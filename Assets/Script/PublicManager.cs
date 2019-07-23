@@ -8,8 +8,11 @@ public class PublicManager:MonoBehaviour
 
     public GameObject PointsUI;
 
-    // public 
+    public bool lockWalk;
 
+    public GameObject arlog;
+
+    public int day;
 
     private void Start()
     {
@@ -43,5 +46,15 @@ public class PublicManager:MonoBehaviour
         Text[] texts= PointsUI.GetComponentsInChildren<Text>();
         texts[0].text = name;
         texts[1].text = del;
+    }
+
+    public void ShowArlog(string note,Ardialog.Callback callback)
+    {
+        arlog.GetComponentInChildren<Text>().text = note;
+        arlog.GetComponent<Ardialog>().call += callback;
+        CanvasGroup group = arlog.GetComponent<CanvasGroup>();
+        group.alpha = 1;
+        group.interactable = true;
+        group.blocksRaycasts = true;
     }
 }

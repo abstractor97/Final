@@ -32,7 +32,7 @@ namespace AI
             {
 
                 EngageTarget(target);
-                runCallBack();
+
                 if (target.Equals(transform.position))
                 {
                     arriveCallBack();
@@ -45,7 +45,8 @@ namespace AI
         public void Goto(Vector3 post )
         {
             target = post;
-          //  EngageTarget(post);
+            runCallBack();
+            //  EngageTarget(post);
         }
 
         public void Stop() {

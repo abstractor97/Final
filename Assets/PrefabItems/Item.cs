@@ -8,7 +8,7 @@ public class Item : ScriptableObject
 
     public string name;
 
-    public Cost cost;
+    public float cost;
 
     public string describe;
 
@@ -17,12 +17,7 @@ public class Item : ScriptableObject
     public ItemControl control;
 
     public float weight;
+
+    public ItemType type;
 }
 
-
-public enum Cost
-{
-    ordinary,
-    rare,
-    seldomSeen,
-}
