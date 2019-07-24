@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(fileName = "自定义人", menuName = "自定义生成系统/人")]
+[CreateAssetMenu(fileName = "自定义NPC", menuName = "自定义生成系统/NPC")]
 public class People : ScriptableObject
 {
     public string name;

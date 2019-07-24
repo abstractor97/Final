@@ -12,15 +12,23 @@ public class PublicManager:MonoBehaviour
 
     public GameObject arlog;
 
-    public int day;
+    public GameObject timelog;
+
+    private GameObject cacheUI;
 
     private void Start()
     {
         PointsUI = GameObject.Instantiate<GameObject>(PointsUI);
-        CanvasGroup group= PointsUI.AddComponent<CanvasGroup>();
-        group.alpha = 0;
-        group.interactable = false;
-        group.blocksRaycasts = false;
+        Hide(PointsUI);
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)&&cacheUI!=null)
+        {
+            Hide(cacheUI);
+        }
     }
 
     public void ShowPointsUIThis(Vector3 post) {
@@ -28,17 +36,11 @@ public class PublicManager:MonoBehaviour
         post.x += 3;
         post.y -= PointsUI.GetComponent<RectTransform>().sizeDelta.y;
         PointsUI.transform.position = post;
-        CanvasGroup group = PointsUI.GetComponent<CanvasGroup>();
-        group.alpha = 1;
-        group.interactable = true;
-        group.blocksRaycasts = true;
+        Show(PointsUI);
     }
 
     public void HidePointsUI() {
-        CanvasGroup group = PointsUI.GetComponent<CanvasGroup>();
-        group.alpha = 0;
-        group.interactable = false;
-        group.blocksRaycasts = false;
+        Hide(PointsUI);
     }
 
     public void ChangePointsUI(string name,string del)
@@ -52,9 +54,31 @@ public class PublicManager:MonoBehaviour
     {
         arlog.GetComponentInChildren<Text>().text = note;
         arlog.GetComponent<Ardialog>().call += callback;
-        CanvasGroup group = arlog.GetComponent<CanvasGroup>();
+        Show(arlog);
+    }
+
+    public void ShowTimeDialog(TimeChoiceDialog.TimeCallback callback)
+    {
+       // timelog.GetComponentInChildren<Text>().text = note;
+        timelog.GetComponent<TimeChoiceDialog>().callback += callback;
+        Show(timelog);
+    }
+
+    public void Show(GameObject ui)
+    {
+        cacheUI = ui;
+        CanvasGroup group = ui.GetComponent<CanvasGroup>();
         group.alpha = 1;
         group.interactable = true;
         group.blocksRaycasts = true;
+    }
+
+    public void Hide(GameObject ui)
+    {
+        cacheUI = null;
+        CanvasGroup group = ui.GetComponent<CanvasGroup>();
+        group.alpha = 0;
+        group.interactable = false;
+        group.blocksRaycasts = false;
     }
 }

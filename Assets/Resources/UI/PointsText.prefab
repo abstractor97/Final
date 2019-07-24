@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 2631997269075392756}
   - component: {fileID: 2631997269075392758}
   - component: {fileID: 2631997269075392757}
+  - component: {fileID: 912941141560768232}
   m_Layer: 5
   m_Name: PointsText
   m_TagString: Untagged
@@ -156,6 +157,18 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!225 &912941141560768232
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2631997269075392763}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2631997269908185881
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using Map;
 
-public class ProcessManager : MonoBehaviour
+public class ProcessManager 
 {
+    private static readonly ProcessManager _instance = new ProcessManager();
     private const string SAVEFILENAME = "/byBin.dat";
-    // Start is called before the first frame update
-    void Start()
+    public static ProcessManager Instance
     {
-        
+        get
+        {
+            return _instance;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public MapPlayer.State cacheState;
+    public DayTime dayTime;
+
+    private ProcessManager() {
+        dayTime = new DayTime();
+    }
+
+    public void SavePlayerState(MapPlayer.State state) {
+        cacheState = state;
     }
 
 
