@@ -15,38 +15,16 @@ namespace Map
 
         public DayTime dayTime;
 
-        public float weight = 55f;
-        public float Hp;
-        public float power;
-        public float speedMultiplier;
-        public float moveSpeed = 0.1f;
-        public float v;
-        public float satiety;
-        public float benchmarkSatiety;
-        public float hpEfflux;
-        public float powerEfflux;
-        public float satietyEfflux;
         public State state;
 
         public Vehicles vehicles;
-
+        /// <summary>
+        /// 难度乘数
+        /// </summary>
         public int DifficultyAmplifier = 1;
         // Start is called before the first frame update
         void Start()
-        {
-            state = new State()
-            {
-                hp = Hp,
-                power = power,
-                speedMultiplier = speedMultiplier,
-                moveSpeed = moveSpeed,
-                weight = weight,
-                satiety = satiety,
-                benchmarkSatiety = benchmarkSatiety,
-                hpEfflux = hpEfflux,
-                powerEfflux = powerEfflux,
-                satietyEfflux = satietyEfflux,
-            };
+        {            
             ai = gameObject.AddComponent<StupidAI>();
             ai.runCallBack += Run;
 
@@ -92,19 +70,27 @@ namespace Map
             }
             else
             {
-                return moveSpeed;
+                return state.moveSpeed;
             }
         }
 
-
+        [System.Serializable]
         public class State
         {
             public string other;
             public float hp;
             public float power;
-            public float speedMultiplier;
+            /// <summary>
+            /// 体力消耗量
+            /// </summary>
+            public float powerLoop;
+
+
             public float moveSpeed;
-            public float weight;//重量
+            /// <summary>
+            /// 重量
+            /// </summary>
+            public float weight;
             public float water;
             /// <summary>
             /// 饱腹度
@@ -113,10 +99,10 @@ namespace Map
             /// <summary>
             /// 基准饱腹度
             /// </summary>
-            public float benchmarkSatiety;//
-                                          /// <summary>
-                                          /// hp自然流逝率
-                                          /// </summary>
+            public float benchmarkSatiety;
+            /// <summary>
+            /// hp自然流逝率
+            /// </summary>
             public float hpEfflux;
             public float powerEfflux;
             public float satietyEfflux;

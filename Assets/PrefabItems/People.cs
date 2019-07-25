@@ -11,6 +11,7 @@ public class People : ScriptableObject
 
     public Inclination inclination;
 
+
     public enum Inclination
     {
         free,

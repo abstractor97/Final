@@ -66,7 +66,7 @@ public class DayTime
                     scale = 0.1f;
                     break;
                 case TimeSpeed.walk:
-                    scale = 1f;
+                    scale = 5f;
                     break;
                 case TimeSpeed.jump:
                     scale = 60f;

@@ -12,6 +12,7 @@ namespace Map
         {
 
             points.eventSend.points = points;
+           // gameObject.AddComponent
             gameObject.AddComponent<CircleCollider2D>().isTrigger = true;
         }
 
@@ -53,7 +54,7 @@ namespace Map
 
         public void Explore()
         {
-            points.eventSend.OnSend();
+           // points.eventSend.OnSend();
         }
 
         public void Wait()

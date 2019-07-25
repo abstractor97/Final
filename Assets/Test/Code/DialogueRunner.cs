@@ -508,7 +508,7 @@ namespace Yarn.Unity
         /// Not implemented here
         public virtual void Clear ()
         {
-            throw new System.NotImplementedException ();
+           
         }
 
         public abstract void ResetToDefaults ();

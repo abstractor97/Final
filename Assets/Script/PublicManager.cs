@@ -14,6 +14,8 @@ public class PublicManager:MonoBehaviour
 
     public GameObject timelog;
 
+    public GameObject actionFrame;
+
     private GameObject cacheUI;
 
     private void Start()
@@ -64,8 +66,16 @@ public class PublicManager:MonoBehaviour
         Show(timelog);
     }
 
+    public void ShowActionFrame(TimeChoiceDialog.TimeCallback callback)
+    {
+        // timelog.GetComponentInChildren<Text>().text = note;
+     //   actionFrame.GetComponent<lIST>().callback += callback;
+        Show(actionFrame);
+    }
+
     public void Show(GameObject ui)
     {
+        Hide(cacheUI);
         cacheUI = ui;
         CanvasGroup group = ui.GetComponent<CanvasGroup>();
         group.alpha = 1;
@@ -74,11 +84,11 @@ public class PublicManager:MonoBehaviour
     }
 
     public void Hide(GameObject ui)
-    {
-        cacheUI = null;
+    {     
         CanvasGroup group = ui.GetComponent<CanvasGroup>();
         group.alpha = 0;
         group.interactable = false;
         group.blocksRaycasts = false;
+        cacheUI = null;
     }
 }

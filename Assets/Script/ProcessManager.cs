@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using Map;
+using System;
 
 public class ProcessManager 
 {
@@ -19,13 +20,21 @@ public class ProcessManager
 
     public MapPlayer.State cacheState;
     public DayTime dayTime;
+    public bool isInGame;
+    public Save save;
 
     private ProcessManager() {
         dayTime = new DayTime();
+        save = LoadByBin();
     }
 
     public void SavePlayerState(MapPlayer.State state) {
         cacheState = state;
+    }
+
+    public void StartGame()
+    {
+
     }
 
 
@@ -34,7 +43,7 @@ public class ProcessManager
         /// </summary>
     private void SaveByBin()
     {
-        Save save = LoadByBin();
+       // Save save = LoadByBin();
         //序列化过程（将Save对象转换为字节流）
         //创建Save对象并保存当前游戏状态
         if (save == null)
@@ -81,6 +90,18 @@ public class ProcessManager
             return null;
         }
     }
+
+    private IEnumerator AutoSave()
+    {
+        while (isInGame)
+        {
+            yield return new WaitForSeconds(60 * 3);
+            SaveByBin();
+        }
+
+    }
+
+ 
 
     [System.Serializable]
     public class Save
