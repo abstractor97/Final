@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Map;
+using UnityEngine.Events;
 
 public class PublicManager:MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class PublicManager:MonoBehaviour
     public GameObject timelog;
 
     public GameObject actionFrame;
+
+    public GameObject selectNum;
 
     private GameObject cacheUI;
 
@@ -31,6 +35,12 @@ public class PublicManager:MonoBehaviour
         {
             Hide(cacheUI);
         }
+    }
+
+    public void ShowSelectNum(UnityAction<int> num)
+    {
+        selectNum.GetComponent<SelectNumDialog>().action += num;
+        Show(selectNum);
     }
 
     public void ShowPointsUIThis(Vector3 post) {
@@ -66,11 +76,18 @@ public class PublicManager:MonoBehaviour
         Show(timelog);
     }
 
-    public void ShowActionFrame(TimeChoiceDialog.TimeCallback callback)
+    public void ShowActionFrame(EventEmitter.EventNote[] et, UnityAction<int> left)
     {
         // timelog.GetComponentInChildren<Text>().text = note;
-     //   actionFrame.GetComponent<lIST>().callback += callback;
+      //  FindObjectOfType<MapControl>().pointsControl.points.eventSend.points
+        actionFrame.GetComponent<GridView>().AddData(et, ActionFrame,left);
         Show(actionFrame);
+    }
+
+
+    void ActionFrame(GameObject ui, EventEmitter.EventNote et)
+    {
+        ui.GetComponentInChildren<Text>().text = et.t;
     }
 
     public void Show(GameObject ui)

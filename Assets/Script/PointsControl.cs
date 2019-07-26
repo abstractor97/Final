@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Map
 {
+    [HideInInspector]
     public class PointsControl : MonoBehaviour
     {
-        public Points points;
         // Start is called before the first frame update
         void Start()
         {
 
-            points.eventSend.points = points;
+           // points.eventSend.points = points;
            // gameObject.AddComponent
             gameObject.AddComponent<CircleCollider2D>().isTrigger = true;
         }
@@ -29,8 +29,9 @@ namespace Map
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            FindObjectOfType<MapControl>().pointsControl = null;
-            points.eventSend.OnLeave();
+            FindObjectOfType<MapControl>().eventEmitter.OnLeave();
+            FindObjectOfType<MapControl>().eventEmitter = null;
+           // points.eventSend.OnLeave();
         }
 
         private void OnMouseEnter()
@@ -52,25 +53,12 @@ namespace Map
 
         }
 
-        public void Explore()
-        {
-           // points.eventSend.OnSend();
-        }
-
-        public void Wait()
-        {
-            points.eventSend.OnWait();
-        }
-
-        public void ToCamp()
-        {
-            points.eventSend.OnCamp();
-        }
-
         public void Arrive()
         {
-            points.eventSend.OnArrive();
-            FindObjectOfType<MapControl>().pointsControl = this;
+            // points.eventSend.OnArrive();
+            EventEmitter e = gameObject.GetComponent<EventEmitter>();
+            e.OnArrive();
+            FindObjectOfType<MapControl>().eventEmitter = e;
             FindObjectOfType<MapPlayer>().Stop();
             FindObjectOfType<PublicManager>().lockWalk = false;
         }

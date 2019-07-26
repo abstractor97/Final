@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Stronghold;
 
 namespace Map
 {
     public class MapControl : MonoBehaviour
     {
-        public PointsControl pointsControl;
+        public EventEmitter eventEmitter;
 
         public GameObject load;
 
         public GameObject task;
+
+        public GameObject bag;
         // Start is called before the first frame update
         void Start()
         {
@@ -26,27 +29,29 @@ namespace Map
 
         public void Stronghold()
         {
-            CanvasGroup group = load.GetComponent<CanvasGroup>();
-            group.alpha = 1;
-            group.interactable = true;
-            group.blocksRaycasts = true;
-            SceneManager.LoadScene("StrongholdScene");
+            if (eventEmitter != null&&eventEmitter.points.holdType!=StrongholdControl.Type.none)
+            {
+                eventEmitter.OnStronghold();
+                CanvasGroup group = load.GetComponent<CanvasGroup>();
+                group.alpha = 1;
+                group.interactable = true;
+                group.blocksRaycasts = true;
+                SceneManager.LoadSceneAsync("StrongholdScene", LoadSceneMode.Additive);
+            }
+                      
         }
 
-        public void Explore()
+        public void Action()
         {
-            if (pointsControl!=null)
+            if (eventEmitter != null)
             {
-                pointsControl.Explore();
+                eventEmitter.ShowAction();
             }
         }
 
-        public void Camp()
+        public void Bag()
         {
-            if (pointsControl != null)
-            {
-                pointsControl.ToCamp();
-            }
+            FindObjectOfType<PublicManager>().Show(bag);
         }
 
         public void Task()
@@ -54,23 +59,23 @@ namespace Map
             FindObjectOfType<PublicManager>().Show(task);
         }
 
-        public void Wait()
-        {
+        //public void Wait()
+        //{
            
-            FindObjectOfType<PublicManager>().ShowTimeDialog(JumpTime);
+        //    FindObjectOfType<PublicManager>().ShowTimeDialog(JumpTime);
         
 
-        }
+        //}
 
-        public void JumpTime(string time)
-        {
-            MapPlayer player = FindObjectOfType<MapPlayer>();
-            player.dayTime.JumpTime(time);
-            if (pointsControl != null)
-            {
-                pointsControl.Wait();
-            }
-        }
+        //public void JumpTime(string time)
+        //{
+        //    MapPlayer player = FindObjectOfType<MapPlayer>();
+        //    player.dayTime.JumpTime(time);
+        //    if (pointsControl != null)
+        //    {
+        //        pointsControl.Wait();
+        //    }
+        //}
     }
 
 }

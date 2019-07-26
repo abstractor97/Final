@@ -9,9 +9,11 @@ public class Points : ScriptableObject
     public Sprite lowSprite;
     // public PointsControl control;
     //public Scripts
-    public EventEmitter eventSend;
+    //public EventEmitter eventSend;
     public Buff[] buffs;
     public Item[] Items;
     public People[] people;
     public string[] environments;
+
+    public Stronghold.StrongholdControl.Type holdType;
 }

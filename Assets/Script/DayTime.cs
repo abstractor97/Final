@@ -92,6 +92,10 @@ public class DayTime
             {
                 timeSpeed = TimeSpeed.wait;
             }
+            if (nowTime.Equals("00:00"))
+            {
+                day++;
+            }
         }       
     }
 

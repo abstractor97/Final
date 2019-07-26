@@ -49,6 +49,10 @@ namespace Map
             dayTime.ChangeSpeed(DayTime.TimeSpeed.wait);
         }
 
+        public void JumpTime(string time) {
+            dayTime.JumpTime(time);
+        }
+
         void UpdateTime(string time)
         {
             clock.GetComponentInChildren<Text>().text = time;

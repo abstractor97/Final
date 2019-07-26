@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using Map;
+using Stronghold;
 using System;
 
 public class ProcessManager 
@@ -22,6 +23,7 @@ public class ProcessManager
     public DayTime dayTime;
     public bool isInGame;
     public Save save;
+    public StrongholdControl.Type loadHold;
 
     private ProcessManager() {
         dayTime = new DayTime();

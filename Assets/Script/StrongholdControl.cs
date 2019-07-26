@@ -71,6 +71,15 @@ namespace Stronghold
         {
             ProcessManager.Instance.dayTime.JumpTime(time);
         }
+
+        public enum Type
+        {
+            none,
+            forest,
+            ruins,
+            grassland
+
+        }
     }
 
 }

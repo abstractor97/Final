@@ -6,27 +6,29 @@ namespace Map
 {
     public class Forest : EventEmitter
     {
-
-        public override void OnArrive()
+        public override void OnAction(int i)
         {
-
-        }
-
-        public override void OnCamp()
-        {
+            switch (eventNotes[i].e)
+            {
+                case Event.explore:
+                    break;
+                case Event.collection:
+                    break;
+                case Event.tocamp:
+                    if (points.holdType== Stronghold.StrongholdControl.Type.none)
+                    {
+                        points.holdType = Stronghold.StrongholdControl.Type.forest;
+                        FindObjectOfType<MapPlayer>().dayTime.JumpTime(holdTime);
+                    }                  
+                    break;
+                case Event.medical:
+                    break;
+            }
             
         }
 
-        public override void OnLeave()
-        {
-            
-        }
 
       
-        public override void OnWait()
-        {
-            
-        }
     }
 
 }
