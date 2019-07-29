@@ -16,4 +16,5 @@ public class Points : ScriptableObject
     public string[] environments;
 
     public Stronghold.StrongholdControl.Type holdType;
+
 }

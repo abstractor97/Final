@@ -61,6 +61,8 @@ namespace Map
             FindObjectOfType<MapControl>().eventEmitter = e;
             FindObjectOfType<MapPlayer>().Stop();
             FindObjectOfType<PublicManager>().lockWalk = false;
+            ProcessManager.Instance.save.x = gameObject.transform.position.x;
+            ProcessManager.Instance.save.y = gameObject.transform.position.y;
         }
 
         public string GenerateChar()

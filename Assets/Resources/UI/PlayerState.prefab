@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.7882353, b: 0.34509805, a: 1}
+  m_Color: {r: 0.5977661, g: 0.9528302, b: 0.6695279, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mDirection: 0
-  color: {r: 1, g: 0.33577108, b: 0, a: 1}
+  color: {r: 0, g: 0.9230871, b: 1, a: 1}
   isMid: 0
 --- !u!114 &3543977966925541624
 MonoBehaviour:
@@ -468,7 +468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.7882353, b: 0.34509805, a: 1}
+  m_Color: {r: 0.9811321, g: 0.78943175, b: 0.38412246, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mDirection: 0
-  color: {r: 1, g: 0.33577108, b: 0, a: 1}
+  color: {r: 1, g: 0.13217431, b: 0, a: 1}
   isMid: 0
 --- !u!114 &3543977967319400455
 MonoBehaviour:
@@ -574,7 +574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.7882353, b: 0.34509805, a: 1}
+  m_Color: {r: 0.9622642, g: 0.48224846, b: 0.26779994, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -582,7 +582,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -603,7 +603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mDirection: 0
-  color: {r: 1, g: 0.33577108, b: 0, a: 1}
+  color: {r: 0.045387268, g: 1, b: 0, a: 1}
   isMid: 0
 --- !u!114 &3543977967984406618
 MonoBehaviour:

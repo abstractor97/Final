@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-//[CustomEditor(typeof(Points))] //指定要编辑的脚本对象
+[CustomEditor(typeof(EventEmitter),true)] //指定要编辑的脚本对象
 public class PointsEditor : Editor
 {
-    private Points m_Target;
+    private EventEmitter m_Target;
 
-    private EventEmitter eventEmitter;
+ //   private EventEmitter eventEmitter;
 
     //重写OnInspectorGUI方法，当激活此面板区域时调用
     public override void OnInspectorGUI()
@@ -15,10 +15,24 @@ public class PointsEditor : Editor
          base.OnInspectorGUI();
 
         //获取指定脚本对象
-        m_Target = target as Points;
+        m_Target = target as EventEmitter;
+        float j=0;
+        for (int i = 0; i < m_Target.eventNotes.Length; i++)
+        {
+            if (j + m_Target.eventNotes[i].probability < 1)
+            {
+                j += m_Target.eventNotes[i].probability;
+            }
+            else
+            {
+                m_Target.eventNotes[i].probability -= (1 - j);
+            }
 
+        }
+        
+        
        // m_Target.eventSend = EditorGUILayout.ObjectField("事件发送器", this.eventEmitter, typeof(EventEmitter), true) as EventEmitter;
-       
+
 
 
 

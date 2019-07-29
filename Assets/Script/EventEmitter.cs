@@ -10,11 +10,11 @@ public abstract class EventEmitter : MonoBehaviour
     /// <summary>
     /// 速度乘数
     /// </summary>
-    [Range(0,10)]
+    [Range(0, 10)]
     public float speedMultiplier;
     [Range(0, 10)]
     public float powerMultiplier;
-
+    [Tooltip("扎营时间")]
     public string holdTime;
    // public Event[] events;
 
@@ -25,6 +25,9 @@ public abstract class EventEmitter : MonoBehaviour
         public Event e;
         [HideInInspector]
         public string t;
+        [Range(0,1)]
+        [Tooltip("触发概率")]
+        public float probability;
     }
 
     private void Start()
