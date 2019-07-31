@@ -18,8 +18,8 @@ namespace Stronghold
         // Start is called before the first frame update
         void Start()
         {
-            ProcessManager.Instance.dayTime.StartDay(this);
-            ProcessManager.Instance.dayTime.ChangeSpeed(DayTime.TimeSpeed.wait);
+           // ProcessManager.Instance.dayTime.StartDay(this);
+            FindObjectOfType<DayTime>().ChangeSpeed(DayTime.TimeSpeed.wait);
         }
 
         // Update is called once per frame
@@ -57,7 +57,7 @@ namespace Stronghold
 
         IEnumerator RunMap()
         {
-            load.GetComponentInChildren<Text>().text = "第" + ProcessManager.Instance.dayTime.day + "天";
+            load.GetComponentInChildren<Text>().text = "第" + FindObjectOfType<DayTime>().day + "天";
             FindObjectOfType<PublicManager>().Show(load);
             AsyncOperation operation= SceneManager.LoadSceneAsync("MapScene");
             operation.allowSceneActivation = false;
@@ -69,7 +69,7 @@ namespace Stronghold
 
         public void JumpTime(string time)
         {
-            ProcessManager.Instance.dayTime.JumpTime(time);
+            FindObjectOfType<DayTime>().JumpTime(time);
         }
 
         public enum Type

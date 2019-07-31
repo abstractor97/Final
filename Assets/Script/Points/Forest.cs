@@ -8,9 +8,10 @@ namespace Map
     {
         public override void OnAction(int i)
         {
-            switch (eventNotes[i].e)
+            switch (points.eventNotes[i].e)
             {
                 case Event.explore:
+                    Explore();
                     break;
                 case Event.collection:
                     break;
@@ -18,7 +19,7 @@ namespace Map
                     if (points.holdType== Stronghold.StrongholdControl.Type.none)
                     {
                         points.holdType = Stronghold.StrongholdControl.Type.forest;
-                        FindObjectOfType<MapPlayer>().dayTime.JumpTime(holdTime);
+                        FindObjectOfType<MapPlayer>().dayTime.JumpTime(points.holdTime);
                     }                  
                     break;
                 case Event.medical:

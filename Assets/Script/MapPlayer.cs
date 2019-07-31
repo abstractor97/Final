@@ -28,8 +28,8 @@ namespace Map
             ai = gameObject.AddComponent<StupidAI>();
             ai.runCallBack += Run;
 
-            dayTime = ProcessManager.Instance.dayTime;
-            dayTime.StartDay(this);
+            dayTime = FindObjectOfType<DayTime>();
+           // dayTime.StartDay(this);
             dayTime.callback += UpdateTime;
             gameObject.transform.position = new Vector3(ProcessManager.Instance.save.x, ProcessManager.Instance.save.y,0);
         }

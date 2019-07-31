@@ -91,6 +91,7 @@ namespace Yarn.Unity.Example {
             });
             if (target != null) {
                 // Kick off the dialogue at this node.
+                Debug.LogWarning(target.talkToNode+">.");
                 FindObjectOfType<DialogueRunner> ().StartDialogue (target.talkToNode);
             }
         }

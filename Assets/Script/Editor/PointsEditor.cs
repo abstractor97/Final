@@ -17,15 +17,15 @@ public class PointsEditor : Editor
         //获取指定脚本对象
         m_Target = target as EventEmitter;
         float j=0;
-        for (int i = 0; i < m_Target.eventNotes.Length; i++)
+        for (int i = 0; i < m_Target.exploreActions.Length; i++)
         {
-            if (j + m_Target.eventNotes[i].probability < 1)
+            if (j + m_Target.exploreActions[i].probability < 1)
             {
-                j += m_Target.eventNotes[i].probability;
+                j += m_Target.exploreActions[i].probability;
             }
             else
             {
-                m_Target.eventNotes[i].probability -= (1 - j);
+                m_Target.exploreActions[i].probability -= (1 - j);
             }
 
         }

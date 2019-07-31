@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Map;
 using UnityEngine.Events;
+using DG.Tweening;
+using System;
 
 public class PublicManager:MonoBehaviour
 {
@@ -22,11 +24,15 @@ public class PublicManager:MonoBehaviour
 
     private GameObject cacheUI;
 
+ 
+
     private void Start()
     {
         PointsUI = GameObject.Instantiate<GameObject>(PointsUI);
         Hide(PointsUI);
-        DontDestroyOnLoad(gameObject);
+      //  DontDestroyOnLoad(gameObject);
+
+
     }
 
     private void Update()
@@ -37,6 +43,7 @@ public class PublicManager:MonoBehaviour
         }
     }
 
+  
     public void ShowSelectNum(UnityAction<int> num)
     {
         selectNum.GetComponent<SelectNumDialog>().action += num;
@@ -76,7 +83,7 @@ public class PublicManager:MonoBehaviour
         Show(timelog);
     }
 
-    public void ShowActionFrame(EventEmitter.EventNote[] et, UnityAction<int> left)
+    public void ShowActionFrame(Points.EventNote[] et, UnityAction<int> left)
     {
         // timelog.GetComponentInChildren<Text>().text = note;
       //  FindObjectOfType<MapControl>().pointsControl.points.eventSend.points
@@ -85,7 +92,7 @@ public class PublicManager:MonoBehaviour
     }
 
 
-    void ActionFrame(GameObject ui, EventEmitter.EventNote et)
+    void ActionFrame(GameObject ui, Points.EventNote et)
     {
         ui.GetComponentInChildren<Text>().text = et.t;
     }

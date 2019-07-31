@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class DayTime
+public class DayTime:MonoBehaviour
 {
     public string nowTime = "00:00";
 
@@ -18,19 +21,64 @@ public class DayTime
     public int day;
     public bool isRun;
 
-    public void StartDay(MonoBehaviour mono)
+    //声明
+    Sequence mScoreSequence;
+
+    int mOldHour = 0;
+    int mOldMins = 0;
+    public Text hourText;
+    public Text minsText;
+
+    private void Start()
     {
-        if (!isRun)
-        {
-            mono.StartCoroutine(Run());
-            isRun = true;
-        }    
+        StartDay();
+        DontDestroyOnLoad(gameObject);
     }
-    public void StopDay(MonoBehaviour mono)
+
+    public void StartDay()
     {
-        mono.StopAllCoroutines();
+        StartCoroutine(Run());
+        isRun = true;
+        //函数内初始化
+        mScoreSequence = DOTween.Sequence();
+        //函数内设置属性
+        mScoreSequence.SetAutoKill(false);
+        
+    }
+    public void StopDay()
+    {
+        StopAllCoroutines();
         isRun = false;
     }
+
+    public void HaTime(int hour,int mins)
+    {
+        if (mOldHour!=hour)
+        {
+            mScoreSequence.Append(DOTween.To(delegate (float value) {
+                //向下取整
+                var temp = Math.Floor(value);
+                //向Text组件赋值
+                hourText.text = temp + "";
+            }, mOldHour, hour, 0.4f));
+            //将更新后的值记录下来, 用于下一次滚动动画
+            mOldHour = hour;
+        }
+
+        if (mOldMins!=mins)
+        {
+            mScoreSequence.Append(DOTween.To(delegate (float value) {
+                //向下取整
+                var temp = Math.Floor(value);
+                //向Text组件赋值
+                minsText.text = temp + "";
+            }, mOldMins, mins, 0.4f));
+            //将更新后的值记录下来, 用于下一次滚动动画
+            mOldMins = mins;
+        }
+   
+    }
+
 
     public void ChangeSpeed(TimeSpeed timeSpeed) {
         this.timeSpeed = timeSpeed;
@@ -63,13 +111,13 @@ public class DayTime
             switch (timeSpeed)
             {
                 case TimeSpeed.wait:
-                    scale = 0.1f;
+                    scale = 1f;
                     break;
                 case TimeSpeed.walk:
-                    scale = 5f;
+                    scale = 0.2f;
                     break;
                 case TimeSpeed.jump:
-                    scale = 60f;
+                    scale = 0.05f;
                     break;
             }
             yield return new WaitForSeconds(scale);
@@ -86,8 +134,18 @@ public class DayTime
                     hour = 0;
                 }
             }
-            nowTime = hour + ":" + minute;
-            callback(nowTime);
+            string hours = hour.ToString();
+            if (hour<10)
+            {
+                hours = "0" + hours;
+            }
+            string minutes = minute.ToString();
+            if (minute < 10)
+            {
+                minutes = "0" + minutes;
+            }
+            nowTime = hours + ":" + minutes;
+
             if (nowTime.Equals(targetTime))
             {
                 timeSpeed = TimeSpeed.wait;
@@ -96,6 +154,10 @@ public class DayTime
             {
                 day++;
             }
+            hourText.text = hours;
+            minsText.text = minutes;
+          //  HaTime(hour, minute);
+            callback?.Invoke(nowTime);
         }       
     }
 

@@ -5,7 +5,10 @@ using UnityEngine;
 /// </summary>
 public enum ItemType
 {
-
+    material,
+    food,
+    water,
+    consumables,
 }
 
 public class ItemInfo

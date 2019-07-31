@@ -20,13 +20,12 @@ public class ProcessManager
     }
 
     public MapPlayer.State cacheState;
-    public DayTime dayTime;
+    //public DayTime dayTime;
     public bool isInGame;
     public Save save;
     public StrongholdControl.Type loadHold;
 
     private ProcessManager() {
-        dayTime = new DayTime();
         save = LoadByBin();
     }
 
