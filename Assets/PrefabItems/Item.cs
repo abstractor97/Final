@@ -8,17 +8,21 @@ public class Item : ScriptableObject
 {
 
    // public string name;
-
     public float cost;
 
     public string describe;
 
     public Sprite lowSprite;
 
-    public UnityAction<Item> use;
-
     public float weight;
 
     public ItemType type;
+
+    public enum ItemType
+    {
+        available,
+        material,
+        equip
+    }
 }
 

@@ -74,6 +74,7 @@ namespace Map
         {
             if (pass == Ardialog.Pass.yes)
             {
+                FindObjectOfType<ATarget>().WalkThis(transform.position);
                 FindObjectOfType<PublicManager>().lockWalk = true;
                 FindObjectOfType<MapPlayer>().ai.Goto(transform.position);
                 FindObjectOfType<MapPlayer>().ai.arriveCallBack += Arrive;

@@ -7,13 +7,14 @@ using UnityEngine.UI;
 public class SelectNumDialog : MonoBehaviour
 {
     public int max=100;
+    public int min = 0;
     private int num;
     public UnityAction<int> action;
     public Text text;
     // Start is called before the first frame update
     void Start()
     {
-        
+        text.text = min.ToString();
     }
 
     // Update is called once per frame
@@ -26,15 +27,17 @@ public class SelectNumDialog : MonoBehaviour
         if (num<max)
         {
             num++;
+            text.text = num.ToString();
         }
        
     }
 
     public void Reduce()
     {
-        if (num>0)
+        if (num> min)
         {
             num--;
+            text.text = num.ToString();
         }
     }
 

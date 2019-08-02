@@ -44,9 +44,11 @@ public class PublicManager:MonoBehaviour
     }
 
   
-    public void ShowSelectNum(UnityAction<int> num)
+    public void ShowSelectNum(int max,int min,UnityAction<int> num)
     {
         selectNum.GetComponent<SelectNumDialog>().action += num;
+        selectNum.GetComponent<SelectNumDialog>().max = max;
+        selectNum.GetComponent<SelectNumDialog>().min = min;
         Show(selectNum);
     }
 
@@ -87,7 +89,7 @@ public class PublicManager:MonoBehaviour
     {
         // timelog.GetComponentInChildren<Text>().text = note;
       //  FindObjectOfType<MapControl>().pointsControl.points.eventSend.points
-        actionFrame.GetComponent<GridView>().AddData(et, ActionFrame,left);
+        actionFrame.GetComponent<GridView>().AddDataDef(et, ActionFrame,left);
         Show(actionFrame);
     }
 

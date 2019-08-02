@@ -14,6 +14,7 @@ namespace Map
                     Explore();
                     break;
                 case Event.collection:
+                    Collection();
                     break;
                 case Event.tocamp:
                     if (points.holdType== Stronghold.StrongholdControl.Type.none)

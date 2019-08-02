@@ -16,19 +16,24 @@ public class PointsEditor : Editor
 
         //获取指定脚本对象
         m_Target = target as EventEmitter;
-        float j=0;
-        for (int i = 0; i < m_Target.exploreActions.Length; i++)
+        if (m_Target.exploreActions!=null)
         {
-            if (j + m_Target.exploreActions[i].probability < 1)
-            {
-                j += m_Target.exploreActions[i].probability;
-            }
-            else
-            {
-                m_Target.exploreActions[i].probability -= (1 - j);
-            }
+            float j = 0;
 
+            for (int i = 0; i < m_Target.exploreActions.Length; i++)
+            {
+                if (j + m_Target.exploreActions[i].probability < 1)
+                {
+                    j += m_Target.exploreActions[i].probability;
+                }
+                else
+                {
+                    m_Target.exploreActions[i].probability -= (1 - j);
+                }
+
+            }
         }
+       
         
         
        // m_Target.eventSend = EditorGUILayout.ObjectField("事件发送器", this.eventEmitter, typeof(EventEmitter), true) as EventEmitter;

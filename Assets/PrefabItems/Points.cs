@@ -21,13 +21,22 @@ public class Points : ScriptableObject
     // public PointsControl control;
     //public Scripts
     //public EventEmitter eventSend;
+    /// <summary>
+    /// 可以获得的
+    /// </summary>
     public Buff[] buffs;
+
+    public int minGet;
+    public int maxGet;
+
     /// <summary>
     /// 可以采集到的
     /// </summary>
-    public Item[] Items;
+    public ItemInPoint[] Items;
+    /// <summary>
+    /// 可以遇到的
+    /// </summary>
     public People[] people;
-    public string[] environments;
 
 
 
@@ -40,6 +49,19 @@ public class Points : ScriptableObject
         public EventEmitter.Event e;
         [HideInInspector]
         public string t;
+
+    }
+
+    [System.Serializable]
+    public class ItemInPoint
+    {
+
+        [Range(0, 1)]
+        [Tooltip("获得概率")]
+        public float probability;
+        [Tooltip("可以获取的最大数量")]
+        public int max;
+        public Item item;
 
     }
 

@@ -9,15 +9,19 @@ public abstract class EventEmitter : MonoBehaviour
 {
     public Points points;
 
-   
-   // public Event[] events;
+   // private float 
+
+    // public Event[] events;
+
+    public List<ExploreAction>  firstActions;
+
 
     public ExploreAction[] exploreActions;
 
     [System.Serializable]
     public struct ExploreAction
     {
-        public string name;
+        public ExploreEvent type;
         [Tooltip("yarn文件")]
         public TextAsset note;
 
@@ -25,7 +29,9 @@ public abstract class EventEmitter : MonoBehaviour
         [Tooltip("触发概率")]
         public float probability;
 
-        public UnityEvent<Points> et;
+        public bool isTrigger;
+
+        public UnityEvent et;
     }
 
     private void Start()
@@ -35,6 +41,7 @@ public abstract class EventEmitter : MonoBehaviour
         {
             points.eventNotes[i].t = EventToString(points.eventNotes[i].e);
         }
+        
     }
 
     public void ShowAction()
@@ -50,6 +57,20 @@ public abstract class EventEmitter : MonoBehaviour
 
     public void Explore()
     {
+        if (firstActions!=null)
+        {
+            foreach (var e in firstActions)
+            {
+                if (!e.isTrigger)
+                {
+                    FindObjectOfType<DialogueRunner>().AddScript(e.note);
+                    FindObjectOfType<DialogueRunner>().StartDialogue();
+                    e.et.Invoke();
+                    return;
+                }
+            }
+        }
+       
         float r = Random.Range(0,1);
         float l = 0;
         foreach (var e in exploreActions)
@@ -59,9 +80,37 @@ public abstract class EventEmitter : MonoBehaviour
             {
                 FindObjectOfType<DialogueRunner>().AddScript(e.note);
                 FindObjectOfType<DialogueRunner>().StartDialogue();
-                e.et.Invoke(points);
+                e.et.Invoke();
             }
         }
+    }
+
+    public void Collection()
+    {
+        int n = Random.Range(points.minGet, points.maxGet);
+
+        for (int i = 0; i < n; i++)
+        {
+            float r = Random.Range(0, 1);
+            float l = 0;
+            foreach (var e in points.Items)
+            {
+                l += e.probability;
+                if (l >= r && e.max != 0)
+                {
+                    //todo showitem | additem
+                }
+            }
+        }
+       
+    }
+
+    public void AddFirstEvent(ExploreAction action) {
+        if (firstActions == null)
+        {
+            firstActions = new List<ExploreAction>();
+        }
+        firstActions.Add(action);
     }
 
     public virtual void OnArrive(){
@@ -119,6 +168,13 @@ public abstract class EventEmitter : MonoBehaviour
         make,
         transaction,
         beg,
+    }
+
+    public enum ExploreEvent
+    {
+        NPC,
+        place,
+        e,
     }
 
 }

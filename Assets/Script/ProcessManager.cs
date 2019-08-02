@@ -38,6 +38,11 @@ public class ProcessManager
 
     }
 
+    public void ToEvent()
+    {
+
+    }
+
 
     /// <summary>
         /// 二进制方法：存档
