@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Pathfinding;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,7 +60,7 @@ namespace Map
             EventEmitter e = gameObject.GetComponent<EventEmitter>();
             e.OnArrive();
             FindObjectOfType<MapControl>().eventEmitter = e;
-            FindObjectOfType<MapPlayer>().Stop();
+            FindObjectOfType<DayTime>().ChangeSpeed(DayTime.TimeSpeed.wait);
             FindObjectOfType<PublicManager>().lockWalk = false;
             ProcessManager.Instance.save.x = gameObject.transform.position.x;
             ProcessManager.Instance.save.y = gameObject.transform.position.y;
@@ -76,8 +77,12 @@ namespace Map
             {
                 FindObjectOfType<ATarget>().WalkThis(transform.position);
                 FindObjectOfType<PublicManager>().lockWalk = true;
-                FindObjectOfType<MapPlayer>().ai.Goto(transform.position);
-                FindObjectOfType<MapPlayer>().ai.arriveCallBack += Arrive;
+                GameObject player = GameObject.FindGameObjectWithTag("Player");
+                player.GetComponent<AILerp>().destination= transform.position;
+                player.GetComponent<AILerp>().SearchPath();
+                player.GetComponent<AILerp>().complete += Arrive;
+               // FindObjectOfType<MapPlayer>().ai.Goto(transform.position);
+               // FindObjectOfType<MapPlayer>().ai.arriveCallBack += Arrive;
             }
         }
 

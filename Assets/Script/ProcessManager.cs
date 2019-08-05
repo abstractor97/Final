@@ -19,7 +19,7 @@ public class ProcessManager
         }
     }
 
-    public MapPlayer.State cacheState;
+    public PlayerManager.State cacheState;
     //public DayTime dayTime;
     public bool isInGame;
     public Save save;
@@ -29,9 +29,6 @@ public class ProcessManager
         save = LoadByBin();
     }
 
-    public void SavePlayerState(MapPlayer.State state) {
-        cacheState = state;
-    }
 
     public void StartGame()
     {

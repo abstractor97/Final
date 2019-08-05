@@ -1036,28 +1036,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1446356504}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff320710edc849f419dd0ef7eb478d94, type: 3}
+  m_Script: {fileID: 11500000, guid: d505ecabe2059af4aa87b26684d3039c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragOffset: {x: 0, y: 0, z: 0}
-  extUI: {fileID: 0}
-  equip: {fileID: 0}
-  bagCapacity: 0
+  item: {fileID: 0}
   items: []
-  bagItems: 
-  itemInfoPanel: {fileID: 0}
-  isAuto: 1
-  Lattice: {fileID: 0}
-  itemInBag: {fileID: 0}
-  allCapacity: 0
-  lineNum: 4
-  top: 0
-  left: 0
-  autoTop: 0
-  autoLeft: 0
-  autoSize: 0
-  isDrag: 0
-  itemTable: []
+  maxWeight: 0
+  playerBag: 0
+  isBag: 0
+  addSprite: {fileID: 0}
 --- !u!114 &1446356507
 MonoBehaviour:
   m_ObjectHideFlags: 0

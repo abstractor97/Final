@@ -114,14 +114,14 @@ public abstract class EventEmitter : MonoBehaviour
     }
 
     public virtual void OnArrive(){
-        FindObjectOfType<MapPlayer>().state.moveSpeed *= points. speedMultiplier;
-        FindObjectOfType<MapPlayer>().state.powerLoop *= points.powerMultiplier;
+        FindObjectOfType<PlayerManager>().state.moveSpeed *= points. speedMultiplier;
+        FindObjectOfType<PlayerManager>().state.powerLoop *= points.powerMultiplier;
     }
 
     public virtual void OnLeave()
     {
-        FindObjectOfType<MapPlayer>().state.moveSpeed /= points.speedMultiplier;
-        FindObjectOfType<MapPlayer>().state.powerLoop /= points.powerMultiplier;
+        FindObjectOfType<PlayerManager>().state.moveSpeed /= points.speedMultiplier;
+        FindObjectOfType<PlayerManager>().state.powerLoop /= points.powerMultiplier;
     }
 
     private string EventToString(Event e)

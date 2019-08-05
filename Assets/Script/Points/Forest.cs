@@ -20,7 +20,7 @@ namespace Map
                     if (points.holdType== Stronghold.StrongholdControl.Type.none)
                     {
                         points.holdType = Stronghold.StrongholdControl.Type.forest;
-                        FindObjectOfType<MapPlayer>().dayTime.JumpTime(points.holdTime);
+                        FindObjectOfType<DayTime>().JumpTime(points.holdTime);
                     }                  
                     break;
                 case Event.medical:

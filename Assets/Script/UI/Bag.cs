@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bag : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Bag : MonoBehaviour
 
     public bool isBag;//todo
 
+    public Sprite addSprite;
 
     [Serializable]
     public class ItemInBag
@@ -64,6 +66,10 @@ public class Bag : MonoBehaviour
         bagItem.note.text = item.item.describe;
         bagItem.num.text = item.num.ToString();
         bagItem.weight.text = item.item.weight.ToString();
+        if (!playerBag)
+        {
+            bagItem.delete.gameObject.GetComponent<Image>().sprite = addSprite;
+        }
 
     }
 
@@ -81,12 +87,24 @@ public class Bag : MonoBehaviour
             switch (items[sel].item.type)
             {
                 case Item.ItemType.available:
-                    FindObjectOfType<PublicManager>().ShowArlog("是否使用" + items[sel].item.name, UseCallBack);
+                    FindObjectOfType<PublicManager>().ShowArlog("是否使用" + items[sel].item.name, delegate (Ardialog.Pass pass)
+                    {
+                        if (pass == Ardialog.Pass.yes)
+                        {
+                            AttrToInvoke(items[sel].item.use);
+                        }
+                    });
                     break;
                 case Item.ItemType.material:
                     break;
                 case Item.ItemType.equip:
-                    FindObjectOfType<PublicManager>().ShowArlog("装备" + items[sel].item.name, EquipCallBack);
+                    FindObjectOfType<PublicManager>().ShowArlog("装备" + items[sel].item.name, delegate (Ardialog.Pass pass)
+                    {
+                        if (pass == Ardialog.Pass.yes)
+                        {
+                            AttrToInvoke(items[sel].item.use);
+                        }
+                    });
                     break;
             }
         }
@@ -95,21 +113,6 @@ public class Bag : MonoBehaviour
       
     }
 
-    private void UseCallBack(Ardialog.Pass pass)
-    {
-        if (pass==Ardialog.Pass.yes)
-        {
-
-        }
-    }
-
-    private void EquipCallBack(Ardialog.Pass pass)
-    {
-        if (pass == Ardialog.Pass.yes)
-        {
-
-        }
-    }
 
     public void DeleteOrMove(int sel)
     {
@@ -142,5 +145,43 @@ public class Bag : MonoBehaviour
             items[actionSel].num -= num;
         }
         UpBag();
+    }
+    /// <summary>
+    ///  负载的速度乘数 y=\frac{\left(2-\frac{xx}{mm})}/{2}{y>0}{x>0}
+    /// </summary>
+    /// <returns>0~1</returns>
+    public float LoadSpeed()
+    {
+        return (2 - (weight * weight) / (maxWeight * maxWeight)) / 2;
+    }
+
+    private void AttrToInvoke(Item.Use[] uses)
+    {
+        foreach (var use in uses)
+        {
+            switch (use.type)
+            {
+                case Item.UseType.recovery:
+
+                    FindObjectOfType<PlayerManager>().ChangeState(use.state,use.degree,use.totalTime);
+
+                    break;
+                case Item.UseType.buff:
+                    break;
+                case Item.UseType.arm:
+                    break;
+                case Item.UseType.hat:
+                    break;
+                case Item.UseType.clothes_up:
+                    break;
+                case Item.UseType.clothes_down:
+                    break;
+                case Item.UseType.shoes:
+                    break;
+                default:
+                    break;
+            }
+        }
+       
     }
 }

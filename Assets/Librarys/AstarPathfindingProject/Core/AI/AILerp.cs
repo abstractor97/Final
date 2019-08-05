@@ -4,37 +4,38 @@ using System.Collections.Generic;
 
 namespace Pathfinding {
 	using Pathfinding.Util;
+    using UnityEngine.Events;
 
-	/// <summary>
-	/// Linearly interpolating movement script.
-	/// This movement script will follow the path exactly, it uses linear interpolation to move between the waypoints in the path.
-	/// This is desirable for some types of games.
-	/// It also works in 2D.
-	///
-	/// See: You can see an example of this script in action in the example scene called Example15_2D.
-	///
-	/// \section rec Configuration
-	/// \subsection rec-snapped Recommended setup for movement along connections
-	///
-	/// This depends on what type of movement you are aiming for.
-	/// If you are aiming for movement where the unit follows the path exactly and move only along the graph connections on a grid/point graph.
-	/// I recommend that you adjust the StartEndModifier on the Seeker component: set the 'Start Point Snapping' field to 'NodeConnection' and the 'End Point Snapping' field to 'SnapToNode'.
-	/// [Open online documentation to see images]
-	/// [Open online documentation to see images]
-	///
-	/// \subsection rec-smooth Recommended setup for smooth movement
-	/// If you on the other hand want smoother movement I recommend setting 'Start Point Snapping' and 'End Point Snapping' to 'ClosestOnNode' and to add the Simple Smooth Modifier to the GameObject as well.
-	/// Alternatively you can use the <see cref="Pathfinding.FunnelModifier Funnel"/> which works better on navmesh/recast graphs or the <see cref="Pathfinding.RaycastModifier"/>.
-	///
-	/// You should not combine the Simple Smooth Modifier or the Funnel Modifier with the NodeConnection snapping mode. This may lead to very odd behavior.
-	///
-	/// [Open online documentation to see images]
-	/// [Open online documentation to see images]
-	/// You may also want to tweak the <see cref="rotationSpeed"/>.
-	///
-	/// \ingroup movementscripts
-	/// </summary>
-	[RequireComponent(typeof(Seeker))]
+    /// <summary>
+    /// Linearly interpolating movement script.
+    /// This movement script will follow the path exactly, it uses linear interpolation to move between the waypoints in the path.
+    /// This is desirable for some types of games.
+    /// It also works in 2D.
+    ///
+    /// See: You can see an example of this script in action in the example scene called Example15_2D.
+    ///
+    /// \section rec Configuration
+    /// \subsection rec-snapped Recommended setup for movement along connections
+    ///
+    /// This depends on what type of movement you are aiming for.
+    /// If you are aiming for movement where the unit follows the path exactly and move only along the graph connections on a grid/point graph.
+    /// I recommend that you adjust the StartEndModifier on the Seeker component: set the 'Start Point Snapping' field to 'NodeConnection' and the 'End Point Snapping' field to 'SnapToNode'.
+    /// [Open online documentation to see images]
+    /// [Open online documentation to see images]
+    ///
+    /// \subsection rec-smooth Recommended setup for smooth movement
+    /// If you on the other hand want smoother movement I recommend setting 'Start Point Snapping' and 'End Point Snapping' to 'ClosestOnNode' and to add the Simple Smooth Modifier to the GameObject as well.
+    /// Alternatively you can use the <see cref="Pathfinding.FunnelModifier Funnel"/> which works better on navmesh/recast graphs or the <see cref="Pathfinding.RaycastModifier"/>.
+    ///
+    /// You should not combine the Simple Smooth Modifier or the Funnel Modifier with the NodeConnection snapping mode. This may lead to very odd behavior.
+    ///
+    /// [Open online documentation to see images]
+    /// [Open online documentation to see images]
+    /// You may also want to tweak the <see cref="rotationSpeed"/>.
+    ///
+    /// \ingroup movementscripts
+    /// </summary>
+    [RequireComponent(typeof(Seeker))]
 	[AddComponentMenu("Pathfinding/AI/AILerp (2D,3D)")]
 	[HelpURL("http://arongranberg.com/astar/docs/class_pathfinding_1_1_a_i_lerp.php")]
 	public class AILerp : VersionedMonoBehaviour, IAstarAI {
@@ -53,6 +54,9 @@ namespace Pathfinding {
 
 		/// <summary>Speed in world units</summary>
 		public float speed = 3;
+
+
+        public UnityAction complete;
 
 		/// <summary>
 		/// Determines which direction the agent moves in.
@@ -427,12 +431,12 @@ namespace Pathfinding {
 		public virtual void OnTargetReached () {
 		}
 
-		/// <summary>
-		/// Called when a requested path has finished calculation.
-		/// A path is first requested by <see cref="SearchPath"/>, it is then calculated, probably in the same or the next frame.
-		/// Finally it is returned to the seeker which forwards it to this function.
-		/// </summary>
-		protected virtual void OnPathComplete (Path _p) {
+        /// <summary>
+        ///当请求的路径完成计算时调用。
+        /// A path is first requested by <see cref="SearchPath"/>, it is then calculated, probably in the same or the next frame.
+        /// Finally it is returned to the seeker which forwards it to this function.
+        /// </summary>
+        protected virtual void OnPathComplete (Path _p) {
 			ABPath p = _p as ABPath;
 
 			if (p == null) throw new System.Exception("This function only handles ABPaths, do not use special path types");
@@ -480,6 +484,12 @@ namespace Pathfinding {
 				reachedEndOfPath = true;
 				OnTargetReached();
 			}
+
+            if (complete!=null)
+            {
+                complete.Invoke();
+                complete = null;
+            }
 		}
 
 		/// <summary>\copydoc Pathfinding::IAstarAI::SetPath</summary>
