@@ -27,6 +27,10 @@ public class ProcessManager
 
     private ProcessManager() {
         save = LoadByBin();
+        if (save==null)
+        {
+            save = new Save();
+        }
     }
 
 

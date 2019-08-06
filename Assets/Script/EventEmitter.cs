@@ -36,7 +36,7 @@ public abstract class EventEmitter : MonoBehaviour
 
     private void Start()
     {
-        gameObject.AddComponent<PointsControl>();
+        gameObject.AddComponent<PointsControl>().eventEmitter=this;
         for (int i = 0; i < points. eventNotes.Length; i++)
         {
             points.eventNotes[i].t = EventToString(points.eventNotes[i].e);
@@ -51,7 +51,13 @@ public abstract class EventEmitter : MonoBehaviour
 
     public abstract void OnAction(int i);
 
-    public virtual void OnStronghold() {
+    public virtual void OnStronghold(int i)
+    {
+
+    }
+
+    public virtual void OnIntercept()
+    {
 
     }
 
@@ -118,10 +124,11 @@ public abstract class EventEmitter : MonoBehaviour
         FindObjectOfType<PlayerManager>().state.powerLoop *= points.powerMultiplier;
     }
 
-    public virtual void OnLeave()
+    public virtual bool OnLeave()
     {
         FindObjectOfType<PlayerManager>().state.moveSpeed /= points.speedMultiplier;
         FindObjectOfType<PlayerManager>().state.powerLoop /= points.powerMultiplier;
+        return true;
     }
 
     private string EventToString(Event e)
@@ -157,6 +164,14 @@ public abstract class EventEmitter : MonoBehaviour
                 break;
         }
         return t;
+    }
+
+    public enum HoldEvent
+    {
+        cook,
+        readiness,
+        sleep,
+        dismantle
     }
 
     public enum Event {

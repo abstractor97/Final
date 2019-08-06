@@ -39,7 +39,6 @@ public class PlayerManager : MonoBehaviour
 
     void UpdateTime(string time)
     {
-        clock.GetComponentInChildren<Text>().text = time;
         if (state.satiety < state.benchmarkSatiety)
         {
             state.hp -= state.hpEfflux;

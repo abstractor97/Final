@@ -21,11 +21,6 @@ public class DayTime:MonoBehaviour
     public int day;
     public bool isRun;
 
-    //声明
-    Sequence mScoreSequence;
-
-    int mOldHour = 0;
-    int mOldMins = 0;
     public Text hourText;
     public Text minsText;
 
@@ -39,10 +34,6 @@ public class DayTime:MonoBehaviour
     {
         StartCoroutine(Run());
         isRun = true;
-        //函数内初始化
-        mScoreSequence = DOTween.Sequence();
-        //函数内设置属性
-        mScoreSequence.SetAutoKill(false);
         
     }
     public void StopDay()
@@ -51,33 +42,7 @@ public class DayTime:MonoBehaviour
         isRun = false;
     }
 
-    public void HaTime(int hour,int mins)
-    {
-        if (mOldHour!=hour)
-        {
-            mScoreSequence.Append(DOTween.To(delegate (float value) {
-                //向下取整
-                var temp = Math.Floor(value);
-                //向Text组件赋值
-                hourText.text = temp + "";
-            }, mOldHour, hour, 0.4f));
-            //将更新后的值记录下来, 用于下一次滚动动画
-            mOldHour = hour;
-        }
-
-        if (mOldMins!=mins)
-        {
-            mScoreSequence.Append(DOTween.To(delegate (float value) {
-                //向下取整
-                var temp = Math.Floor(value);
-                //向Text组件赋值
-                minsText.text = temp + "";
-            }, mOldMins, mins, 0.4f));
-            //将更新后的值记录下来, 用于下一次滚动动画
-            mOldMins = mins;
-        }
-   
-    }
+    
 
 
     public void ChangeSpeed(TimeSpeed timeSpeed) {
@@ -111,13 +76,13 @@ public class DayTime:MonoBehaviour
             switch (timeSpeed)
             {
                 case TimeSpeed.wait:
-                    scale = 1f;
+                    scale = 2f;
                     break;
                 case TimeSpeed.walk:
-                    scale = 0.2f;
+                    scale = 0.4f;
                     break;
                 case TimeSpeed.jump:
-                    scale = 0.05f;
+                    scale = 0.1f;
                     break;
             }
             yield return new WaitForSeconds(scale);

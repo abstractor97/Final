@@ -90,7 +90,7 @@ public class PublicManager:MonoBehaviour
         // timelog.GetComponentInChildren<Text>().text = note;
       //  FindObjectOfType<MapControl>().pointsControl.points.eventSend.points
         actionFrame.GetComponent<GridView>().AddDataDef(et, ActionFrame,left);
-        Show(actionFrame);
+      //  Show(actionFrame);
     }
 
 

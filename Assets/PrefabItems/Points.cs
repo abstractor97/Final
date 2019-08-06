@@ -11,12 +11,18 @@ public class Points : ScriptableObject
     /// <summary>
     /// 速度乘数
     /// </summary>
-    [Range(0, 10)]
-    public float speedMultiplier;
-    [Range(0, 10)]
-    public float powerMultiplier;
+    [Range(0, 2)]
+    public float speedMultiplier=1;
+    [Range(0, 2)]
+    public float powerMultiplier=1;
     [Tooltip("扎营时间")]
-    public string holdTime;
+    public string holdTime="04:00";
+    [Tooltip("扎营类型")]
+    public Stronghold.StrongholdControl.Type holdType;
+
+    public bool isHold;
+    [Tooltip("是否拦截通过者")]
+    public bool intercept;
 
     // public PointsControl control;
     //public Scripts
@@ -40,8 +46,7 @@ public class Points : ScriptableObject
 
 
 
-    public Stronghold.StrongholdControl.Type holdType;
-
+    [Tooltip("在行动中的事件")]
     public EventNote[] eventNotes;
     [System.Serializable]
     public struct EventNote
@@ -52,6 +57,10 @@ public class Points : ScriptableObject
 
     }
 
+    [Tooltip("在营地中的事件")]
+    public EventEmitter.HoldEvent[] HoldNotes= { EventEmitter.HoldEvent.cook };
+
+ 
     [System.Serializable]
     public class ItemInPoint
     {

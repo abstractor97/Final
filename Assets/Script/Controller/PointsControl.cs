@@ -8,6 +8,8 @@ namespace Map
     [HideInInspector]
     public class PointsControl : MonoBehaviour
     {
+
+        public EventEmitter eventEmitter;
         // Start is called before the first frame update
         void Start()
         {
@@ -23,16 +25,23 @@ namespace Map
 
         }
 
+        
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            if (eventEmitter.points.intercept)
+            {
+                GameObject player = GameObject.FindGameObjectWithTag("Player");
+                player.GetComponent<AILerp>().destination = transform.position;
+                player.GetComponent<AILerp>().SearchPath();
+                player.GetComponent<AILerp>().complete += Arrive;
 
+            }
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            FindObjectOfType<MapControl>().eventEmitter.OnLeave();
-            FindObjectOfType<MapControl>().eventEmitter = null;
-           // points.eventSend.OnLeave();
+
         }
 
         private void OnMouseEnter()
@@ -47,9 +56,11 @@ namespace Map
             // mousePosition.z = 0;
             if (!GameObject.FindObjectOfType<PublicManager>().lockWalk)
             {
-                GameObject.FindObjectOfType<PublicManager>().ShowArlog(GenerateChar(), Go);
-
-
+                if (FindObjectOfType<MapControl>().eventEmitter.OnLeave())
+                {
+                    GameObject.FindObjectOfType<PublicManager>().ShowArlog(GenerateChar(), Go);
+                }
+              
             }
 
         }
@@ -64,6 +75,10 @@ namespace Map
             FindObjectOfType<PublicManager>().lockWalk = false;
             ProcessManager.Instance.save.x = gameObject.transform.position.x;
             ProcessManager.Instance.save.y = gameObject.transform.position.y;
+            if (eventEmitter.points.intercept)
+            {
+                eventEmitter.OnIntercept();
+            }
         }
 
         public string GenerateChar()

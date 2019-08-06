@@ -19,7 +19,7 @@ namespace Stronghold
         void Start()
         {
            // ProcessManager.Instance.dayTime.StartDay(this);
-            FindObjectOfType<DayTime>().ChangeSpeed(DayTime.TimeSpeed.wait);
+        //    FindObjectOfType<DayTime>().ChangeSpeed(DayTime.TimeSpeed.wait);
         }
 
         // Update is called once per frame
