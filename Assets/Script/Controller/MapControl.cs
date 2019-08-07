@@ -91,10 +91,6 @@ namespace Map
             FindObjectOfType<PublicManager>().Show(bag);
         }
 
-        public void Task()
-        {
-          //  FindObjectOfType<PublicManager>().Show(task);
-        }
 
         //public void Wait()
         //{

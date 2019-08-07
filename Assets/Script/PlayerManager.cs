@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Yarn.Unity.Example;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -19,6 +19,9 @@ public class PlayerManager : MonoBehaviour
     /// 难度乘数
     /// </summary>
     public int DifficultyAmplifier = 1;
+
+
+    public NPC talkTo; 
     // Start is called before the first frame update
     void Start()
     {

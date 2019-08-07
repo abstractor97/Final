@@ -13,26 +13,7 @@ public abstract class EventEmitter : MonoBehaviour
 
     // public Event[] events;
 
-    public List<ExploreAction>  firstActions;
-
-
-    public ExploreAction[] exploreActions;
-
-    [System.Serializable]
-    public struct ExploreAction
-    {
-        public ExploreEvent type;
-        [Tooltip("yarn文件")]
-        public TextAsset note;
-
-        [Range(0, 1)]
-        [Tooltip("触发概率")]
-        public float probability;
-
-        public bool isTrigger;
-
-        public UnityEvent et;
-    }
+   
 
     private void Start()
     {
@@ -55,23 +36,44 @@ public abstract class EventEmitter : MonoBehaviour
     {
 
     }
-
+    /// <summary>
+    /// 拦截回调
+    /// </summary>
     public virtual void OnIntercept()
     {
 
     }
 
-    public void Explore()
+    public void SendExplore(Place.ExploreAction action)
     {
-        if (firstActions!=null)
+        switch (action.type)
         {
-            foreach (var e in firstActions)
+            case ExploreEvent.NPC:
+                  FindObjectOfType<DialogueRunner>().AddScript(action.note);
+                  FindObjectOfType<DialogueRunner>().StartDialogue(action.talkToNode);
+                break;
+            case ExploreEvent.place:
+                if (!action.place.isShow)
+                {
+                    action.place.isShow = true;
+                }
+                break;
+            case ExploreEvent.e:
+                break;
+        }
+    }
+
+    public void Explore(Place place)
+    {
+        if (place.firstActions !=null)
+        {
+            foreach (var e in place.firstActions)
             {
                 if (!e.isTrigger)
                 {
-                    FindObjectOfType<DialogueRunner>().AddScript(e.note);
-                    FindObjectOfType<DialogueRunner>().StartDialogue();
-                    e.et.Invoke();
+                   // FindObjectOfType<DialogueRunner>().AddScript(e.note);
+                  //  FindObjectOfType<DialogueRunner>().StartDialogue();
+                    SendExplore(e);
                     return;
                 }
             }
@@ -79,14 +81,14 @@ public abstract class EventEmitter : MonoBehaviour
        
         float r = Random.Range(0,1);
         float l = 0;
-        foreach (var e in exploreActions)
+        foreach (var e in place.exploreActions)
         {
             l += e.probability;
             if (l>=r)
             {
-                FindObjectOfType<DialogueRunner>().AddScript(e.note);
-                FindObjectOfType<DialogueRunner>().StartDialogue();
-                e.et.Invoke();
+              //  FindObjectOfType<DialogueRunner>().AddScript(e.note);
+              //  FindObjectOfType<DialogueRunner>().StartDialogue();
+                SendExplore(e);
             }
         }
     }
@@ -111,13 +113,7 @@ public abstract class EventEmitter : MonoBehaviour
        
     }
 
-    public void AddFirstEvent(ExploreAction action) {
-        if (firstActions == null)
-        {
-            firstActions = new List<ExploreAction>();
-        }
-        firstActions.Add(action);
-    }
+    
 
     public virtual void OnArrive(){
         FindObjectOfType<PlayerManager>().state.moveSpeed *= points. speedMultiplier;
@@ -131,33 +127,38 @@ public abstract class EventEmitter : MonoBehaviour
         return true;
     }
 
-    private string EventToString(Event e)
+    public void SaveThis()
+    {
+       // points
+    }
+
+    private string EventToString(TakeAction e)
     {
         string t="";
         switch (e)
         {
-            case Event.tocamp:
+            case TakeAction.tocamp:
                 t="扎营";
                 break;
-            case Event.explore:
+            case TakeAction.explore:
                 t = "探索";
                 break;
-            case Event.collection:
+            case TakeAction.collection:
                 t = "采集";
                 break;
-            case Event.medical:
+            case TakeAction.medical:
                 t = "医疗";
                 break;
-            case Event.rest:
+            case TakeAction.rest:
                 t = "休息";
                 break;
-            case Event.make:
+            case TakeAction.make:
                 t = "制作";
                 break;
-            case Event.transaction:
+            case TakeAction.transaction:
                 t = "交易";
                 break;
-            case Event.beg:
+            case TakeAction.beg:
                 t = "乞讨";
                 break;
             default:
@@ -174,7 +175,7 @@ public abstract class EventEmitter : MonoBehaviour
         dismantle
     }
 
-    public enum Event {
+    public enum TakeAction {
         tocamp,
         explore,
         collection,

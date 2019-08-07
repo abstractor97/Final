@@ -30,7 +30,21 @@ namespace Map
         }
 
 
-      
+        public override void OnStronghold(int i)
+        {
+            base.OnStronghold(i);
+            switch (points.HoldNotes[i])
+            {
+                case HoldEvent.cook:
+                    break;
+                case HoldEvent.readiness:
+                    break;
+                case HoldEvent.sleep:
+                    break;
+                case HoldEvent.dismantle:
+                    break;
+            }
+        }
     }
 
 }

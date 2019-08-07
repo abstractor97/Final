@@ -52,6 +52,12 @@ namespace Yarn.Unity.Example {
         void Update () {
 
         }
+
+
+        public void StartTalk()
+        {
+            FindObjectOfType<DialogueRunner>().StartDialogue(talkToNode);
+        }
     }
 
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "自定义兴趣点", menuName = "自定义生成系统/兴趣点")]
 public class Points : ScriptableObject
 {
-   // public string name;
+    // public string name;
     public string describe;
     public Sprite lowSprite;
 
@@ -12,11 +12,11 @@ public class Points : ScriptableObject
     /// 速度乘数
     /// </summary>
     [Range(0, 2)]
-    public float speedMultiplier=1;
+    public float speedMultiplier = 1;
     [Range(0, 2)]
-    public float powerMultiplier=1;
+    public float powerMultiplier = 1;
     [Tooltip("扎营时间")]
-    public string holdTime="04:00";
+    public string holdTime = "04:00";
     [Tooltip("扎营类型")]
     public Stronghold.StrongholdControl.Type holdType;
 
@@ -30,9 +30,10 @@ public class Points : ScriptableObject
     /// <summary>
     /// 可以获得的
     /// </summary>
-    public Buff[] buffs;
-
+   // public Buff[] buffs;
+   [Tooltip("最小获取物品数")]
     public int minGet;
+    [Tooltip("最大获取物品数")]
     public int maxGet;
 
     /// <summary>
@@ -44,6 +45,15 @@ public class Points : ScriptableObject
     /// </summary>
     public People[] people;
 
+    [Tooltip("最小生成地点数")]
+    public int minPlace;
+    [Tooltip("最大生成地点数")]
+    public int maxPlace;
+    /// <summary>
+    /// 可能生成的地点
+    /// </summary>
+    public Place[] places;
+
 
 
     [Tooltip("在行动中的事件")]
@@ -51,7 +61,7 @@ public class Points : ScriptableObject
     [System.Serializable]
     public struct EventNote
     {
-        public EventEmitter.Event e;
+        public EventEmitter.TakeAction e;
         [HideInInspector]
         public string t;
 
