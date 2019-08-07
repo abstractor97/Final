@@ -10,20 +10,17 @@ namespace Map
         {
             switch (points.eventNotes[i].e)
             {
-                case Event.explore:
-                    Explore();
+                case TakeAction.explore:
+                   // todo placeselect
+                  //  Explore();
                     break;
-                case Event.collection:
+                case TakeAction.collection:
                     Collection();
                     break;
-                case Event.tocamp:
-                    if (points.holdType== Stronghold.StrongholdControl.Type.none)
-                    {
-                        points.holdType = Stronghold.StrongholdControl.Type.forest;
-                        FindObjectOfType<DayTime>().JumpTime(points.holdTime);
-                    }                  
+                case TakeAction.tocamp:                   
+                        FindObjectOfType<DayTime>().JumpTime(points.holdTime);                                    
                     break;
-                case Event.medical:
+                case TakeAction.medical:
                     break;
             }
             
