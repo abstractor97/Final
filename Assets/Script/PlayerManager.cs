@@ -14,6 +14,8 @@ public class PlayerManager : MonoBehaviour
 
     public Bag[] bags;
 
+    public EquipBar equipBar;
+
     public Vehicles vehicles;
     /// <summary>
     /// 难度乘数
@@ -29,7 +31,11 @@ public class PlayerManager : MonoBehaviour
         // dayTime.StartDay(this);
         FindObjectOfType<DayTime>().callback += UpdateTime;
         gameObject.transform.position = new Vector3(ProcessManager.Instance.save.x, ProcessManager.Instance.save.y, 0);
-        state = ProcessManager.Instance.cacheState;
+        //state = ProcessManager.Instance.cacheState;
+        foreach (var bag in bags)
+        {
+            bag.playerBag = true;
+        }
     }
 
     // Update is called once per frame

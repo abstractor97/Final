@@ -21,6 +21,8 @@ public class Item : ScriptableObject
 
     public Use[] use;
 
+    public Equip equip;
+
     public enum ItemType
     {
         available,
@@ -40,7 +42,6 @@ public class Item : ScriptableObject
 
         public Buff buff;
 
-        public Equip equip;
     }
 
     public enum UseType

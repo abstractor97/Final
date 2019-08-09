@@ -12,4 +12,5 @@ public class Equip : ScriptableObject
     public int warm;
 
     public int beautiful;
+
 }

@@ -4,13 +4,19 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "自定义地点", menuName = "自定义生成系统/地点")]
 public class Place : ScriptableObject
 {
-    [Range(0,100)]
+    [Range(0, 100)]
     public int intact;
+
+    public string explain;
     [Tooltip("完整度从前到后")]
     public Sprite[] lowSprite;
+    [Tooltip("可能生成的状态")]
+    public State[] states;
 
-    public bool isShow;
-
+    [HideInInspector]
+    public State state;
+    [Tooltip("偏好位置,-1为随机位置")]
+    public int position=-1;
 
     public List<ExploreAction> firstActions;
 
@@ -39,6 +45,14 @@ public class Place : ScriptableObject
         //  public 
 
         //  public UnityEvent et;
+    }
+
+    public enum State
+    {
+        Unreconnoitre,
+        safe,
+        risky,
+        hostile,
     }
 
 }

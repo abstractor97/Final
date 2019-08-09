@@ -25,7 +25,7 @@ public class BagItem : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button==PointerEventData.InputButton.Left)
+        if (eventData.button==PointerEventData.InputButton.Left&& clickAction!=null)
         {
             clickAction.Invoke(int.Parse(name));
         }

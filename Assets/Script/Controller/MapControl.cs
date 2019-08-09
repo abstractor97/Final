@@ -21,7 +21,7 @@ namespace Map
         // Start is called before the first frame update
         void Start()
         {
-            if (GameObject.FindGameObjectWithTag("Player").transform.position.Equals(eventEmitter.transform.position))
+            if (eventEmitter!=null&& GameObject.FindGameObjectWithTag("Player").transform.position.Equals(eventEmitter.transform.position))
             {
                 GameObject.FindGameObjectWithTag("Player").transform.position = eventEmitter.transform.position;
             }

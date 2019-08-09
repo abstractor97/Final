@@ -53,10 +53,7 @@ public abstract class EventEmitter : MonoBehaviour
                   FindObjectOfType<DialogueRunner>().StartDialogue(action.talkToNode);
                 break;
             case ExploreEvent.place:
-                if (!action.place.isShow)
-                {
-                    action.place.isShow = true;
-                }
+                
                 break;
             case ExploreEvent.e:
                 break;
@@ -71,8 +68,6 @@ public abstract class EventEmitter : MonoBehaviour
             {
                 if (!e.isTrigger)
                 {
-                   // FindObjectOfType<DialogueRunner>().AddScript(e.note);
-                  //  FindObjectOfType<DialogueRunner>().StartDialogue();
                     SendExplore(e);
                     return;
                 }
@@ -86,8 +81,6 @@ public abstract class EventEmitter : MonoBehaviour
             l += e.probability;
             if (l>=r)
             {
-              //  FindObjectOfType<DialogueRunner>().AddScript(e.note);
-              //  FindObjectOfType<DialogueRunner>().StartDialogue();
                 SendExplore(e);
             }
         }

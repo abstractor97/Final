@@ -95,6 +95,7 @@ namespace Map
                 FindObjectOfType<PublicManager>().lockWalk = true;
                 GameObject player = GameObject.FindGameObjectWithTag("Player");
                 player.GetComponent<AILerp>().destination= transform.position;
+                player.GetComponent<AILerp>().speed = FindObjectOfType<PlayerManager>().GetSpeed();
                 player.GetComponent<AILerp>().SearchPath();
                 player.GetComponent<AILerp>().complete += Arrive;
                // FindObjectOfType<MapPlayer>().ai.Goto(transform.position);

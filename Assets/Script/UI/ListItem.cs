@@ -32,11 +32,19 @@ public class ListItem : MonoBehaviour,IPointerClickHandler
     {
         if (eventData.button==PointerEventData.InputButton.Left)
         {
-            leftAction(sel);
+            if (leftAction!=null)
+            {
+                leftAction(sel);
+            }
+
         }
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            rightAction(sel);
+            if (rightAction != null)
+            {
+                rightAction(sel);
+            }
+
         }
     }
 

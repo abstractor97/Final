@@ -2,25 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class GridView : MonoBehaviour
 {
     public int all { get; private set; } = 0;
-    public int lineNum = 1;
-    [Tooltip("整体距上")]
-    public float top = 0;
-    [Tooltip("整体距左")]
-    public float left = 0;
-    [Tooltip("格子间上间距")]
-    public float autoTop = 0;
-    [Tooltip("格子间左间距")]
-    public float autoLeft = 0;
-    [Tooltip("格子大小")]
-    public float autoSize = 0;
+    //public int lineNum = 1;
+    //[Tooltip("整体距上")]
+    //public float top = 0;
+    //[Tooltip("整体距左")]
+    //public float left = 0;
+    //[Tooltip("格子间上间距")]
+    //public float autoTop = 0;
+    //[Tooltip("格子间左间距")]
+    //public float autoLeft = 0;
+    //[Tooltip("格子大小")]
+    //public float autoSize = 0;
 
     public GameObject item;
-    //todo
+
     public bool drawLattice;
+
+    public int latticeNum;
+
+    public GameObject lattice;
+
+    public float interval;
 
     public delegate void ViewCallBack<T>(GameObject ui,T item);
 
@@ -30,10 +37,26 @@ public class GridView : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GridLayout grid= gameObject.AddComponent<GridLayout>();
+       // GridLayout grid= gameObject.AddComponent<GridLayout>();
         if (drawLattice)
         {
-
+            GameObject latticeMusk = new GameObject("LatticeMusk");
+            VerticalLayoutGroup verticalLayout= latticeMusk.AddComponent<VerticalLayoutGroup>();
+            verticalLayout.childControlHeight = false;
+            verticalLayout.childControlWidth = false;
+            verticalLayout.childForceExpandHeight = false;
+            verticalLayout.spacing = interval;
+            latticeMusk =  GameObject.Instantiate<GameObject>(latticeMusk);
+            latticeMusk.GetComponent<RectTransform>().sizeDelta = gameObject.GetComponent<RectTransform>().sizeDelta;
+            latticeMusk.transform.SetParent(gameObject.transform.parent,false);
+            latticeMusk.transform.SetAsLastSibling();
+            for (int i = 0; i < latticeNum; i++)
+            {
+                GameObject l= GameObject.Instantiate<GameObject>(lattice);
+                l.GetComponent<RectTransform>().sizeDelta = item.GetComponent<RectTransform>().sizeDelta;
+                l.transform.SetParent(latticeMusk.transform,false);
+            }
+          //  max = latticeNum;
         }
         
     }
@@ -124,6 +147,11 @@ public class GridView : MonoBehaviour
         mitem.transform.SetParent(gameObject.GetComponent<RectTransform>().transform, false);//再将它设为canvas的子物体
         view(mitem, t);
         all++;
+    }
+
+    public void UpItem<T>(int index,T t, ViewCallBack<T> view)
+    {      
+        view(gameObject.transform.GetChild(index).gameObject, t);
     }
 
     public void Remove(int sel)

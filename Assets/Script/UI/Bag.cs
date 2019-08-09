@@ -8,20 +8,33 @@ public class Bag : MonoBehaviour
 {
     public GameObject item;
 
-
     public List<ItemInBag> items;
 
     public float maxWeight;
 
+    public GameObject context;
+
     public bool playerBag;
+    /// <summary>
+    /// 可交互
+    /// </summary>
+    public bool Interactive = true;
 
     public bool isBag;//todo
 
     public Sprite addSprite;
+    public Sprite deleteSprite;
 
     [Serializable]
     public class ItemInBag
     {
+        public ItemInBag() {
+        }
+        public ItemInBag(Item item,int num) {
+            this.item = item;
+            this.num = num;
+        }
+
         public Item item;
 
         public int num;
@@ -36,11 +49,12 @@ public class Bag : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        grid= gameObject.AddComponent<GridView>();
+        gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(item.GetComponent<RectTransform>().sizeDelta.x+8, gameObject.GetComponent<RectTransform>().sizeDelta.y); 
+        grid= context.AddComponent<GridView>();
         grid.item = item;
-        foreach (var item in items)
+        if (items!=null)
         {
-            AddItem(item);
+            grid.AddData(items.ToArray(), View);
         }
     }
 
@@ -52,30 +66,57 @@ public class Bag : MonoBehaviour
 
     public void AddItem(ItemInBag item)
     {
-        items.Add(item);
-        grid.AddItem(item, View);
+       // ItemInBag inBag = items.Find(i => i.item.name.Equals(item.item.name));
+        int index= items.FindIndex(i => i.item.name.Equals(item.item.name));
+        if (index != -1)
+        {
+            items[index].num += item.num;
+            grid.UpItem(index, item, View);
+        }
+        else
+        {
+            items.Add(item);
+            grid.AddItem(item, View);
+        }
+        weight += item.item.weight*item.num;
     }
 
     private void View(GameObject ui, ItemInBag item)
     {
-        BagItem bagItem = ui.AddComponent<BagItem>();
+        BagItem bagItem = ui.GetComponent<BagItem>();
         bagItem.deleteAction = DeleteOrMove;
         bagItem.clickAction = Use;
         bagItem.icon.sprite = item.item.lowSprite;
         bagItem.itemName.text = item.item.name;
         bagItem.note.text = item.item.describe;
         bagItem.num.text = item.num.ToString();
-        bagItem.weight.text = item.item.weight.ToString();
-        if (!playerBag)
+        bagItem.weight.text = item.item.weight.ToString()+"kg";      
+        if (!Interactive)
         {
-            bagItem.delete.gameObject.GetComponent<Image>().sprite = addSprite;
+            bagItem.delete.gameObject.GetComponent<Image>().sprite = null;
         }
-
+        else
+        {
+            if (!playerBag)
+            {
+                bagItem.delete.gameObject.GetComponent<Image>().sprite = addSprite;
+            }
+            else
+            {
+                bagItem.delete.gameObject.GetComponent<Image>().sprite = deleteSprite;
+            }
+        }
     }
 
     public void UpBag()
     {
+        weight = 0;
+        foreach (var item in items)
+        {
+           weight+= item.item.weight*item.num;
+        }
         grid.UpData(items.ToArray(), View);
+       
     }
 
 
@@ -169,6 +210,7 @@ public class Bag : MonoBehaviour
                 case Item.UseType.buff:
                     break;
                 case Item.UseType.arm:
+
                     break;
                 case Item.UseType.hat:
                     break;
