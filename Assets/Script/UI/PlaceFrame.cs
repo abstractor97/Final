@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using Yarn.Unity;
 
 public class PlaceFrame : MonoBehaviour
 {
@@ -17,8 +19,20 @@ public class PlaceFrame : MonoBehaviour
 
     public GameObject plane;
 
+    public GameObject scale;
+
+    public GameObject idf;
+    /// <summary>
+    /// 行动
+    /// </summary>
     public Actions[] walkActions;
+    /// <summary>
+    /// 交互
+    /// </summary>
     public Actions[] interactionActions;
+    /// <summary>
+    /// 场景
+    /// </summary>
     public Actions[] sceneActions;
 
     [System.Serializable]
@@ -33,9 +47,13 @@ public class PlaceFrame : MonoBehaviour
     public int position;
     [HideInInspector]
     public int totalDistance;
-
+    /// <summary>
+    /// 每格间距
+    /// </summary>
+    private float distance;
     private PlaceLattice[] placeLattices;
-
+    private bool isWalk;
+    private Posture posture = Posture.normal;
     // Start is called before the first frame update
     void Start()
     {
@@ -66,7 +84,7 @@ public class PlaceFrame : MonoBehaviour
             li.leftAction += SceneAction;
             il.transform.SetParent(actionPlane.transform.Find("Scene"), false);
         }
-
+        distance = (scale.GetComponent<RectTransform>().sizeDelta.x - 40) / (totalDistance - 1);
     }
 
     // Update is called once per frame
@@ -111,27 +129,40 @@ public class PlaceFrame : MonoBehaviour
 
     private void WalkAction(int sel)
     {
+        if (isWalk)
+        {
+            FindObjectOfType<PublicManager>().ShowTips("正在行动中");
+            return;
+        }
         switch (sel)
         {
             case 0:
+                isWalk = true;
                 Move(-1);
                 break;
             case 1:
+                isWalk = true;
                 Move(1);
                 break;
             case 2:
-                Move(1, MoveType.run);
+                posture = Posture.run;
                 break;
             case 3:
-                Move(1, MoveType.quiet);
+                posture = Posture.quiet;
                 break;
             case 4:
+                posture = Posture.normal;
                 break;
         }
     }
 
     private void IdAction(int sel)
     {
+        if (isWalk)
+        {
+            FindObjectOfType<PublicManager>().ShowTips("正在行动中");
+            return;
+        }
         switch (sel)
         {
             case 0:
@@ -149,6 +180,11 @@ public class PlaceFrame : MonoBehaviour
 
     private void SceneAction(int sel)
     {
+        if (isWalk)
+        {
+            FindObjectOfType<PublicManager>().ShowTips("正在行动中");
+            return;
+        }
         switch (sel)
         {
             case 0:
@@ -164,21 +200,42 @@ public class PlaceFrame : MonoBehaviour
         }
     }
 
-    public void Move(int step, MoveType move=MoveType.walk)
+    public void Move(int step)
     {
-        FindObjectOfType<MapControl>().eventEmitter.Explore(placeLattices[position+step].place);
-        //todo 触发
+        Dictionary<EventEmitter.ExploreEvent, float> perturbation = new Dictionary<EventEmitter.ExploreEvent, float>();
+        switch (posture)
+        {
+            case Posture.normal:
+                break;
+            case Posture.run:
+                perturbation.Add(EventEmitter.ExploreEvent.NPC, 0.3f);
+                perturbation.Add(EventEmitter.ExploreEvent.place, -0.2f);
+                perturbation.Add(EventEmitter.ExploreEvent.e, -0.1f);
+                break;
+            case Posture.quiet:
+                perturbation.Add(EventEmitter.ExploreEvent.NPC, -0.3f);
+                perturbation.Add(EventEmitter.ExploreEvent.place, 0.2f);
+                perturbation.Add(EventEmitter.ExploreEvent.e, 0.1f);
+                break;
+        }
+        
+       FindObjectOfType<MapControl>().eventEmitter.Explore(placeLattices[position+step].place, perturbation);
+        Tweener tweener = idf.transform.DOMoveX(idf.transform.position.x+ (distance*step),1*step);
+        tweener.OnComplete(delegate { isWalk = false; });
+        
     }
-
-
     public void GetInto()
     {
 
     }
 
-    public enum MoveType
+
+   
+
+
+    public enum Posture
     {
-        walk,
+        normal,
         run,
         quiet,
     }

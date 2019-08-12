@@ -24,10 +24,12 @@ public class ProcessManager
     public bool isInGame;
     public Save save;
     public StrongholdControl.Type loadHold;
-
-    private ProcessManager() {
+    public LocalLanguage language;
+    private ProcessManager()
+    {
+        language = new LocalLanguage();
         save = LoadByBin();
-        if (save==null)
+        if (save == null)
         {
             save = new Save();
         }

@@ -22,9 +22,11 @@ public class PublicManager:MonoBehaviour
 
     public GameObject selectNum;
 
+    public GameObject tips;
+
     private GameObject cacheUI;
 
- 
+    
 
     private void Start()
     {
@@ -99,6 +101,16 @@ public class PublicManager:MonoBehaviour
         ui.GetComponentInChildren<Text>().text = et.t;
     }
 
+    public void ShowTips(string t)
+    {
+        
+      GameObject ts=  Resources.Load<GameObject>("UI/Tips");
+      ts=  GameObject.Instantiate<GameObject>(ts);
+        ts.GetComponentInChildren<Text>().text = ProcessManager.Instance.language.Text(t); ;
+        ts.transform.SetParent(GameObject.Find("HUD").transform,false);
+        LastLife(ts,2);
+    }
+
     public void Show(GameObject ui)
     {
         Hide(cacheUI);
@@ -116,5 +128,17 @@ public class PublicManager:MonoBehaviour
         group.interactable = false;
         group.blocksRaycasts = false;
         cacheUI = null;
+    }
+
+    public void LastLife(GameObject obj, float t)
+    {
+        StartCoroutine(LastDes(obj,t));
+    }
+
+    private IEnumerator LastDes(GameObject obj,float t)
+    {
+        yield return new WaitForSeconds(t);
+        Destroy(obj);
+
     }
 }

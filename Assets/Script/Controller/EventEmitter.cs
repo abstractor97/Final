@@ -60,30 +60,44 @@ public abstract class EventEmitter : MonoBehaviour
         }
     }
 
-    public void Explore(Place place)
+    public void Explore(Place place,Dictionary<ExploreEvent,float> perturbation=null)
     {
         if (place.firstActions !=null)
         {
-            foreach (var e in place.firstActions)
+            for (int i = 0; i < place.firstActions.Count; i++)
             {
-                if (!e.isTrigger)
+                if (!place.firstActions[i].isTrigger)
                 {
-                    SendExplore(e);
+                    SendExplore(place.firstActions[i]);
+                    place.firstActions[i].isTrigger=true;
                     return;
                 }
             }
+           
         }
        
         float r = Random.Range(0,1);
         float l = 0;
         foreach (var e in place.exploreActions)
         {
-            l += e.probability;
+            if (perturbation!=null)
+            {
+                if (perturbation.ContainsKey(e.type))
+                {
+                    l += (e.probability+perturbation[e.type]);
+                }
+            }
+            else
+            {
+                l += e.probability;
+            }
             if (l>=r)
             {
                 SendExplore(e);
+                return;
             }
         }
+
     }
 
     public void Collection()

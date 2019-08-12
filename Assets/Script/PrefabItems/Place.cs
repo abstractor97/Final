@@ -24,7 +24,7 @@ public class Place : ScriptableObject
     public ExploreAction[] exploreActions;
 
     [System.Serializable]
-    public struct ExploreAction
+    public class ExploreAction
     {
         public EventEmitter.ExploreEvent type;
         [Tooltip("yarn文件")]
