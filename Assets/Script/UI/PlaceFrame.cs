@@ -92,11 +92,18 @@ public class PlaceFrame : MonoBehaviour
     {
         
     }
-
+    /// <summary>
+    /// 进入地点方法，需要先添加当前位置和总长度
+    /// </summary>
     public void Show(Place[] places,bool isNew=true)
     {
         if (isNew)
         {
+
+            foreach (var tr in gameObject.transform)
+            {
+                Destroy(((Transform)tr).gameObject);
+            }
 
             placeLattices = new PlaceLattice[totalDistance];
             for (int i = 0; i < totalDistance; i++)
@@ -105,20 +112,18 @@ public class PlaceFrame : MonoBehaviour
                 PlaceLattice pls = pl.GetComponent<PlaceLattice>();
                 pls.plane = plane;
                 pl.transform.SetParent(placePlane.transform, false);
+                pls.place = places[i];
+                int count = places[i].intact / (100 / places[i].lowSprite.Length);
+                pls.placeIcon.sprite = places[i].lowSprite[count];
                 placeLattices[i] = pls;
             }
 
-            foreach (var tr in gameObject.transform)
-            {
-                Destroy(((Transform)tr).gameObject);
-            }
-
-            foreach (var p in places)
-            {
-                placeLattices[p.position].place = p;
-                int count = p.intact / (100 / p.lowSprite.Length);
-                placeLattices[p.position].placeIcon.sprite = p.lowSprite[count];
-            }
+            //foreach (var p in places)
+            //{
+            //    placeLattices[p.position].place = p;
+            //    int count = p.intact / (100 / p.lowSprite.Length);
+            //    placeLattices[p.position].placeIcon.sprite = p.lowSprite[count];
+            //}
         }    
         CanvasGroup group= gameObject.GetComponent<CanvasGroup>();
         group.alpha = 1;
@@ -220,10 +225,14 @@ public class PlaceFrame : MonoBehaviour
         }
         
        FindObjectOfType<MapControl>().eventEmitter.Explore(placeLattices[position+step].place, perturbation);
+        FindObjectOfType<MapControl>().eventEmitter.position = position + step;
         Tweener tweener = idf.transform.DOMoveX(idf.transform.position.x+ (distance*step),1*step);
         tweener.OnComplete(delegate { isWalk = false; });
-        
+     
     }
+  /// <summary>
+  /// 进入地点
+  /// </summary>
     public void GetInto()
     {
 

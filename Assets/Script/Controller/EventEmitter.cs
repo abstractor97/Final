@@ -9,11 +9,12 @@ public abstract class EventEmitter : MonoBehaviour
 {
     public Points points;
 
-   // private float 
+    /// <summary>
+    /// 入口位置或缓存的当前位置，人物在该坐标初始化
+    /// </summary>
+    public int position;
 
-    // public Event[] events;
-
-   
+    public bool init;
 
     private void Start()
     {
@@ -136,7 +137,8 @@ public abstract class EventEmitter : MonoBehaviour
 
     public void SaveThis()
     {
-       // points
+        string save = ProcessManager.SAVE_POINTS_FLAG+ gameObject.transform.position, position;
+        
     }
 
     private string EventToString(TakeAction e)
@@ -168,8 +170,6 @@ public abstract class EventEmitter : MonoBehaviour
             case TakeAction.beg:
                 t = "乞讨";
                 break;
-            default:
-                break;
         }
         return t;
     }
@@ -177,9 +177,9 @@ public abstract class EventEmitter : MonoBehaviour
     public enum HoldEvent
     {
         cook,
-        readiness,
+        wait,
         sleep,
-        dismantle
+        
     }
 
     public enum TakeAction {

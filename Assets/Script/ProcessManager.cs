@@ -6,6 +6,7 @@ using UnityEngine;
 using Map;
 using Stronghold;
 using System;
+using System.Text;
 
 public class ProcessManager 
 {
@@ -18,12 +19,27 @@ public class ProcessManager
             return _instance;
         }
     }
+    /// <summary>
+    /// 储存已触发的点
+    /// </summary>
+    public readonly string SAVE_POINTS_FLAG = "points";
+    /// <summary>
+    /// 储存player状态相关
+    /// </summary>
+    public  readonly string SAVE_PLAYER_FLAG = "player";
+    /// <summary>
+    /// 储存物品，装备相关
+    /// </summary>
+    public  readonly string SAVE_ITEM_FLAG = "item";
+
+    /// <summary>
+    /// 储存NPC相关
+    /// </summary>
+    public readonly string SAVE_NPC_FLAG = "npc";
 
     public PlayerManager.State cacheState;
-    //public DayTime dayTime;
     public bool isInGame;
     public Save save;
-    public StrongholdControl.Type loadHold;
     public LocalLanguage language;
     private ProcessManager()
     {
@@ -43,6 +59,58 @@ public class ProcessManager
 
     public void ToEvent()
     {
+
+    }
+
+    public void CreateSaveData()
+    {
+        EventEmitter[] emitters= GameObject.FindObjectsOfType<EventEmitter>();
+        PointsSave[] pointsSaves=new PointsSave[emitters.Length];
+        for (int i = 0; i < emitters.Length; i++)
+        {
+            PointsSave pointsSave = new PointsSave();
+            pointsSave.x = emitters[i].gameObject.transform.position.x;
+            pointsSave.y = emitters[i].gameObject.transform.position.y;
+            pointsSave.position = emitters[i].position;
+
+            if (emitters[i].points.isRandom)
+            {
+                //todo save random places
+            }
+            else
+            {
+
+                for (int j = 0; j < emitters[i].points.places.Length; j++)
+                {
+                    pointsSave.states[j] = emitters[i].points.places[j].state;
+                }
+            }
+            pointsSaves[i] = pointsSave;
+        }
+        
+        
+    }
+    [Serializable]
+    public struct PointsSave
+    {
+        public float x;
+        public float y;
+        public float z;
+
+        public int position;
+
+        public Place.State[] states;
+    }
+
+    [Serializable]
+    public struct PlayerSave
+    {
+        public float x;
+        public float y;
+        public float z;
+
+        public PlayerManager.State state;
+
 
     }
 
@@ -127,5 +195,9 @@ public class ProcessManager
         /// 格式name|name
         /// </summary>
         public string packItems;
+
+        public PlayerSave playerSave;
+
+        public PointsSave[] pointsSaves;
     }
 }

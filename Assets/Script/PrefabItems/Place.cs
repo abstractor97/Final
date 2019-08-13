@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = "自定义地点", menuName = "自定义生成系统/地点")]
@@ -15,15 +16,17 @@ public class Place : ScriptableObject
 
     [HideInInspector]
     public State state;
-    [Tooltip("偏好位置,-1为随机位置")]
+    [Tooltip("偏好位置")]
     public int position=-1;
 
+    [Tooltip("出入口")]
+    public bool door;
     public List<ExploreAction> firstActions;
 
 
     public ExploreAction[] exploreActions;
 
-    [System.Serializable]
+    [Serializable]
     public class ExploreAction
     {
         public EventEmitter.ExploreEvent type;
@@ -46,7 +49,7 @@ public class Place : ScriptableObject
 
         //  public UnityEvent et;
     }
-
+    [Serializable]
     public enum State
     {
         Unreconnoitre,

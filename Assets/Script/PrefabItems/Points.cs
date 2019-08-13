@@ -37,20 +37,26 @@ public class Points : ScriptableObject
     public int maxGet;
 
     /// <summary>
-    /// 可以采集到的
+    /// 可以不进入采集到的
     /// </summary>
     public ItemInPoint[] Items;
     /// <summary>
-    /// 可以遇到的
+    /// 可以不进入遇到的
     /// </summary>
     public People[] people;
-
+    /// <summary>
+    /// true places是可能生成的地点，false places等同于地点地图
+    /// 同时忽视maxPlace参数
+    /// </summary>
+    [Tooltip("是否随机生成地点")]
+    public bool isRandom;
     [Tooltip("最小生成地点数")]
     public int minPlace;
     [Tooltip("最大生成地点数")]
     public int maxPlace;
+  
     /// <summary>
-    /// 可能生成的地点
+    /// 可能生成的地点，随机最少生成一个
     /// </summary>
     public Place[] places;
 

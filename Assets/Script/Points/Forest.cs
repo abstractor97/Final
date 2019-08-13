@@ -34,11 +34,9 @@ namespace Map
             {
                 case HoldEvent.cook:
                     break;
-                case HoldEvent.readiness:
+                case HoldEvent.wait:
                     break;
                 case HoldEvent.sleep:
-                    break;
-                case HoldEvent.dismantle:
                     break;
             }
         }

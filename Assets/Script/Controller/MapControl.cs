@@ -18,6 +18,8 @@ namespace Map
         public GameObject task;
 
         public GameObject bag;
+
+        public GameObject placeFrame;
         // Start is called before the first frame update
         void Start()
         {
@@ -58,17 +60,15 @@ namespace Map
             switch (item)
             {
                 case EventEmitter.HoldEvent.cook:
-                    text.text = "烹饪";
+                    text.text =ProcessManager.Instance.language.Text("烹饪") ;
                     break;
-                case EventEmitter.HoldEvent.readiness:
-                    text.text = "烹饪";
+                case EventEmitter.HoldEvent.wait:
+                    text.text = ProcessManager.Instance.language.Text("等待");
                     break;
                 case EventEmitter.HoldEvent.sleep:
-                    text.text = "睡眠";
+                    text.text = ProcessManager.Instance.language.Text("睡眠");
                     break;
-                case EventEmitter.HoldEvent.dismantle:
-                    text.text = "拆除";
-                    break;
+                
             }
         }
 
@@ -91,6 +91,37 @@ namespace Map
             FindObjectOfType<PublicManager>().Show(bag);
         }
 
+        public void GetInto()
+        {
+            PlaceFrame pf = placeFrame.GetComponent<PlaceFrame>();
+        
+            if (eventEmitter.points.isRandom)
+            {
+                Place[] places = new Place[eventEmitter.points.maxPlace];
+                pf.totalDistance = eventEmitter.points.maxPlace;
+
+                //todo 生成随机地块算法 
+                pf.position = eventEmitter.position;
+                placeFrame.GetComponent<PlaceFrame>().Show(places);
+            }
+            else
+            {
+                for (int i = 0; i < eventEmitter.points.places.Length; i++)
+                {
+                    if (eventEmitter.points.places[i].door)
+                    {
+                        pf.position = i;
+                        eventEmitter.position = i;
+                    }
+                }
+                pf.totalDistance = eventEmitter.points.places.Length;
+                placeFrame.GetComponent<PlaceFrame>().Show(eventEmitter.points.places);
+            }
+            
+
+
+          //  FindObjectOfType<PublicManager>().Show(bag);
+        }
 
         //public void Wait()
         //{
