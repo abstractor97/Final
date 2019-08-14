@@ -325,6 +325,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 47017755}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &47017757 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1149205302384312281, guid: 8e86df067f4532d4cbd4b2bf463d48ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 47017755}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &71100260
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -988,6 +994,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 230553850}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &230553852 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3512182949772902825, guid: c32910377e0b16446900ced881da2d8e,
+    type: 3}
+  m_PrefabInstance: {fileID: 230553850}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d505ecabe2059af4aa87b26684d3039c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &266140905
 GameObject:
   m_ObjectHideFlags: 0
@@ -3842,6 +3860,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1753449582}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1753449584 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3543977966933128279, guid: 978a5f3523ea63c44840a79338ca241f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1753449582}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1772018021
 GameObject:
   m_ObjectHideFlags: 0
@@ -4520,9 +4544,8 @@ MonoBehaviour:
   lockWalk: 0
   arlog: {fileID: 1453929727}
   timelog: {fileID: 2130774471}
-  actionFrame: {fileID: 0}
+  actionFrame: {fileID: 47017757}
   selectNum: {fileID: 485700516}
-  tips: {fileID: 0}
 --- !u!4 &1990632844
 Transform:
   m_ObjectHideFlags: 0
@@ -4550,6 +4573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clock: {fileID: 71100262}
+  buffFrame: {fileID: 1753449584}
   state:
     other: 
     hp: 0
@@ -4564,7 +4588,8 @@ MonoBehaviour:
     powerEfflux: 0
     satietyEfflux: 0
     waterEfflux: 0
-  bags: []
+  bags:
+  - {fileID: 230553852}
   equipBar: {fileID: 192116110}
   vehicles: {fileID: 0}
   DifficultyAmplifier: 1
