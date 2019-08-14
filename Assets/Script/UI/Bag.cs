@@ -132,7 +132,7 @@ public class Bag : MonoBehaviour
                     {
                         if (pass == Ardialog.Pass.yes)
                         {
-                            AttrToInvoke(items[sel].item.use);
+                            AttrToInvoke(items[sel].item);
                         }
                     });
                     break;
@@ -143,7 +143,7 @@ public class Bag : MonoBehaviour
                     {
                         if (pass == Ardialog.Pass.yes)
                         {
-                            AttrToInvoke(items[sel].item.use);
+                            AttrToInvoke(items[sel].item);
                         }
                     });
                     break;
@@ -196,31 +196,24 @@ public class Bag : MonoBehaviour
         return (2 - (weight * weight) / (maxWeight * maxWeight)) / 2;
     }
 
-    private void AttrToInvoke(Item.Use[] uses)
+    private void AttrToInvoke(Item item)
     {
-        foreach (var use in uses)
+        foreach (var use in item.use)
         {
             switch (use.type)
             {
                 case Item.UseType.recovery:
 
-                    FindObjectOfType<PlayerManager>().ChangeState(use.state,use.degree,use.totalTime);
+                    FindObjectOfType<PlayerManager>().Attribute(use.state,use.degree);
 
                     break;
                 case Item.UseType.buff:
-                    break;
-                case Item.UseType.arm:
+                    FindObjectOfType<PlayerManager>().AddBuff(use.buff);
 
                     break;
-                case Item.UseType.hat:
-                    break;
-                case Item.UseType.clothes_up:
-                    break;
-                case Item.UseType.clothes_down:
-                    break;
-                case Item.UseType.shoes:
-                    break;
+             
                 default:
+                    FindObjectOfType<PlayerManager>().Equip(item);
                     break;
             }
         }

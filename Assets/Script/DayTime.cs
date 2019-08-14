@@ -20,6 +20,7 @@ public class DayTime:MonoBehaviour
     public string targetTime;
     public int day;
     public bool isRun;
+    public bool isStop;
 
     public Text hourText;
     public Text minsText;
@@ -27,7 +28,7 @@ public class DayTime:MonoBehaviour
     private void Start()
     {
         StartDay();
-        DontDestroyOnLoad(gameObject);
+      //  DontDestroyOnLoad(gameObject);
     }
 
     public void StartDay()
@@ -36,11 +37,12 @@ public class DayTime:MonoBehaviour
         isRun = true;
         
     }
-    public void StopDay()
+    public void StopAll()
     {
         StopAllCoroutines();
         isRun = false;
     }
+
 
     
 
@@ -70,7 +72,8 @@ public class DayTime:MonoBehaviour
         timeSpeed = TimeSpeed.jump;
     }
 
-    IEnumerator Run() {
+    IEnumerator Run()
+    {
         while (true)
         {
             switch (timeSpeed)
@@ -86,44 +89,48 @@ public class DayTime:MonoBehaviour
                     break;
             }
             yield return new WaitForSeconds(scale);
-            if (minute < 59)
+            if (!isStop)
             {
-                minute += (int)(1 * speed);
-            }
-            else
-            {
-                hour++;
-                minute = 0;
-                if (hour == 24)
+                if (minute < 59)
                 {
-                    hour = 0;
+                    minute += (int)(1 * speed);
                 }
-            }
-            string hours = hour.ToString();
-            if (hour<10)
-            {
-                hours = "0" + hours;
-            }
-            string minutes = minute.ToString();
-            if (minute < 10)
-            {
-                minutes = "0" + minutes;
-            }
-            nowTime = hours + ":" + minutes;
+                else
+                {
+                    hour++;
+                    minute = 0;
+                    if (hour == 24)
+                    {
+                        hour = 0;
+                    }
+                }
+                string hours = hour.ToString();
+                if (hour < 10)
+                {
+                    hours = "0" + hours;
+                }
+                string minutes = minute.ToString();
+                if (minute < 10)
+                {
+                    minutes = "0" + minutes;
+                }
+                nowTime = hours + ":" + minutes;
 
-            if (nowTime.Equals(targetTime))
-            {
-                timeSpeed = TimeSpeed.wait;
+                if (nowTime.Equals(targetTime))
+                {
+                    timeSpeed = TimeSpeed.wait;
+                }
+                if (nowTime.Equals("00:00"))
+                {
+                    day++;
+                }
+                hourText.text = hours;
+                minsText.text = minutes;
+                //  HaTime(hour, minute);
+                callback?.Invoke(nowTime);
             }
-            if (nowTime.Equals("00:00"))
-            {
-                day++;
-            }
-            hourText.text = hours;
-            minsText.text = minutes;
-          //  HaTime(hour, minute);
-            callback?.Invoke(nowTime);
-        }       
+        }
+
     }
 
     public enum TimeSpeed

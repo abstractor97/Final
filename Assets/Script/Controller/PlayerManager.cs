@@ -1,4 +1,5 @@
 ﻿using AI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class PlayerManager : MonoBehaviour
 {
 
     public GameObject clock;
+
+    public GameObject buffFrame;
 
     public State state;
 
@@ -22,20 +25,20 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     public int DifficultyAmplifier = 1;
 
-
-    public NPC talkTo; 
+    [HideInInspector]
+    public NPC talkTo;
+    [HideInInspector]
+    public List<BuffControl> buffs;
     // Start is called before the first frame update
     void Start()
     {
 
-        // dayTime.StartDay(this);
         FindObjectOfType<DayTime>().callback += UpdateTime;
-        gameObject.transform.position = new Vector3(ProcessManager.Instance.save.x, ProcessManager.Instance.save.y, 0);
-        //state = ProcessManager.Instance.cacheState;
         foreach (var bag in bags)
         {
             bag.playerBag = true;
         }
+        buffs = new List<BuffControl>();
     }
 
     // Update is called once per frame
@@ -55,6 +58,11 @@ public class PlayerManager : MonoBehaviour
         state.power -= state.powerEfflux;
         state.satiety -= state.satietyEfflux;
         state.water -= state.waterEfflux;
+        //额外状态
+        foreach (var b in buffs)
+        {
+            b.Next(state);
+        }
     }
 
     public float GetSpeed()
@@ -74,56 +82,148 @@ public class PlayerManager : MonoBehaviour
             return speed;
         }
     }
+    /// <summary>
+    /// 直接改变某个属性
+    /// </summary>
+    /// <param name=""></param>
+    public void Attribute(StateTag tag,float value)
+    {
+        switch (tag)
+        {
+            case StateTag.m:
+                state.moveSpeed += value;
+                break;
+            case StateTag.h:
+                state.hp += value;
+                break;
+            case StateTag.p:
+                state.power += value;
+                break;
+            case StateTag.s:
+                state.satiety += value;
+                break;
+            case StateTag.w:
+                state.water += value;
+                break;
+        }
+    }
+
+    public void Equip(Item item)
+    {
+        equipBar.Equip(item);
+    }
 
     public void AddBuff(Buff buff)
     {
-        foreach (var s in buff.state)
+        foreach (var b in buffs)
         {
-            switch (s.type)
+            if (b.ui.name.Equals(buff.name))
             {
-                case Buff.BuffType.speed:
-                    state.moveSpeed *= s.drgee;
-                    break;
-                case Buff.BuffType.state:
-                    ChangeState(s.tag, s.drgee, buff.totalTime);
-                    break;
+                b.time += buff.totalTime;
+                return;
             }
         }
-        
-        FindObjectOfType<BuffFarme>().AddBuff(buff);
-    }
-
-    public void ChangeState(StateTag tag,float drgee,float time)
-    {
-        StartCoroutine(RunChangeState(tag,drgee,time));
-    }
-
-    IEnumerator RunChangeState(StateTag tag, float drgee, float time)
-    {
-        while (time>0)
+        GameObject l = Resources.Load<GameObject>("UI/BuffLattice");
+        l = GameObject.Instantiate<GameObject>(l);
+        l.transform.SetParent(buffFrame.transform);
+        l.GetComponent<Image>().sprite = buff.lowSprite;
+        l.name = buff.name;
+        ListItem li= l.AddComponent<ListItem>();
+        li.panelPath = "UI/BuffTips";
+        li.panelAction += delegate (GameObject panel) {
+            Text[] texts= panel.GetComponentsInChildren<Text>();
+            texts[0].text = buff.name;
+            texts[1].text = buff.describe;
+        };
+        BuffControl bc = new BuffControl
         {
-            switch (tag)
+            time = buff.totalTime,
+            ui = l,
+            buffs = buffs,
+            buff= buff
+        };
+        bc.Init(state);
+    }
+
+
+
+    public class BuffControl
+    {
+        public int time;
+
+        public GameObject ui;
+
+        public List<BuffControl> buffs;
+
+        public Buff buff;
+
+        public void Init(State state)
+        {
+            foreach (var b in buff.state)
             {
-                case StateTag.h:
-                    state.hp += drgee;
-                    break;
-                case StateTag.p:
-                    state.power += drgee;
-                    break;
-                case StateTag.s:
-                    state.satiety += drgee;
-                    break;
-                case StateTag.w:
-                    state.water += drgee;
-                    break;
+                if (b.tag==StateTag.m)
+                {
+                    state.moveSpeed += b.drgee;
+                }
             }
-            yield return new WaitForSeconds(1f);
+            int hour = time / 60;
+            int minus = time % 60;
+            ui.transform.Find("Time").gameObject.GetComponent<Text>().text = hour + ":" + minus;
+
+          
+            buffs.Add(this);
+
+        }
+
+
+        public void Next(State state)
+        {
+            foreach (var b in buff.state)
+            {
+                switch (b.tag)
+                {
+                    case StateTag.h:
+                        state.hp += b.drgee;
+                        break;
+                    case StateTag.p:
+                        state.power += b.drgee;
+                        break;
+                    case StateTag.s:
+                        state.satiety += b.drgee;
+                        break;
+                    case StateTag.w:
+                        state.water += b.drgee;
+                        break;
+                }
+            }        
             time--;
+            if (time==0)
+            {
+                Remove(state);
+            }
+            else
+            {
+                int hour = time / 60;
+                int minus = time % 60;
+                ui.transform.Find("Time").gameObject.GetComponent<Text>().text = hour + ":" + minus;
+            }
         }
-       
+
+        public void Remove(State state)
+        {
+            foreach (var b in buff.state)
+            {
+                if (b.tag == StateTag.m)
+                {
+                    state.moveSpeed -= b.drgee;
+                }
+            }
+            Destroy(ui);
+            buffs.Remove(this);
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class State
     {
         public string other;
@@ -160,6 +260,7 @@ public class PlayerManager : MonoBehaviour
 
     public enum StateTag
     {
+        m,
         h,
         p,
         s,

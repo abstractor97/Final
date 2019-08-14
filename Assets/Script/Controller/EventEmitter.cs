@@ -137,7 +137,7 @@ public abstract class EventEmitter : MonoBehaviour
 
     public void SaveThis()
     {
-        string save = ProcessManager.SAVE_POINTS_FLAG+ gameObject.transform.position, position;
+
         
     }
 

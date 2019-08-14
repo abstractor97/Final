@@ -74,8 +74,8 @@ namespace Map
             FindObjectOfType<MapControl>().eventEmitter = e;
             FindObjectOfType<DayTime>().ChangeSpeed(DayTime.TimeSpeed.wait);
             FindObjectOfType<PublicManager>().lockWalk = false;
-            ProcessManager.Instance.save.x = gameObject.transform.position.x;
-            ProcessManager.Instance.save.y = gameObject.transform.position.y;
+          //  ProcessManager.Instance.save.x = gameObject.transform.position.x;
+          //  ProcessManager.Instance.save.y = gameObject.transform.position.y;
             if (eventEmitter.points.intercept)
             {
                 eventEmitter.OnIntercept();

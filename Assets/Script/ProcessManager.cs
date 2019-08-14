@@ -7,8 +7,9 @@ using Map;
 using Stronghold;
 using System;
 using System.Text;
+using System.Threading;
 
-public class ProcessManager 
+public class ProcessManager
 {
     private static readonly ProcessManager _instance = new ProcessManager();
     private const string SAVEFILENAME = "/byBin.dat";
@@ -19,23 +20,7 @@ public class ProcessManager
             return _instance;
         }
     }
-    /// <summary>
-    /// 储存已触发的点
-    /// </summary>
-    public readonly string SAVE_POINTS_FLAG = "points";
-    /// <summary>
-    /// 储存player状态相关
-    /// </summary>
-    public  readonly string SAVE_PLAYER_FLAG = "player";
-    /// <summary>
-    /// 储存物品，装备相关
-    /// </summary>
-    public  readonly string SAVE_ITEM_FLAG = "item";
 
-    /// <summary>
-    /// 储存NPC相关
-    /// </summary>
-    public readonly string SAVE_NPC_FLAG = "npc";
 
     public PlayerManager.State cacheState;
     public bool isInGame;
@@ -64,14 +49,37 @@ public class ProcessManager
 
     public void CreateSaveData()
     {
-        EventEmitter[] emitters= GameObject.FindObjectsOfType<EventEmitter>();
-        PointsSave[] pointsSaves=new PointsSave[emitters.Length];
+        //player相关
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        PlayerManager playerMana = GameObject.FindObjectOfType<PlayerManager>();
+        List<Buff> buffs = new List<Buff>();
+        playerMana.buffs.ForEach(delegate (PlayerManager.BuffControl buffControl) {
+            buffControl.buff.totalTime = buffControl.time;
+            buffs.Add(buffControl.buff);
+        });
+        PlayerSave playerSave = new PlayerSave
+        {
+            x = player.transform.position.x,
+            y = player.transform.position.y,
+            state = playerMana.state,
+            buffs= buffs.ToArray()
+        };
+
+
+        //points相关
+        EventEmitter[] emitters = GameObject.FindObjectsOfType<EventEmitter>();
+
+        Thread th1 = new Thread(delegate () { float l = emitters[0].gameObject.transform.position.x; });
+
+        PointsSave[] pointsSaves = new PointsSave[emitters.Length];
         for (int i = 0; i < emitters.Length; i++)
         {
-            PointsSave pointsSave = new PointsSave();
-            pointsSave.x = emitters[i].gameObject.transform.position.x;
-            pointsSave.y = emitters[i].gameObject.transform.position.y;
-            pointsSave.position = emitters[i].position;
+            PointsSave pointsSave = new PointsSave
+            {
+                x = emitters[i].gameObject.transform.position.x,
+                y = emitters[i].gameObject.transform.position.y,
+                position = emitters[i].position
+            };
 
             if (emitters[i].points.isRandom)
             {
@@ -87,8 +95,8 @@ public class ProcessManager
             }
             pointsSaves[i] = pointsSave;
         }
-        
-        
+
+
     }
     [Serializable]
     public struct PointsSave
@@ -100,6 +108,8 @@ public class ProcessManager
         public int position;
 
         public Place.State[] states;
+
+        public string[] randomPlaces;
     }
 
     [Serializable]
@@ -111,7 +121,57 @@ public class ProcessManager
 
         public PlayerManager.State state;
 
+        public Buff[] buffs;
 
+    }
+
+
+    [Serializable]
+    public struct ItemSave
+    {
+        public string ascription;
+
+        public Item item;
+
+        public int number;
+    }
+    /// <summary>
+    /// 恢复数据
+    /// </summary>
+    public void RecoverySave()
+    {
+        GameObject.FindGameObjectWithTag("Player").transform.position= new Vector3(save.playerSave.x,save.playerSave.y,save.playerSave.z);
+        PlayerManager playerMana = GameObject.FindObjectOfType<PlayerManager>();
+        playerMana.state = save.playerSave.state;
+        foreach (var buff in save.playerSave.buffs)
+        {
+            playerMana.AddBuff(buff);
+        }
+
+
+        EventEmitter[] emitters = GameObject.FindObjectsOfType<EventEmitter>();
+
+        Thread th1 = new Thread(delegate () { float l = emitters[0].gameObject.transform.position.x; });
+
+
+        for (int i = 0; i < emitters.Length; i++)
+        {
+            emitters[i].position = save.pointsSaves[i].position;
+            for (int j = 0; j < emitters[i].points.places.Length; j++)
+            {
+                if (emitters[i].points.isRandom)
+                {
+                    //todo
+                    //emitters[i].points
+                    emitters[i].points.places[j].states = save.pointsSaves[i].states;
+                }
+                else
+                {
+                    emitters[i].points.places[j].states = save.pointsSaves[i].states;
+                }             
+            }
+             
+        }
     }
 
 
@@ -173,7 +233,7 @@ public class ProcessManager
         while (isInGame)
         {
             yield return new WaitForSeconds(60 * 3);
-            SaveByBin();
+            CreateSaveData();
         }
 
     }
@@ -185,19 +245,11 @@ public class ProcessManager
     {
 
         public string dogTag;
-        public float x;
-        public float y;
-        /// <summary>
-        /// 格式name|name
-        /// </summary>
-        public string bagItems;
-        /// <summary>
-        /// 格式name|name
-        /// </summary>
-        public string packItems;
 
         public PlayerSave playerSave;
 
         public PointsSave[] pointsSaves;
+
+        public ItemSave[] itemSaves;
     }
 }

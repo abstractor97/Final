@@ -1,4 +1,5 @@
 ﻿using LitJson;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,12 +10,14 @@ public class LocalLanguage
     public readonly string ITEMTABLE_PATH = "Table/TextTable.xlsx";
     private string localLangId = "zh_CN";
     private JsonData jd;
+    private string localFlag;
 
     public LocalLanguage()
     {
         localLangId = System.Globalization.CultureInfo.InstalledUICulture.Name;
         textasset = Resources.Load<TextAsset>(ITEMTABLE_PATH);
         jd = JsonMapper.ToObject(textasset.text);
+        localFlag = localLangId.Substring(0, 2);
     }
 
    
@@ -23,13 +26,25 @@ public class LocalLanguage
     {
         if (textasset != null)
         {         
-            if (localLangId.Substring(0,2).Equals("zh") )
+            if (localFlag.Equals("zh") )
             {
                 return baseText;
             }
             else
             {
-                return jd[baseText]["en"].ToString();
+                if (IsNumeric(baseText))
+                {
+                    baseText.Contains(@"\d");
+                    string zht = System.Text.RegularExpressions.Regex.Replace(baseText, @"\d", "{d}");
+                    string ent = jd[zht]["en"].ToString();
+                    return System.Text.RegularExpressions.Regex.Replace(baseText,"{d}", "{d}");
+                }
+                else
+                {
+                    return jd[baseText]["en"].ToString();
+                }
+              
+               
             }
            
         }
@@ -58,4 +73,18 @@ public class LocalLanguage
 
     }
 
+
+
+        private bool IsNumeric(string str)
+        {
+            
+            foreach (char c in str)
+            {
+                if (!char.IsNumber(c))
+                {
+                    return false;
+                }
+            }
+           return true;
+        }
 }

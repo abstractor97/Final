@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class ListItem : MonoBehaviour,IPointerClickHandler
+public class ListItem : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
 {
 
     //  [SerializeField]
@@ -15,6 +15,12 @@ public class ListItem : MonoBehaviour,IPointerClickHandler
 
     public UnityAction<int> leftAction;
     public UnityAction<int> rightAction;
+
+    public GameObject panel;
+
+    public string panelPath;
+
+    public UnityAction<GameObject> panelAction;
 
     void Start()
     {
@@ -30,22 +36,49 @@ public class ListItem : MonoBehaviour,IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button==PointerEventData.InputButton.Left)
-        {
-            if (leftAction!=null)
-            {
-                leftAction(sel);
-            }
 
-        }
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            if (rightAction != null)
+            if (eventData.button == PointerEventData.InputButton.Left)
             {
-                rightAction(sel);
-            }
+                leftAction?.Invoke(sel);
 
+            }
+            if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                rightAction?.Invoke(sel);
+
+            }
+        
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (panelPath != null)
+        {
+            panel = gameObject.transform.parent.Find("ListPanel")?.gameObject;
+            if (panel == null)
+            {
+                panel = Resources.Load<GameObject>(panelPath);
+                panel = GameObject.Instantiate<GameObject>(panel);
+                panel.transform.SetParent(gameObject.transform.parent,false);
+                panel.transform.position = gameObject.transform.position + new Vector3(gameObject.GetComponent<RectTransform>().sizeDelta.x/2, gameObject.GetComponent<RectTransform>().sizeDelta.y / 2);
+            }
+            else {
+                panel.transform.position = gameObject.transform.position + new Vector3(gameObject.GetComponent<RectTransform>().sizeDelta.x / 2, gameObject.GetComponent<RectTransform>().sizeDelta.y / 2);
+            }
+            panelAction?.Invoke(panel);
+            CanvasGroup group = panel.GetComponent<CanvasGroup>();
+            group.alpha = 1;
+            group.interactable = true;
+            group.blocksRaycasts = true;
         }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        CanvasGroup group = panel.GetComponent<CanvasGroup>();
+        group.alpha = 0;
+        group.interactable = false;
+        group.blocksRaycasts = false;
     }
 
 

@@ -14,20 +14,15 @@ public class Buff : ScriptableObject
     public bool isPlayer;
 
     public BuffState[] state;
+    /// <summary>
+    /// 以clock计时
+    /// </summary>
+    [Tooltip("总时间")]
+    public int totalTime;
 
-    public float totalTime;
-
-
-    public enum BuffType
-    {
-        speed,
-        state,
-
-    }
     [System.Serializable]
     public struct BuffState
     {
-        public BuffType type;
 
         public PlayerManager.StateTag tag;
 

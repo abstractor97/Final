@@ -22,8 +22,6 @@ public class PublicManager:MonoBehaviour
 
     public GameObject selectNum;
 
-    public GameObject tips;
-
     private GameObject cacheUI;
 
     
@@ -69,13 +67,13 @@ public class PublicManager:MonoBehaviour
     public void ChangePointsUI(string name,string del)
     {
         Text[] texts= PointsUI.GetComponentsInChildren<Text>();
-        texts[0].text = name;
-        texts[1].text = del;
+        texts[0].text = ProcessManager.Instance.language.Text(name);
+        texts[1].text = ProcessManager.Instance.language.Text(del);
     }
 
     public void ShowArlog(string note,Ardialog.Callback callback)
     {
-        arlog.GetComponentInChildren<Text>().text = note;
+        arlog.GetComponentInChildren<Text>().text = ProcessManager.Instance.language.Text(note);
         arlog.GetComponent<Ardialog>().call += callback;
         Show(arlog);
     }
