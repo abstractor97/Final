@@ -14,7 +14,8 @@ public abstract class EventEmitter : MonoBehaviour
     /// </summary>
     public int position;
 
-    public bool init;
+    public int level;
+
 
     private void Start()
     {
@@ -46,17 +47,21 @@ public abstract class EventEmitter : MonoBehaviour
     }
 
     public void SendExplore(Place.ExploreAction action)
-    {
+    {//todo 事件触发
         switch (action.type)
         {
             case ExploreEvent.NPC:
-                  FindObjectOfType<DialogueRunner>().AddScript(action.note);
-                  FindObjectOfType<DialogueRunner>().StartDialogue(action.talkToNode);
+                //todo 打开fight页
+
+                
                 break;
             case ExploreEvent.place:
                 
                 break;
             case ExploreEvent.e:
+                FindObjectOfType<DialogueRunner>().AddScript(action.note);
+                FindObjectOfType<DialogueRunner>().StartDialogue(action.talkToNode);
+
                 break;
         }
     }
@@ -135,10 +140,9 @@ public abstract class EventEmitter : MonoBehaviour
         return true;
     }
 
-    public void SaveThis()
+    public void UpLevel(int lv)
     {
 
-        
     }
 
     private string EventToString(TakeAction e)
@@ -171,7 +175,7 @@ public abstract class EventEmitter : MonoBehaviour
                 t = "乞讨";
                 break;
         }
-        return t;
+        return ProcessManager.Instance.language.Text(t);
     }
 
     public enum HoldEvent

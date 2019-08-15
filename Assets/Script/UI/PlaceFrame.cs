@@ -113,8 +113,8 @@ public class PlaceFrame : MonoBehaviour
                 pls.plane = plane;
                 pl.transform.SetParent(placePlane.transform, false);
                 pls.place = places[i];
-                int count = places[i].intact / (100 / places[i].lowSprite.Length);
-                pls.placeIcon.sprite = places[i].lowSprite[count];
+              //  int count = places[i].intact / (100 / places[i].lowSprite.Length);
+                pls.placeIcon.sprite = places[i].lowSprite;
                 placeLattices[i] = pls;
             }
 
@@ -143,17 +143,23 @@ public class PlaceFrame : MonoBehaviour
         {
             case 0:
                 isWalk = true;
+                posture = Posture.normal;
                 Move(-1);
                 break;
             case 1:
                 isWalk = true;
+                posture = Posture.normal;
                 Move(1);
                 break;
             case 2:
+                isWalk = true;
                 posture = Posture.run;
+                Move(1);
                 break;
             case 3:
+                isWalk = true;
                 posture = Posture.quiet;
+                Move(1);
                 break;
             case 4:
                 posture = Posture.normal;

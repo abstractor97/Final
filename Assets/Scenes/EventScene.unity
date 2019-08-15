@@ -751,6 +751,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points: {fileID: 11400000, guid: c216776aff182bd43b7b8d34e5ee30be, type: 2}
+  position: 0
+  level: 0
 --- !u!212 &365500630
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1521,8 +1523,24 @@ MonoBehaviour:
   plane: {fileID: 130711743}
   scale: {fileID: 1054564096}
   idf: {fileID: 1098060227}
-  walkActions: []
-  interactionActions: []
+  walkActions:
+  - name: "\u540E\u9000"
+    icon: {fileID: 0}
+  - name: "\u524D\u8FDB"
+    icon: {fileID: 0}
+  - name: "\u5954\u8DD1"
+    icon: {fileID: 0}
+  - name: "\u6F5C\u884C"
+    icon: {fileID: 0}
+  - name: "\u9690\u79D8"
+    icon: {fileID: 0}
+  interactionActions:
+  - name: "\u4EA4\u4E92"
+    icon: {fileID: 0}
+  - name: "\u8FDB\u5165"
+    icon: {fileID: 0}
+  - name: "\u641C\u7D22"
+    icon: {fileID: 0}
   sceneActions: []
   position: 0
   totalDistance: 0

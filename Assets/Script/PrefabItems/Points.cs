@@ -46,7 +46,6 @@ public class Points : ScriptableObject
     public People[] people;
     /// <summary>
     /// true places是可能生成的地点，false places等同于地点地图
-    /// 同时忽视maxPlace参数
     /// </summary>
     [Tooltip("是否随机生成地点")]
     public bool isRandom;
@@ -54,7 +53,8 @@ public class Points : ScriptableObject
     public int minPlace;
     [Tooltip("最大生成地点数")]
     public int maxPlace;
-  
+    [HideInInspector]
+    public int totalWeight;
     /// <summary>
     /// 可能生成的地点，随机最少生成一个
     /// </summary>
@@ -74,7 +74,7 @@ public class Points : ScriptableObject
     }
 
     [Tooltip("在营地中的事件")]
-    public EventEmitter.HoldEvent[] HoldNotes= { EventEmitter.HoldEvent.cook };
+    public EventEmitter.HoldEvent[] HoldNotes= { EventEmitter.HoldEvent.cook, EventEmitter.HoldEvent.wait, EventEmitter.HoldEvent.sleep };
 
  
     [System.Serializable]

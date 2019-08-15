@@ -7,20 +7,22 @@ public class Place : ScriptableObject
 {
     [Range(0, 100)]
     public int intact;
-
+    [Tooltip("说明")]
     public string explain;
-    [Tooltip("完整度从前到后")]
-    public Sprite[] lowSprite;
+    [Tooltip("")]
+    public Sprite lowSprite;
     [Tooltip("可能生成的状态")]
     public State[] states;
 
-    [HideInInspector]
+    [Tooltip("默认状态")]
     public State state;
-    [Tooltip("偏好位置")]
-    public int position=-1;
+    [Tooltip("偏好位置,值越低生成概率越低")]
+    [Range(1,9)]
+    public int position=1;
 
     [Tooltip("出入口")]
     public bool door;
+    
     public List<ExploreAction> firstActions;
 
 

@@ -28,6 +28,7 @@ public class ProcessManager
     public LocalLanguage language;
     private ProcessManager()
     {
+               
         language = new LocalLanguage();
         save = LoadByBin();
         if (save == null)
@@ -78,12 +79,20 @@ public class ProcessManager
             {
                 x = emitters[i].gameObject.transform.position.x,
                 y = emitters[i].gameObject.transform.position.y,
-                position = emitters[i].position
+                position = emitters[i].position,               
             };
 
             if (emitters[i].points.isRandom)
             {
-                //todo save random places
+                if (emitters[i].points.maxPlace == emitters[i].points.places.Length)//相等时证明以被生成
+                {
+                    pointsSave.randomPlaces = new string[emitters[i].points.maxPlace];
+                    for (int j = 0; j < pointsSave.randomPlaces.Length; j++)
+                    {
+                        pointsSave.randomPlaces[j] = emitters[i].points.places[j].name;
+                    }
+                  
+                }
             }
             else
             {
@@ -110,6 +119,7 @@ public class ProcessManager
         public Place.State[] states;
 
         public string[] randomPlaces;
+
     }
 
     [Serializable]
@@ -157,20 +167,38 @@ public class ProcessManager
         for (int i = 0; i < emitters.Length; i++)
         {
             emitters[i].position = save.pointsSaves[i].position;
-            for (int j = 0; j < emitters[i].points.places.Length; j++)
+
+            if (emitters[i].points.isRandom)
             {
-                if (emitters[i].points.isRandom)
+                if (save.pointsSaves[i].randomPlaces != null)
                 {
-                    //todo
-                    //emitters[i].points
-                    emitters[i].points.places[j].states = save.pointsSaves[i].states;
+                    List<Place> places = new List<Place>();
+                    for (int j = 0; j < save.pointsSaves[i].randomPlaces.Length; j++)
+                    {
+                        foreach (var place in emitters[i].points.places)
+                        {
+                            if (save.pointsSaves[i].randomPlaces[j].Equals(place.name))
+                            {
+                                places.Add(place);
+                                break;
+                            }
+                        }
+                        emitters[i].points.places[j].state = save.pointsSaves[i].states[j];
+                    }
+                    emitters[i].points.places = places.ToArray();
+                    //  emitters[i].points.isRandom = false;
                 }
-                else
-                {
-                    emitters[i].points.places[j].states = save.pointsSaves[i].states;
-                }             
             }
-             
+            else
+            {
+                for (int j = 0; j < emitters[i].points.places.Length; j++)
+                {
+                    emitters[i].points.places[j].state = save.pointsSaves[i].states[j];
+                }
+              
+            }
+
+
         }
     }
 

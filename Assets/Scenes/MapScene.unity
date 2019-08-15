@@ -4521,6 +4521,7 @@ GameObject:
   - component: {fileID: 1990632844}
   - component: {fileID: 1990632843}
   - component: {fileID: 1990632845}
+  - component: {fileID: 1990632846}
   m_Layer: 0
   m_Name: Manage
   m_TagString: Untagged
@@ -4576,24 +4577,36 @@ MonoBehaviour:
   buffFrame: {fileID: 1753449584}
   state:
     other: 
-    hp: 0
-    power: 0
-    powerLoop: 0
-    moveSpeed: 0
-    weight: 0
-    water: 0
-    satiety: 0
-    benchmarkSatiety: 0
-    hpEfflux: 0
-    powerEfflux: 0
-    satietyEfflux: 0
-    waterEfflux: 0
+    hp: 100
+    power: 100
+    powerLoop: 0.0694
+    moveSpeed: 1
+    weight: 75
+    water: 100
+    satiety: 100
+    benchmarkSatiety: 60
+    hpEfflux: 0.004
+    powerEfflux: 0.0231
+    satietyEfflux: 0.0231
+    waterEfflux: 0.0139
   bags:
   - {fileID: 230553852}
   equipBar: {fileID: 192116110}
   vehicles: {fileID: 0}
   DifficultyAmplifier: 1
   talkTo: {fileID: 0}
+--- !u!114 &1990632846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990632842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec3478adea651d945be7632942098b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2033401939
 GameObject:
   m_ObjectHideFlags: 0

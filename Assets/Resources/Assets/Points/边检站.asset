@@ -17,13 +17,31 @@ MonoBehaviour:
   speedMultiplier: 1
   powerMultiplier: 1
   holdTime: 
-  holdType: 0
-  isHold: 0
+  holdType: 3
+  isHold: 1
   intercept: 1
-  buffs: []
   minGet: 0
-  maxGet: 0
-  Items: []
-  people: []
-  eventNotes: []
-  HoldNotes: 00000000
+  maxGet: 1
+  Items:
+  - probability: 0.3
+    max: 1
+    item: {fileID: 11400000, guid: 14f53872a3ee35146873e156f16dc188, type: 2}
+  people:
+  - {fileID: 11400000, guid: b38e191235434ca419f247ba47577ed4, type: 2}
+  - {fileID: 11400000, guid: a6e846e6199ee1c47bb411996a3549b9, type: 2}
+  isRandom: 0
+  minPlace: 0
+  maxPlace: 0
+  totalWeight: 0
+  places:
+  - {fileID: 11400000, guid: 6d0ccd9904b347b44a8fd45f8302068f, type: 2}
+  - {fileID: 11400000, guid: 7b425828c5be3de4eb94e4d559ba7e6a, type: 2}
+  - {fileID: 11400000, guid: 555c6f67f7c4ed34c82997ec0f327cec, type: 2}
+  eventNotes:
+  - e: 0
+    t: 
+  - e: 1
+    t: 
+  - e: 2
+    t: 
+  HoldNotes: 000000000100000002000000

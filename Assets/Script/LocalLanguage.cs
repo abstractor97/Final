@@ -34,10 +34,36 @@ public class LocalLanguage
             {
                 if (IsNumeric(baseText))
                 {
-                    baseText.Contains(@"\d");
-                    string zht = System.Text.RegularExpressions.Regex.Replace(baseText, @"\d", "{d}");
-                    string ent = jd[zht]["en"].ToString();
-                    return System.Text.RegularExpressions.Regex.Replace(baseText,"{d}", "{d}");
+                   // String numberStr = "asd22uu335hh66mm99tt44yy445";
+                    String needReplaceStr = "_++{d}—{d}—{d}++{d}__}";
+                    System.Text.RegularExpressions.MatchCollection vMatchs = System.Text.RegularExpressions.Regex.Matches(baseText, @"(\d+)");
+                    String[] vInts = new String[vMatchs.Count];
+                    for (int i = 0; i < vMatchs.Count; i++)
+                    {
+                        vInts[i] = vMatchs[i].Value;
+                    }
+                    needReplaceStr = jd[needReplaceStr]["en"].ToString();
+
+                    for (int i = 0; i < vInts.Length; i++)
+                    {
+                        int index = needReplaceStr.IndexOf("{d}");
+                        if (index >= 0)
+                        {
+                            needReplaceStr = needReplaceStr.Remove(index, 3).Insert(index, vInts[i]);
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                    }
+                    needReplaceStr = needReplaceStr.Replace("{d}", "0");
+
+                    return needReplaceStr;
+                    //baseText.Contains(@"\d");
+                    //string zht = System.Text.RegularExpressions.Regex.Replace(baseText, @"\d", "{d}");
+                    //string ent = jd[zht]["en"].ToString();
+                    //return System.Text.RegularExpressions.Regex.Replace(baseText,"{d}", "{d}");
                 }
                 else
                 {

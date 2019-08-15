@@ -20,6 +20,8 @@ public class Item : ScriptableObject
     public ItemType type;
 
     public Use[] use;
+    [Tooltip("使用说明")]
+    public string instructions;
 
     public Equip equip;
 

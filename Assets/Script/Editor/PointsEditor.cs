@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
- [CustomEditor(typeof(EventEmitter),true)] //指定要编辑的脚本对象
+ [CustomEditor(typeof(Points))] //指定要编辑的脚本对象
 public class PointsEditor : Editor
 {
-    private EventEmitter m_Target;
+    private Points m_Target;
 
  //   private EventEmitter eventEmitter;
 
@@ -15,7 +15,19 @@ public class PointsEditor : Editor
          base.OnInspectorGUI();
 
         //获取指定脚本对象
-        m_Target = target as EventEmitter;
+        m_Target = target as Points;
+        if (m_Target.isRandom)
+        {
+            int i = 0;
+            foreach (var p in m_Target.places)
+            {
+                i += p.position;
+            }
+            m_Target.totalWeight = i;
+        }
+      
+       
+
         //if (m_Target.exploreActions!=null)
         //{
         //    float j = 0;

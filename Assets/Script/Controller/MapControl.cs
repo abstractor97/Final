@@ -97,12 +97,41 @@ namespace Map
         
             if (eventEmitter.points.isRandom)
             {
-                Place[] places = new Place[eventEmitter.points.maxPlace];
-                pf.totalDistance = eventEmitter.points.maxPlace;
+                if (eventEmitter.points.places.Length!=eventEmitter.points.maxPlace)
+                {
+                    Place[] places = new Place[eventEmitter.points.maxPlace];
+                    pf.totalDistance = eventEmitter.points.maxPlace;
+                    for (int i = 0; i < eventEmitter.points.maxPlace; i++)
+                    {
+                        int door = UnityEngine.Random.Range(0, eventEmitter.points.maxPlace);
+                        places[door] = Resources.Load<Place>("Assets/Places/出入口");
+                        int index=0;
 
-                //todo 生成随机地块算法 
-                pf.position = eventEmitter.position;
-                placeFrame.GetComponent<PlaceFrame>().Show(places);
+                        if (places[i]==null)
+                        {
+                            int random = UnityEngine.Random.Range(1, eventEmitter.points.totalWeight);
+                            foreach (var place in eventEmitter.points.places)
+                            {
+                                if (random > place.position)
+                                {
+                                    random -= place.position;
+                                    index++;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+
+                            }
+                            places[i] = eventEmitter.points.places[index];
+                        }
+                       
+                    }
+
+                    pf.position = eventEmitter.position;
+                    eventEmitter.points.places = places;
+                }
+                       
             }
             else
             {
@@ -115,12 +144,12 @@ namespace Map
                     }
                 }
                 pf.totalDistance = eventEmitter.points.places.Length;
-                placeFrame.GetComponent<PlaceFrame>().Show(eventEmitter.points.places);
+              
             }
-            
+            placeFrame.GetComponent<PlaceFrame>().Show(eventEmitter.points.places);
 
 
-          //  FindObjectOfType<PublicManager>().Show(bag);
+            //  FindObjectOfType<PublicManager>().Show(bag);
         }
 
         //public void Wait()
