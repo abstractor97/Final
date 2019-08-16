@@ -62,16 +62,9 @@ public class Points : ScriptableObject
 
 
 
-    [Tooltip("在行动中的事件")]
-    public EventNote[] eventNotes;
-    [System.Serializable]
-    public struct EventNote
-    {
-        public EventEmitter.TakeAction e;
-        [HideInInspector]
-        public string t;
-
-    }
+    [Tooltip("在行动中禁用的事件")]
+    public EventEmitter.TakeAction[] eventNots;
+  
 
     [Tooltip("在营地中的事件")]
     public EventEmitter.HoldEvent[] HoldNotes= { EventEmitter.HoldEvent.cook, EventEmitter.HoldEvent.wait, EventEmitter.HoldEvent.sleep };

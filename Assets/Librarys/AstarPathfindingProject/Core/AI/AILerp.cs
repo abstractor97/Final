@@ -57,19 +57,20 @@ namespace Pathfinding {
 
 
         public UnityAction complete;
+        public UnityAction<float> pathCallBack;
 
-		/// <summary>
-		/// Determines which direction the agent moves in.
-		/// For 3D games you most likely want the ZAxisIsForward option as that is the convention for 3D games.
-		/// For 2D games you most likely want the YAxisIsForward option as that is the convention for 2D games.
-		///
-		/// Using the YAxisForward option will also allow the agent to assume that the movement will happen in the 2D (XY) plane instead of the XZ plane
-		/// if it does not know. This is important only for the point graph which does not have a well defined up direction. The other built-in graphs (e.g the grid graph)
-		/// will all tell the agent which movement plane it is supposed to use.
-		///
-		/// [Open online documentation to see images]
-		/// </summary>
-		[UnityEngine.Serialization.FormerlySerializedAs("rotationIn2D")]
+        /// <summary>
+        /// Determines which direction the agent moves in.
+        /// For 3D games you most likely want the ZAxisIsForward option as that is the convention for 3D games.
+        /// For 2D games you most likely want the YAxisIsForward option as that is the convention for 2D games.
+        ///
+        /// Using the YAxisForward option will also allow the agent to assume that the movement will happen in the 2D (XY) plane instead of the XZ plane
+        /// if it does not know. This is important only for the point graph which does not have a well defined up direction. The other built-in graphs (e.g the grid graph)
+        /// will all tell the agent which movement plane it is supposed to use.
+        ///
+        /// [Open online documentation to see images]
+        /// </summary>
+        [UnityEngine.Serialization.FormerlySerializedAs("rotationIn2D")]
 		public OrientationMode orientation = OrientationMode.ZAxisForward;
 
 		/// <summary>
@@ -429,68 +430,72 @@ namespace Pathfinding {
 		/// and override the function in that script.
 		/// </summary>
 		public virtual void OnTargetReached () {
-		}
+            complete?.Invoke();
+            complete = null;
+
+        }
 
         /// <summary>
         ///当请求的路径完成计算时调用。
         /// A path is first requested by <see cref="SearchPath"/>, it is then calculated, probably in the same or the next frame.
         /// Finally it is returned to the seeker which forwards it to this function.
         /// </summary>
-        protected virtual void OnPathComplete (Path _p) {
-			ABPath p = _p as ABPath;
+        protected virtual void OnPathComplete(Path _p)
+        {
+            ABPath p = _p as ABPath;
 
-			if (p == null) throw new System.Exception("This function only handles ABPaths, do not use special path types");
+            if (p == null) throw new System.Exception("This function only handles ABPaths, do not use special path types");
 
-			canSearchAgain = true;
+            canSearchAgain = true;
 
-			// Increase the reference count on the path.
-			// This is used for path pooling
-			p.Claim(this);
+            // Increase the reference count on the path.
+            // This is used for path pooling
+            p.Claim(this);
 
-			// Path couldn't be calculated of some reason.
-			// More info in p.errorLog (debug string)
-			if (p.error) {
-				p.Release(this);
-				return;
-			}
-
-			if (interpolatePathSwitches) {
-				ConfigurePathSwitchInterpolation();
-			}
-
-
-			// Replace the old path
-			var oldPath = path;
-			path = p;
-			reachedEndOfPath = false;
-
-			// Just for the rest of the code to work, if there
-			// is only one waypoint in the path add another one
-			if (path.vectorPath != null && path.vectorPath.Count == 1) {
-				path.vectorPath.Insert(0, GetFeetPosition());
-			}
-
-			// Reset some variables
-			ConfigureNewPath();
-
-			// Release the previous path
-			// This is used for path pooling.
-			// This is done after the interpolator has been configured in the ConfigureNewPath method
-			// as this method would otherwise invalidate the interpolator
-			// since the vectorPath list (which the interpolator uses) will be pooled.
-			if (oldPath != null) oldPath.Release(this);
-
-			if (interpolator.remainingDistance < 0.0001f && !reachedEndOfPath) {
-				reachedEndOfPath = true;
-				OnTargetReached();
-			}
-
-            if (complete!=null)
+            // Path couldn't be calculated of some reason.
+            // More info in p.errorLog (debug string)
+            if (p.error)
             {
-                complete.Invoke();
-                complete = null;
+                p.Release(this);
+                return;
             }
-		}
+
+            if (interpolatePathSwitches)
+            {
+                ConfigurePathSwitchInterpolation();
+            }
+
+
+            // Replace the old path
+            var oldPath = path;
+            path = p;
+            reachedEndOfPath = false;
+
+            // Just for the rest of the code to work, if there
+            // is only one waypoint in the path add another one
+            if (path.vectorPath != null && path.vectorPath.Count == 1)
+            {
+                path.vectorPath.Insert(0, GetFeetPosition());
+            }
+
+            // 重置一些变量
+            ConfigureNewPath();
+
+            // 释放上一个路径
+            // 这用于路径池。
+            //这是在配置器路径方法中配置了内插器之后完成的，因为此方法会使内插器失效，因为将汇集向量路径列表（内插器使用的列表）。
+            if (oldPath != null) oldPath.Release(this);
+
+            if (interpolator.remainingDistance < 0.0001f && !reachedEndOfPath)
+            {
+                reachedEndOfPath = true;
+                OnTargetReached();
+            }
+            //只调用一次路径长度
+            pathCallBack?.Invoke(remainingDistance);
+            pathCallBack = null;
+
+        }
 
 		/// <summary>\copydoc Pathfinding::IAstarAI::SetPath</summary>
 		public void SetPath (Path path) {

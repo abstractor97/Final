@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class TimeChoiceDialog : MonoBehaviour
@@ -10,24 +11,29 @@ public class TimeChoiceDialog : MonoBehaviour
     public int addTime = 30;
 
     public GameObject time;
+    
 
     private Text hour;
     private Text min;
-    public delegate void TimeCallback(string time);
+    private Text tip;
 
-    public event TimeCallback callback;
-
+    public event UnityAction<string> callback;
     // Start is called before the first frame update
     void Start()
     {
         hour=time.transform.Find("Hour").GetComponent<Text>();
         min=time.transform.Find("Min").GetComponent<Text>();
+        tip= time.transform.Find("Tip").GetComponent<Text>();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SetText(string text) {
+        tip.text = text;
     }
 
     public void AddTime() {
@@ -82,7 +88,12 @@ public class TimeChoiceDialog : MonoBehaviour
     }
 
     public void Enter() {
-        callback(hour.text+":"+min.text);
+        string rtime= hour.text + ":" + min.text;
+        if (!rtime.Equals("00:00"))
+        {
+            callback(rtime);
+        }
+        Close();
     }
 
     public void Close() {

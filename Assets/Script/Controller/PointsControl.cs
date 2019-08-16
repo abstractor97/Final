@@ -11,6 +11,7 @@ namespace Map
     {
 
         public EventEmitter eventEmitter;
+        private float d;
         // Start is called before the first frame update
         void Start()
         {
@@ -47,7 +48,7 @@ namespace Map
 
         private void OnMouseEnter()
         {
-            GameObject.FindObjectOfType<PublicManager>().ShowPointsUIThis(transform.position);
+           // GameObject.FindObjectOfType<PublicManager>().ShowPointsUIThis(transform.position);
         }
 
         private void OnMouseDown()
@@ -84,7 +85,7 @@ namespace Map
 
         public string GenerateChar()
         {
-            return "前往" + gameObject.name + ",预计用时" + TimeConsum() + "小时";
+            return "前往:" + gameObject.name ;
         }
 
         public void Go(Ardialog.Pass pass)
@@ -98,15 +99,14 @@ namespace Map
                 player.GetComponent<AILerp>().speed = FindObjectOfType<PlayerManager>().GetSpeed();
                 player.GetComponent<AILerp>().SearchPath();
                 player.GetComponent<AILerp>().complete += Arrive;
-               // FindObjectOfType<MapPlayer>().ai.Goto(transform.position);
-               // FindObjectOfType<MapPlayer>().ai.arriveCallBack += Arrive;
+                player.GetComponent<AILerp>().pathCallBack += delegate(float l) { d = l; };
+                GameObject.FindObjectOfType<DayTime>().ChangeSpeed(DayTime.TimeSpeed.walk);
+                // FindObjectOfType<MapPlayer>().ai.Goto(transform.position);
+                // FindObjectOfType<MapPlayer>().ai.arriveCallBack += Arrive;
             }
         }
 
-        public virtual int TimeConsum()
-        {
-            return 0;
-        }
+        
 
 
     }

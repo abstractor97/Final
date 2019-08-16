@@ -230,7 +230,7 @@ public class PlaceFrame : MonoBehaviour
                 break;
         }
         
-       FindObjectOfType<MapControl>().eventEmitter.Explore(placeLattices[position+step].place, perturbation);
+       FindObjectOfType<MapControl>().eventEmitter.MoveEvent(placeLattices[position+step].place, perturbation);
         FindObjectOfType<MapControl>().eventEmitter.position = position + step;
         Tweener tweener = idf.transform.DOMoveX(idf.transform.position.x+ (distance*step),1*step);
         tweener.OnComplete(delegate { isWalk = false; });

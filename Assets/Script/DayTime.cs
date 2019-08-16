@@ -53,7 +53,7 @@ public class DayTime:MonoBehaviour
 
     public void JumpTime(string time)
     {
- 
+        //todo 时间流逝时动画效果
         string[] ts = time.Split(':');
 
         int thour = hour + int.Parse(ts[0]);
@@ -119,6 +119,7 @@ public class DayTime:MonoBehaviour
                 if (nowTime.Equals(targetTime))
                 {
                     timeSpeed = TimeSpeed.wait;
+                    targetTime = "";
                 }
                 if (nowTime.Equals("00:00"))
                 {

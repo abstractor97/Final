@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 /// <summary>
-/// 全局事件发送，管理
+/// todo 全局事件发送，管理
 /// </summary>
 public class EventManager : MonoBehaviour
 {

@@ -48,7 +48,9 @@ namespace Stronghold
         }
         public void Sleep()
         {
-            FindObjectOfType<PublicManager>().ShowTimeDialog(JumpTime);
+            FindObjectOfType<PublicManager>().ShowTimeDialog("",delegate(string time) {
+                FindObjectOfType<DayTime>().JumpTime(time);
+            });
         }
         public void Leave()
         {
@@ -66,12 +68,6 @@ namespace Stronghold
         }
 
      
-
-        public void JumpTime(string time)
-        {
-            FindObjectOfType<DayTime>().JumpTime(time);
-        }
-
         public enum Type
         {
             none,

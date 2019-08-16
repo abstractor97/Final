@@ -34,7 +34,7 @@ namespace Map
         {
 
         }
-
+        [Obsolete]
         public void Stronghold()
         {
             if (eventEmitter != null&&eventEmitter.points.isHold)
@@ -53,7 +53,7 @@ namespace Map
             }
                       
         }
-
+        [Obsolete]
         private void ActionFrame(GameObject ui, EventEmitter.HoldEvent item)
         {
             Text text= ui.GetComponent<Text>();
@@ -74,16 +74,19 @@ namespace Map
 
         public void Action()
         {
+            if (FindObjectOfType<PublicManager>().lockWalk)
+            {
+                return;
+            }
             if (eventEmitter != null)
             {
-                //  eventEmitter.ShowAction();
-                task.GetComponent<GridView>().AddDataDef(eventEmitter.points.eventNotes, ActionFrame, eventEmitter.OnAction);
+                task.GetComponent<GridView>().AddDataDef(eventEmitter.eventNotes.ToArray(), ActionFrame, eventEmitter.OnAction);
             }
         }
 
-        private void ActionFrame(GameObject ui, Points.EventNote item)
+        private void ActionFrame(GameObject ui, EventEmitter.TakeAction item)
         {
-            ui.GetComponent<Text>().text = item.t;
+            ui.GetComponent<Text>().text = eventEmitter.EventToString(item);
         }
 
         public void Bag()
@@ -91,8 +94,17 @@ namespace Map
             FindObjectOfType<PublicManager>().Show(bag);
         }
 
+        public void HideBag()
+        {
+            FindObjectOfType<PublicManager>().Hide(bag);
+        }
+
         public void GetInto()
         {
+            if (FindObjectOfType<PublicManager>().lockWalk)
+            {
+                return;
+            }
             PlaceFrame pf = placeFrame.GetComponent<PlaceFrame>();
         
             if (eventEmitter.points.isRandom)
@@ -148,27 +160,9 @@ namespace Map
             }
             placeFrame.GetComponent<PlaceFrame>().Show(eventEmitter.points.places);
 
-
-            //  FindObjectOfType<PublicManager>().Show(bag);
         }
 
-        //public void Wait()
-        //{
-           
-        //    FindObjectOfType<PublicManager>().ShowTimeDialog(JumpTime);
-        
-
-        //}
-
-        //public void JumpTime(string time)
-        //{
-        //    MapPlayer player = FindObjectOfType<MapPlayer>();
-        //    player.dayTime.JumpTime(time);
-        //    if (pointsControl != null)
-        //    {
-        //        pointsControl.Wait();
-        //    }
-        //}
+     
     }
 
 }

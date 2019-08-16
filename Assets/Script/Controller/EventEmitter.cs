@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Yarn.Unity;
 
-public abstract class EventEmitter : MonoBehaviour
+public class EventEmitter : MonoBehaviour
 {
     public Points points;
 
@@ -16,23 +16,46 @@ public abstract class EventEmitter : MonoBehaviour
 
     public int level;
 
+    public List<TakeAction> eventNotes=new List<TakeAction>();
 
     private void Start()
     {
+        eventNotes.Add(TakeAction.explore);
+        eventNotes.Add(TakeAction.collection);
+        eventNotes.Add(TakeAction.make);
+        eventNotes.Add(TakeAction.medical);
+        eventNotes.Add(TakeAction.transaction);
         gameObject.AddComponent<PointsControl>().eventEmitter=this;
-        for (int i = 0; i < points. eventNotes.Length; i++)
+        for (int i = 0; i < points.eventNots.Length; i++)
         {
-            points.eventNotes[i].t = EventToString(points.eventNotes[i].e);
+            for (int j = 0; j < eventNotes.Count; j++)
+            {
+                if (points.eventNots[i]== eventNotes[j])
+                {
+                    eventNotes.Remove(eventNotes[j]);
+                }
+            }
         }
         
     }
 
-    public void ShowAction()
-    {
-        FindObjectOfType<PublicManager>().ShowActionFrame(points.eventNotes, OnAction);
-    }
+    public virtual void OnAction(int i) {
+        switch (eventNotes[i])
+        {
+            case TakeAction.explore:
+                //  Explore();
+                break;
+            case TakeAction.collection:
+                Collection();
+                break;
+            case TakeAction.tocamp:
+                FindObjectOfType<DayTime>().JumpTime(points.holdTime);
+                break;
+            case TakeAction.medical:
+                break;
+        }
 
-    public abstract void OnAction(int i);
+    }
 
     public virtual void OnStronghold(int i)
     {
@@ -45,8 +68,15 @@ public abstract class EventEmitter : MonoBehaviour
     {
 
     }
+    /// <summary>
+    /// 周边探索
+    /// </summary>
+    public void Explore() {
 
-    public void SendExplore(Place.ExploreAction action)
+    }
+
+
+    public void SendMoveEvent(Place.ExploreAction action)
     {//todo 事件触发
         switch (action.type)
         {
@@ -66,7 +96,7 @@ public abstract class EventEmitter : MonoBehaviour
         }
     }
 
-    public void Explore(Place place,Dictionary<ExploreEvent,float> perturbation=null)
+    public void MoveEvent(Place place,Dictionary<ExploreEvent,float> perturbation=null)
     {
         if (place.firstActions !=null)
         {
@@ -74,7 +104,7 @@ public abstract class EventEmitter : MonoBehaviour
             {
                 if (!place.firstActions[i].isTrigger)
                 {
-                    SendExplore(place.firstActions[i]);
+                    SendMoveEvent(place.firstActions[i]);
                     place.firstActions[i].isTrigger=true;
                     return;
                 }
@@ -99,7 +129,7 @@ public abstract class EventEmitter : MonoBehaviour
             }
             if (l>=r)
             {
-                SendExplore(e);
+                SendMoveEvent(e);
                 return;
             }
         }
@@ -108,25 +138,39 @@ public abstract class EventEmitter : MonoBehaviour
 
     public void Collection()
     {
-        int n = Random.Range(points.minGet, points.maxGet);
+        FindObjectOfType<PublicManager>().ShowTimeDialog("设置采集时间",delegate (string time) {
 
-        for (int i = 0; i < n; i++)
-        {
-            float r = Random.Range(0, 1);
-            float l = 0;
-            foreach (var e in points.Items)
+            string[] ts = time.Split(':');
+            int tmin = int.Parse(ts[0]) * 60+ int.Parse(ts[1]);
+            int ext = tmin / 30;
+
+            FindObjectOfType<DayTime>().JumpTime(time);
+            GameObject temporaryBag = Resources.Load<GameObject>("UI/Bag");
+            temporaryBag = GameObject.Instantiate<GameObject>(temporaryBag);
+            FindObjectOfType<PublicManager>().AdditionalFrame(temporaryBag).transform.SetParent(GameObject.FindGameObjectWithTag("HUD").transform, false);
+
+            int n = Random.Range(points.minGet+ ext/2, points.maxGet+ ext);
+
+            for (int i = 0; i < n; i++)
             {
-                l += e.probability;
-                if (l >= r && e.max != 0)
+                float r = Random.Range(0, 1);
+                float l = 0;
+                foreach (var e in points.Items)
                 {
-                    //todo showitem | additem
+                    l += e.probability;
+                    if (l >= r && e.max != 0)
+                    {
+                        temporaryBag.GetComponent<Bag>().AddItem(new Bag.ItemInBag() { item = e.item, num = 1 });
+                    }
                 }
             }
-        }
+        });
+       
        
     }
-
     
+
+
 
     public virtual void OnArrive(){
         FindObjectOfType<PlayerManager>().state.moveSpeed *= points. speedMultiplier;
@@ -145,7 +189,7 @@ public abstract class EventEmitter : MonoBehaviour
 
     }
 
-    private string EventToString(TakeAction e)
+    public string EventToString(TakeAction e)
     {
         string t="";
         switch (e)
@@ -195,6 +239,8 @@ public abstract class EventEmitter : MonoBehaviour
         make,
         transaction,
         beg,
+
+        none
     }
 
     public enum ExploreEvent

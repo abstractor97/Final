@@ -78,14 +78,15 @@ public class PublicManager:MonoBehaviour
         Show(arlog);
     }
 
-    public void ShowTimeDialog(TimeChoiceDialog.TimeCallback callback)
+    public void ShowTimeDialog(string note, UnityAction<string> callback)
     {
-       // timelog.GetComponentInChildren<Text>().text = note;
+        // timelog.GetComponentInChildren<Text>().text = note;
+        timelog.GetComponent<TimeChoiceDialog>().SetText(ProcessManager.Instance.language.Text(note));
         timelog.GetComponent<TimeChoiceDialog>().callback += callback;
         Show(timelog);
     }
-
-    public void ShowActionFrame(Points.EventNote[] et, UnityAction<int> left)
+    [Obsolete]
+    public void ShowActionFrame(EventEmitter.TakeAction[] et, UnityAction<int> left)
     {
         // timelog.GetComponentInChildren<Text>().text = note;
       //  FindObjectOfType<MapControl>().pointsControl.points.eventSend.points
@@ -93,10 +94,10 @@ public class PublicManager:MonoBehaviour
       //  Show(actionFrame);
     }
 
-
-    void ActionFrame(GameObject ui, Points.EventNote et)
+    [Obsolete]
+    void ActionFrame(GameObject ui, EventEmitter.TakeAction et)
     {
-        ui.GetComponentInChildren<Text>().text = et.t;
+       // ui.GetComponentInChildren<Text>().text = et.t;
     }
 
     public void ShowTips(string t)
@@ -126,6 +127,20 @@ public class PublicManager:MonoBehaviour
         group.interactable = false;
         group.blocksRaycasts = false;
         cacheUI = null;
+    }
+
+    public GameObject AdditionalFrame(GameObject ui)
+    {
+        GameObject frame = Resources.Load<GameObject>("UI/ControlledFrame");
+        frame = GameObject.Instantiate<GameObject>(frame);
+        RectTransform uiRect = ui.GetComponent<RectTransform>();
+        frame.GetComponent<RectTransform>().sizeDelta = uiRect.sizeDelta + new Vector2(20, 70);
+
+        uiRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, uiRect.sizeDelta.y / 2 + 70, uiRect.sizeDelta.y);
+        uiRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, uiRect.sizeDelta.x / 2 + 10, uiRect.sizeDelta.x);
+        uiRect.SetParent(frame.transform, false);
+        frame.GetComponentInChildren<Button>().onClick.AddListener(delegate () { Destroy(frame); });
+        return frame;
     }
 
     public void LastLife(GameObject obj, float t)

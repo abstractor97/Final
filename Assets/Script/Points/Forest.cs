@@ -8,7 +8,7 @@ namespace Map
     {
         public override void OnAction(int i)
         {
-            switch (points.eventNotes[i].e)
+            switch (eventNotes[i])
             {
                 case TakeAction.explore:
                    // todo placeselect
