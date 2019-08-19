@@ -48,10 +48,7 @@ public class Typewriter : MonoBehaviour
     }
 
     void InitBaseText() {
-        AddQueue("据上次启动已经过" + Time.deltaTime + "次时钟频率");
-        AddQueue("正在接管系统日志...");
-        AddQueue("");
-        AddQueue("系统已上线_");
+
     }
 
     public void AddQueue(string text)
@@ -67,7 +64,6 @@ public class Typewriter : MonoBehaviour
     public void Clear()
     {
         textUI.text = "";
-        AddQueue("系统清除日志");
     }
 
     public void Hide() {

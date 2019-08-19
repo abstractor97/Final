@@ -28,12 +28,9 @@ public class EventEmitter : MonoBehaviour
         gameObject.AddComponent<PointsControl>().eventEmitter=this;
         for (int i = 0; i < points.eventNots.Length; i++)
         {
-            for (int j = 0; j < eventNotes.Count; j++)
+            if (eventNotes.Contains(points.eventNots[i]))
             {
-                if (points.eventNots[i]== eventNotes[j])
-                {
-                    eventNotes.Remove(eventNotes[j]);
-                }
+                eventNotes.Remove(points.eventNots[i]);
             }
         }
         
