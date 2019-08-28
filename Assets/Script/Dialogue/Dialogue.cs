@@ -1,0 +1,491 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Xml;
+using UnityEngine;
+using UnityEngine.UI;
+using System;
+using System.Text;
+using UnityEngine.Events;
+/// <summary>
+/// 数据驱动的对话系统
+/// params 为对话参数【参数描述自行约定】
+///所有分行都要在行首添加>符，包括注释,需要外部实现控制节点
+/// </summary>
+public class Dialogue : MonoBehaviour
+{
+    //  public GameObject fullScreen;
+    /// <summary>
+    /// 生成选项的示例，至少要拥有一个button脚本和一个text脚本
+    /// </summary>
+    public GameObject selectExample;
+
+    //  public GameObject downScreen;
+    /// <summary>
+    /// 对话框
+    /// </summary>
+    public RectTransform dialogueFrame;
+    /// <summary>
+    /// 显示文字的控件，不传入会自动在dialogueFrame下寻找名称为"Text"的子控件
+    /// </summary>
+    public Text text;
+    /// <summary>
+    /// 放置选项的框，自动生成的选项会添加到这里，堆叠式对话文本也会被添加进这里,
+    /// 不传入会自动在dialogueFrame下寻找名称为"ButtonFrame"的子控件
+    /// </summary>
+    public RectTransform buttonFrame;
+
+    /// <summary>
+    /// 受文本控制的对话图像，不传入的话会自动寻找，可用于筛选
+    /// </summary>
+    public Image[] images;
+
+    /// <summary>
+    /// 跳转下一句所需的按键留空为任意键
+    /// </summary>
+    public string nextKey;
+    /// <summary>
+    /// 每一行文本处理完成后返回给外部
+    /// </summary>
+    public UnityAction<string> lineCallBack;
+    /// <summary>
+    /// 播放完成
+    /// </summary>
+    public UnityAction endCallBack;
+    /// <summary>
+    /// 对话历史
+    /// </summary>
+    [HideInInspector]
+    public List<string> history;
+
+#if UNITY_EDITOR
+    public TextAsset testAsset;
+#endif
+    public Font font;
+
+    public string DialoguePath = "Assets/Story/";
+
+    private Dictionary<string, Runner> dialogueData;
+
+    private Dictionary<string, string> dialoguePairs;
+
+    private string readPath;
+
+    private Mode mode;
+
+    private string runDialoueTitle;
+
+    private bool isRun;
+
+    // private 
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        if (images == null)
+        {
+            images = dialogueFrame.gameObject.GetComponentsInChildren<Image>();
+
+        }
+        dialogueFrame.gameObject.AddComponent<CanvasGroup>().alpha = 0;
+        history = new List<string>();
+#if UNITY_EDITOR
+        dialoguePairs = new Dictionary<string, string>();
+        dialogueData = new Dictionary<string, Runner>();
+        LoadText(testAsset.ToString());
+        Show(Mode.stacked).Play("jianmian");
+#endif
+    }
+
+// Update is called once per frame
+void Update()
+    {
+        if (nextKey.Equals(""))
+        {
+            if (Input.anyKeyDown && isRun)
+            {
+                Next();
+            }
+
+        }
+        else {
+            if ( Input.GetKeyDown(nextKey) && isRun)
+            {
+
+                Next();
+            }
+        }
+        
+    }
+
+    private void Next()
+    {
+        string data = dialogueData[runDialoueTitle].Next();
+#if UNITY_EDITOR
+        Debug.LogWarning(data);
+#endif
+
+        if (data.Equals("END"))
+        {
+            isRun = false;
+            dialogueFrame.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+            endCallBack?.Invoke();
+        }
+        else
+        {
+            if (Analysis(data) > 0)
+            {
+                Analysis(data);
+            }
+
+        }
+    }
+
+
+    /// <summary>
+    /// 加载对话文本
+    /// </summary>
+    /// <param name="dialogueName">名称或路径</param>
+    public Dialogue Load(string dialogueName)
+    {
+        if (dialogueName.Contains("/"))
+        {
+            readPath = "";
+            string[] paths= dialogueName.Split('/');
+            for (int i = 0; i < paths.Length-1; i++)
+            {
+                readPath = readPath + paths[i] + "/";
+            }
+        }
+        
+        TextAsset textAsset = Resources.Load<TextAsset>(DialoguePath+dialogueName);
+        dialoguePairs = new Dictionary<string, string>();
+        dialogueData = new Dictionary<string, Runner>();
+        LoadText(textAsset.ToString());
+    
+     
+        return this;
+    }
+
+    /// <summary>
+    /// 设置显示模式
+    /// </summary>
+    /// <param name="mode"></param>
+    /// <returns></returns>
+    public Dialogue Show(Mode mode)
+    {
+        this.mode = mode;
+        if (text == null&&mode!=Mode.stacked)
+        {
+            text = dialogueFrame?.Find("Text").gameObject.GetComponent<Text>();
+            text.gameObject.AddComponent<CanvasGroup>().alpha = 0;
+        }
+        if (buttonFrame == null)
+        {
+            buttonFrame = dialogueFrame?.transform.Find("ButtonFrame").gameObject.GetComponent<RectTransform>();
+
+        }
+        VerticalLayoutGroup verticalLayout= buttonFrame.gameObject.AddComponent<VerticalLayoutGroup>();
+        verticalLayout.childControlHeight = false;
+        verticalLayout.childControlWidth = true;
+        verticalLayout.childForceExpandHeight = false;
+        verticalLayout.spacing = 4;
+        buttonFrame.gameObject.AddComponent<CanvasGroup>().alpha = 0;
+        dialogueFrame.gameObject.GetComponent<CanvasGroup>().alpha = 1;
+        return this;
+    }
+    /// <summary>
+    /// todo 设置显示图片张数（默认为dialogueframe下子对象中image控件的数量）
+    /// </summary>
+    /// <returns></returns>
+    public Dialogue Image()
+    {
+        return this;
+    }
+
+    /// <summary>
+    /// 开始播放
+    /// </summary>
+    /// <param name="nodeName"></param>
+    public void Play(string nodeName)
+    {
+        Debug.LogWarning("nodeName:"+nodeName);
+        if (dialogueData != null&& dialogueData.ContainsKey(nodeName))
+        {
+            isRun = true;
+            runDialoueTitle = nodeName;
+            dialogueData[runDialoueTitle].index = 0;//重置下下标
+            if (Analysis(dialogueData[runDialoueTitle].Next())>0)
+            {
+                Analysis(dialogueData[runDialoueTitle].Next());
+            } ;//从第一句开始
+        }
+        else
+        {
+            throw new Exception("未载入数据或没有找到节点");
+        }
+    }
+    /// <summary>
+    /// 托管参数，托管后参数会受到剧本选项等影响
+    /// </summary>
+    public void TrustParam(string pName,string pValue)
+    {
+        dialoguePairs.Add(pName,pValue);
+        if (dialoguePairs.ContainsKey(pName))
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 解析文本
+    /// 
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    private int Analysis(string data)
+    {
+
+        if (data.Contains("["))
+        {
+            if (mode != Mode.stacked)
+            {
+                text.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+                buttonFrame.GetComponent<CanvasGroup>().alpha = 1;
+                foreach (var f in buttonFrame)
+                {
+                    Destroy(((Transform)f).gameObject);
+                }
+            }
+            bool inBracket = false;
+           
+            StringBuilder sbr = new StringBuilder();
+            foreach (var s in data)
+            {
+                if (s.Equals(']'))
+                {
+                    inBracket = false;
+                }
+                if (inBracket)
+                {
+                    sbr.Append(s);
+                }
+                if (s.Equals('['))
+                {
+                    inBracket = true;
+                }
+            }
+            int imageIndex = 0;
+            foreach (var s in sbr.ToString().Split('|'))
+            {
+
+                string[] pcs = s.Split('#');
+                
+                foreach (var pc in pcs)
+                {
+                    if (pc.Contains("-"))
+                    {
+                        string[] pcm = pc.Split('-');
+                        string pam = dialoguePairs[pcm[0]];
+                        dialoguePairs[pcm[0]]= (int.Parse(pam)-int.Parse(pcm[1])).ToString();
+                        continue;
+                    }
+                    if (pc.Contains("+"))
+                    {
+                        string[] pcm = pc.Split('+');
+                        string pam = dialoguePairs[pcm[0]];
+                        dialoguePairs[pcm[0]] = (int.Parse(pam) + int.Parse(pcm[1])).ToString();
+                        continue;
+                    }
+                    if (pc.Contains("="))
+                    {
+                        string[] pcm = pc.Split('=');
+                        string pam = dialoguePairs[pcm[0]];
+                        dialoguePairs[pcm[0]] = pcm[1];
+                        continue;
+                    }
+                    if (pc.StartsWith("path:"))
+                    {
+                       images[imageIndex].sprite= Resources.Load<Sprite>(DialoguePath + readPath + pc.Substring(5, pc.Length));
+                        imageIndex++;
+                    }
+
+
+                }
+                if (!pcs[0].Trim().Equals(""))
+                {
+                    isRun = false;
+                    GameObject b=null;
+                    if (selectExample==null)
+                    {
+                        b = new GameObject();
+                        b.AddComponent<Button>();
+                        b.AddComponent<Text>().font = font;
+                        b.GetComponent<Text>().alignment = TextAnchor.MiddleLeft;
+                        b.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 30);
+                    }
+                    else
+                    {
+                        b = GameObject.Instantiate<GameObject>(selectExample);
+                    } 
+                    b.GetComponent<Text>().text = pcs[0];              
+                    b.GetComponent<Button>().onClick.AddListener(delegate () {
+                        isRun = true;
+                        Play(dialogueData[pcs[0]].title);
+                        foreach (var button in buttonFrame.GetComponentsInChildren<Button>())
+                        {
+                            button.onClick.RemoveAllListeners();
+                        }
+                    });
+                    b.transform.SetParent(buttonFrame, false);
+                }
+             
+            }
+            if (imageIndex > 0)//如果这一行操作图片，自动下移一行
+            {
+                lineCallBack?.Invoke(data);
+                return 1;
+            }
+         
+        }
+        else
+        {
+            if (mode == Mode.stacked)
+            {
+                GameObject b = new GameObject
+                {
+                    name = "text"
+                };
+                // b = GameObject.Instantiate<GameObject>(b);
+                Text t = b.AddComponent<Text>();
+                t.text = data;
+                t.font = font;
+                t.alignment = TextAnchor.MiddleLeft;
+                b.GetComponent<RectTransform>().sizeDelta=new Vector2(100,30);
+                b.transform.SetParent(buttonFrame,false);
+                buttonFrame.GetComponent<CanvasGroup>().alpha = 1;
+            }
+            else {
+                text.text = data;
+                buttonFrame.GetComponent<CanvasGroup>().alpha = 0;
+                text.gameObject.GetComponent<CanvasGroup>().alpha = 1;
+            }
+        }
+        lineCallBack?.Invoke(data);
+        return 0;
+    }
+
+    public void SubmitAsync(string dialogueName)
+    {
+        Resources.Load<TextAsset>(DialoguePath + dialogueName);
+    }
+
+    private void LoadText(string text)
+    {
+        dialoguePairs.Clear();
+        dialogueData.Clear();
+        string[] ls = text.Split('>');
+        Runner runner=null;
+        foreach (var l in ls)
+        {
+
+            if (!l.TrimStart().StartsWith("//")&&!l.Trim().Equals(""))
+            {
+                if (l.StartsWith("title:"))
+                {
+                    if (runner!=null)
+                    {
+                        dialogueData.Add(runner.title, runner);
+                    }
+                    runner = new Runner
+                    {
+                        title = l.Trim().Substring(6, l.Trim().Length-6)
+                    };
+                    continue;
+                }
+                if (l.StartsWith("params:"))
+                {
+                    foreach (var param in l.Trim().Substring(7, l.Trim().Length-7).Split('$'))
+                    {
+                        if (!param.Trim().Equals(""))
+                        {
+                            string[] pst = param.Split('=');
+                            dialoguePairs.Add(pst[0].Trim(), pst[1].Trim());
+                        }
+                    }
+                    continue;
+                }
+                if (l.StartsWith("sprite:"))
+                {
+                    string cz = "[";
+                    foreach (var sp in l.Trim().Substring(7, l.Trim().Length-8).Split(','))
+                    {
+                        cz =cz+"#path:"+sp;
+                    }
+                    cz += "]";
+                    runner?.sentence.Add(cz);
+                    continue;
+                }
+                runner?.sentence.Add(l.Trim());
+            }
+        }
+       
+    }
+
+    private Dictionary<string,string> LoadXml(string xmlText)
+    {
+        xmlText.Insert(0, "<object>");
+
+        xmlText.Insert(xmlText.Length, "</object>");
+
+        //创建xml文档
+        XmlDocument xml = new XmlDocument();
+
+        xml.LoadXml(xmlText);
+
+        //得到objects节点下的所有子节点
+        XmlNodeList xmlNodeList = xml.SelectSingleNode("object").ChildNodes;
+
+        Dictionary<string, string> listXmlElement = new Dictionary<string, string>();
+
+        //遍历所有子节点
+        foreach (XmlElement xl1 in xmlNodeList)
+        {
+            listXmlElement.Add(xl1.Name, xl1.Value);
+           
+        }
+
+        return listXmlElement;
+
+
+    }
+
+
+    public class Runner
+    {
+        public List<string> sentence = new List<string>();
+
+        public string title;
+
+        public int index;
+
+        public string Next()
+        {
+            index++;
+            if (index <= sentence.Count)
+            {
+                return sentence[index-1];
+            }
+            else {
+                index = 0;
+                return "END";
+            }
+        }
+    }
+
+    public enum Mode
+    {
+        stacked,
+        cover,
+    }
+
+}
