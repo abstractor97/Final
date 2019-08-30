@@ -12,6 +12,7 @@ public class Typewriter : MonoBehaviour
     public int cacheNum=20;
     [Tooltip("自适应")]
     public bool isAdaption;
+
     public float height;
     private ScrollRect scrollRect;
     private Queue<string> queue;

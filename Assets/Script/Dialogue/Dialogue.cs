@@ -46,10 +46,12 @@ public class Dialogue : MonoBehaviour
     /// <summary>
     /// 每一行文本处理完成后返回给外部
     /// </summary>
+    [HideInInspector]
     public UnityAction<string> lineCallBack;
     /// <summary>
     /// 播放完成
     /// </summary>
+    [HideInInspector]
     public UnityAction endCallBack;
     /// <summary>
     /// 对话历史
@@ -57,12 +59,17 @@ public class Dialogue : MonoBehaviour
     [HideInInspector]
     public List<string> history;
 
-#if UNITY_EDITOR
-    public TextAsset testAsset;
-#endif
     public Font font;
 
     public string DialoguePath = "Assets/Story/";
+    /// <summary>
+    /// 是否启动打字机效果
+    /// </summary>
+    public bool isWriter=true;
+
+#if UNITY_EDITOR
+    public TextAsset testAsset;
+#endif
 
     private Dictionary<string, Runner> dialogueData;
 
@@ -129,6 +136,10 @@ void Update()
             isRun = false;
             dialogueFrame.gameObject.GetComponent<CanvasGroup>().alpha = 0;
             endCallBack?.Invoke();
+            if (text!=null)
+            {
+                text.text = "";
+            }
         }
         else
         {
@@ -167,6 +178,20 @@ void Update()
     }
 
     /// <summary>
+    /// 加载对话文本
+    /// </summary>
+    /// <param name="dialogueName">名称或路径</param>
+    public Dialogue Load(TextAsset dialogue)
+    {
+        dialoguePairs = new Dictionary<string, string>();
+        dialogueData = new Dictionary<string, Runner>();
+        LoadText(dialogue.ToString());
+
+
+        return this;
+    }
+
+    /// <summary>
     /// 设置显示模式
     /// </summary>
     /// <param name="mode"></param>
@@ -191,6 +216,10 @@ void Update()
         verticalLayout.spacing = 4;
         buttonFrame.gameObject.AddComponent<CanvasGroup>().alpha = 0;
         dialogueFrame.gameObject.GetComponent<CanvasGroup>().alpha = 1;
+        if (isWriter && mode != Mode.stacked)
+        {
+            text.gameObject.AddComponent<Wirter>().wirterOver=delegate(string s) { isRun = true; };
+        }
         return this;
     }
     /// <summary>
@@ -206,12 +235,22 @@ void Update()
     /// 开始播放
     /// </summary>
     /// <param name="nodeName"></param>
-    public void Play(string nodeName)
+    public Dialogue Play(string nodeName)
     {
-        Debug.LogWarning("nodeName:"+nodeName);
+        if (nodeName.Equals(""))
+        {
+            foreach (var data in dialogueData)
+            {
+                nodeName = data.Key;
+                break;
+            }
+        }
         if (dialogueData != null&& dialogueData.ContainsKey(nodeName))
         {
-            isRun = true;
+            if (!isWriter)
+            {
+                isRun = true;
+            }
             runDialoueTitle = nodeName;
             dialogueData[runDialoueTitle].index = 0;//重置下下标
             if (Analysis(dialogueData[runDialoueTitle].Next())>0)
@@ -223,6 +262,7 @@ void Update()
         {
             throw new Exception("未载入数据或没有找到节点");
         }
+        return this;
     }
     /// <summary>
     /// 托管参数，托管后参数会受到剧本选项等影响
@@ -230,10 +270,22 @@ void Update()
     public void TrustParam(string pName,string pValue)
     {
         dialoguePairs.Add(pName,pValue);
-        if (dialoguePairs.ContainsKey(pName))
-        {
+        //if (dialoguePairs.ContainsKey(pName))
+        //{
 
-        }
+        //}
+    }
+
+    /// <summary>
+    /// 取出某一个托管参数
+    /// </summary>
+    public string GetTrustParam(string pName)
+    {
+        return dialoguePairs[pName];
+        //if (dialoguePairs.ContainsKey(pName))
+        //{
+
+        //}
     }
 
     /// <summary>
@@ -277,7 +329,6 @@ void Update()
             int imageIndex = 0;
             foreach (var s in sbr.ToString().Split('|'))
             {
-
                 string[] pcs = s.Split('#');
                 
                 foreach (var pc in pcs)
@@ -308,8 +359,6 @@ void Update()
                        images[imageIndex].sprite= Resources.Load<Sprite>(DialoguePath + readPath + pc.Substring(5, pc.Length));
                         imageIndex++;
                     }
-
-
                 }
                 if (!pcs[0].Trim().Equals(""))
                 {
@@ -326,15 +375,28 @@ void Update()
                     else
                     {
                         b = GameObject.Instantiate<GameObject>(selectExample);
-                    } 
-                    b.GetComponent<Text>().text = pcs[0];              
+                    }
+                    Text btext = b.GetComponent<Text>();
+                    if (btext == null)
+                    {
+                        btext = b.GetComponentInChildren<Text>();
+                    }
+                    btext.text = pcs[0];              
                     b.GetComponent<Button>().onClick.AddListener(delegate () {
                         isRun = true;
-                        Play(dialogueData[pcs[0]].title);
+                        if (dialogueData.ContainsKey(pcs[0]))
+                        {
+                            Play(dialogueData[pcs[0]].title);
+                        }
+                        else
+                        {
+                            Next();
+                        }                      
                         foreach (var button in buttonFrame.GetComponentsInChildren<Button>())
                         {
                             button.onClick.RemoveAllListeners();
                         }
+
                     });
                     b.transform.SetParent(buttonFrame, false);
                 }
@@ -356,11 +418,20 @@ void Update()
                     name = "text"
                 };
                 // b = GameObject.Instantiate<GameObject>(b);
-                Text t = b.AddComponent<Text>();
-                t.text = data;
+                Text t = b.AddComponent<Text>();            
                 t.font = font;
                 t.alignment = TextAnchor.MiddleLeft;
                 b.GetComponent<RectTransform>().sizeDelta=new Vector2(100,30);
+                if (isWriter)
+                {
+                    Wirter wirter= b.AddComponent<Wirter>();
+                    wirter.AddQueue(data);
+                    wirter.wirterOver = delegate (string s) { isRun = true; };
+                }
+                else
+                {
+                    t.text = data;
+                }            
                 b.transform.SetParent(buttonFrame,false);
                 buttonFrame.GetComponent<CanvasGroup>().alpha = 1;
             }
@@ -428,33 +499,10 @@ void Update()
                 runner?.sentence.Add(l.Trim());
             }
         }
-       
-    }
-
-    private Dictionary<string,string> LoadXml(string xmlText)
-    {
-        xmlText.Insert(0, "<object>");
-
-        xmlText.Insert(xmlText.Length, "</object>");
-
-        //创建xml文档
-        XmlDocument xml = new XmlDocument();
-
-        xml.LoadXml(xmlText);
-
-        //得到objects节点下的所有子节点
-        XmlNodeList xmlNodeList = xml.SelectSingleNode("object").ChildNodes;
-
-        Dictionary<string, string> listXmlElement = new Dictionary<string, string>();
-
-        //遍历所有子节点
-        foreach (XmlElement xl1 in xmlNodeList)
+        if (!dialogueData.ContainsKey(runner.title))
         {
-            listXmlElement.Add(xl1.Name, xl1.Value);
-           
+            dialogueData.Add(runner.title, runner);
         }
-
-        return listXmlElement;
 
 
     }
@@ -488,4 +536,6 @@ void Update()
         cover,
     }
 
+
+ 
 }
