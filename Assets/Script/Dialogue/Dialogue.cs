@@ -44,10 +44,10 @@ public class Dialogue : MonoBehaviour
     /// </summary>
     public string nextKey;
     /// <summary>
-    /// 每一行文本处理完成后返回给外部
+    /// 每个段落文本处理完成后返回给外部
     /// </summary>
     [HideInInspector]
-    public UnityAction<string> lineCallBack;
+    public UnityAction<string> titleCallBack;
     /// <summary>
     /// 播放完成
     /// </summary>
@@ -67,9 +67,15 @@ public class Dialogue : MonoBehaviour
     /// </summary>
     public bool isWriter=true;
 
+    [HideInInspector]
+    public bool hasText;
 #if UNITY_EDITOR
     public TextAsset testAsset;
 #endif
+    /// <summary>
+    /// 全局参数
+    /// </summary>
+    private Dictionary<string, string> dialogueOaData;
 
     private Dictionary<string, Runner> dialogueData;
 
@@ -80,8 +86,8 @@ public class Dialogue : MonoBehaviour
     private Mode mode;
 
     private string runDialoueTitle;
-
-    private bool isRun;
+    [HideInInspector]
+    public bool isRun;
 
     // private 
 
@@ -134,12 +140,18 @@ void Update()
         if (data.Equals("END"))
         {
             isRun = false;
+            hasText = false;
             dialogueFrame.gameObject.GetComponent<CanvasGroup>().alpha = 0;
             endCallBack?.Invoke();
-            if (text!=null)
+            if (text != null)
             {
                 text.text = "";
             }
+            foreach (var f in buttonFrame)
+            {
+                Destroy(((Transform)f).gameObject);
+            }
+
         }
         else
         {
@@ -172,8 +184,8 @@ void Update()
         dialoguePairs = new Dictionary<string, string>();
         dialogueData = new Dictionary<string, Runner>();
         LoadText(textAsset.ToString());
-    
-     
+
+        hasText = true;
         return this;
     }
 
@@ -187,7 +199,7 @@ void Update()
         dialogueData = new Dictionary<string, Runner>();
         LoadText(dialogue.ToString());
 
-
+        hasText = true;
         return this;
     }
 
@@ -262,18 +274,39 @@ void Update()
         {
             throw new Exception("未载入数据或没有找到节点");
         }
+        titleCallBack?.Invoke(nodeName);
         return this;
     }
+    /// <summary>
+    ///强制停止 
+    /// </summary>
+    public void Stop() {
+        isRun = false;
+        hasText = false;
+        dialogueFrame.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+        endCallBack?.Invoke();
+        if (text != null)
+        {
+            text.text = "";
+        }
+        foreach (var f in buttonFrame)
+        {
+            Destroy(((Transform)f).gameObject);
+        }
+    }
+
     /// <summary>
     /// 托管参数，托管后参数会受到剧本选项等影响
     /// </summary>
     public void TrustParam(string pName,string pValue)
     {
         dialoguePairs.Add(pName,pValue);
-        //if (dialoguePairs.ContainsKey(pName))
-        //{
-
-        //}
+        if (dialoguePairs.ContainsKey(pName))
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning("重复托管参数:"+ pName);
+#endif
+        }
     }
 
     /// <summary>
@@ -286,6 +319,13 @@ void Update()
         //{
 
         //}
+    }
+    /// <summary>
+    /// 托管全局参数，托管后参数会受到剧本选项等影响，这个参数不会被回收//todo 剧本中添加
+    /// </summary>
+    public void TrustOverallParam(string pName, string pValue)
+    {
+        dialogueOaData.Add(pName, pValue);
     }
 
     /// <summary>
@@ -336,21 +376,21 @@ void Update()
                     if (pc.Contains("-"))
                     {
                         string[] pcm = pc.Split('-');
-                        string pam = dialoguePairs[pcm[0]];
+                        string pam = dialoguePairs[pcm[0]]==null?dialogueOaData[pcm[0]]: dialoguePairs[pcm[0]];
                         dialoguePairs[pcm[0]]= (int.Parse(pam)-int.Parse(pcm[1])).ToString();
                         continue;
                     }
                     if (pc.Contains("+"))
                     {
                         string[] pcm = pc.Split('+');
-                        string pam = dialoguePairs[pcm[0]];
+                        string pam = dialoguePairs[pcm[0]] == null ? dialogueOaData[pcm[0]] : dialoguePairs[pcm[0]];
                         dialoguePairs[pcm[0]] = (int.Parse(pam) + int.Parse(pcm[1])).ToString();
                         continue;
                     }
                     if (pc.Contains("="))
                     {
                         string[] pcm = pc.Split('=');
-                        string pam = dialoguePairs[pcm[0]];
+                        string pam = dialoguePairs[pcm[0]] == null ? dialogueOaData[pcm[0]] : dialoguePairs[pcm[0]];
                         dialoguePairs[pcm[0]] = pcm[1];
                         continue;
                     }
@@ -404,7 +444,6 @@ void Update()
             }
             if (imageIndex > 0)//如果这一行操作图片，自动下移一行
             {
-                lineCallBack?.Invoke(data);
                 return 1;
             }
          
@@ -441,7 +480,6 @@ void Update()
                 text.gameObject.GetComponent<CanvasGroup>().alpha = 1;
             }
         }
-        lineCallBack?.Invoke(data);
         return 0;
     }
 
@@ -481,6 +519,18 @@ void Update()
                         {
                             string[] pst = param.Split('=');
                             dialoguePairs.Add(pst[0].Trim(), pst[1].Trim());
+                        }
+                    }
+                    continue;
+                }
+                if (l.StartsWith("paramsOa:"))
+                {
+                    foreach (var param in l.Trim().Substring(7, l.Trim().Length - 7).Split('$'))
+                    {
+                        if (!param.Trim().Equals(""))
+                        {
+                            string[] pst = param.Split('=');
+                            dialogueOaData.Add(pst[0].Trim(), pst[1].Trim());
                         }
                     }
                     continue;

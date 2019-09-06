@@ -32,15 +32,15 @@ public class StartMenuContrl : MonoBehaviour
         
     }
 
-    public void StartNew()
+    public void Continue()
     {
         ToGameScene();
     }
 
-    public void SaveSelect(int i)
+    public void StartNew()
     {
-       
-            stories = Resources.LoadAll<Story>(storyOS);
+        storyMenu.SetActive(true);
+             stories = Resources.LoadAll<Story>(storyOS);
             Transform storyList = storyMenu.transform.Find("StoryList").transform.GetChild(0).transform.GetChild(0);
             for (int j = 0; j < stories.Length; j++)
             {
@@ -57,23 +57,27 @@ public class StartMenuContrl : MonoBehaviour
                 t.transform.SetParent(storyList);
                 if (j == 0)
                 {
-                    GameObject.Find("StoryScore/DegreeCivilization").GetComponent<Image>().fillAmount = stories[j].degreeCivilization;
-                    GameObject.Find("StoryScore/Difficulty").GetComponent<Image>().fillAmount = stories[j].difficulty;
-                    Transform storyNote = storyMenu.transform.Find("StoryNote").transform.GetChild(0);
-                    storyNote.gameObject.GetComponent<Text>().text = stories[j].describe;
-                }
+                    //GameObject.Find("StoryScore/DegreeCivilization").GetComponent<Image>().fillAmount = stories[j].degreeCivilization;
+                    //GameObject.Find("StoryScore/Difficulty").GetComponent<Image>().fillAmount = stories[j].difficulty;
+                    //Transform storyNote = storyMenu.transform.Find("StoryNote").transform.GetChild(0);
+                    //storyNote.gameObject.GetComponent<Text>().text = stories[j].describe;
+                storyMenu.GetComponentInChildren<Text>().text = stories[j].describe;
+                storyMenu.GetComponentInChildren<Image>().sprite = stories[j].icon;
+            }
             }
         
     }
 
     int storyIndex = 0;
 
-    public void StorySelect(int i)
+    private void StorySelect(int i)
     {
-        GameObject.Find("StoryScore/DegreeCivilization").GetComponent<Image>().fillAmount = stories[i].degreeCivilization;
-        GameObject.Find("StoryScore/Difficulty").GetComponent<Image>().fillAmount = stories[i].difficulty;
-        Transform storyNote = GameObject.Find("StorySelectMenu").transform.Find("StoryNote").transform.GetChild(0);
-        storyNote.gameObject.GetComponent<Text>().text = stories[i].describe;
+        //GameObject.Find("StoryScore/DegreeCivilization").GetComponent<Image>().fillAmount = stories[i].degreeCivilization;
+        //GameObject.Find("StoryScore/Difficulty").GetComponent<Image>().fillAmount = stories[i].difficulty;
+        //Transform storyNote = GameObject.Find("StorySelectMenu").transform.Find("StoryNote").transform.GetChild(0);
+        //storyNote.gameObject.GetComponent<Text>().text = stories[i].describe;
+        storyMenu.GetComponentInChildren<Text>().text = stories[i].describe;
+        storyMenu.GetComponentInChildren<Image>().sprite = stories[i].icon;
         storyIndex = i;
     }
 
@@ -81,8 +85,8 @@ public class StartMenuContrl : MonoBehaviour
     private void ToGameScene()
     {
         loaddlg.SetActive(true);
-        loadingSlider = loaddlg.transform.Find("Loading/Slider").GetComponent<Slider>();
-        loadingText = loaddlg.transform.Find("Loading/Slider/Text").GetComponent<Text>();
+        loadingSlider = loaddlg.transform.Find("Slider").GetComponent<Slider>();
+        loadingText = loaddlg.transform.Find("Slider/Text").GetComponent<Text>();
         asyncOperation = SceneManager.LoadSceneAsync("MapScene");
         //StartCoroutine(LoadingScene());
     }

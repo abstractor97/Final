@@ -11,8 +11,11 @@ public class Story : ScriptableObject
     public float degreeCivilization;
     [Tooltip("描述")]
     public string describe;
-   // [Tooltip("启动时调用")]
-  //  public UnityAction<GameTable> init;
- //   [Tooltip("配置表")]
-  //  public GameTable table;
+    [Tooltip("图片")]
+    public Sprite icon;
+
+    // [Tooltip("启动时调用")]
+    //  public UnityAction<GameTable> init;
+    //   [Tooltip("配置表")]
+    //  public GameTable table;
 }
