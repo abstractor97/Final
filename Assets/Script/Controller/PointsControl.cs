@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Yarn.Unity;
 
 namespace Map
 {
@@ -56,7 +55,7 @@ namespace Map
             // Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // mousePosition = tileGrid.GetCellCenterWorld(tileGrid.WorldToCell(mousePosition));
             // mousePosition.z = 0;
-            if (Input.GetMouseButtonDown(0)&&!GameObject.FindObjectOfType<PublicManager>().lockWalk&& !FindObjectOfType<DialogueRunner>().isDialogueRunning)
+            if (Input.GetMouseButtonDown(0)&&!GameObject.FindObjectOfType<PublicManager>().lockWalk&& !FindObjectOfType<Dialogue>().hasText)
             {
                 if (FindObjectOfType<MapControl>().eventEmitter.OnLeave())
                 {

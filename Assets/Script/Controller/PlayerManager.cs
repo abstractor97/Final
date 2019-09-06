@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Yarn.Unity.Example;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -25,8 +24,6 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     public int DifficultyAmplifier = 1;
 
-    [HideInInspector]
-    public NPC talkTo;
     [HideInInspector]
     public List<BuffControl> buffs;
     // Start is called before the first frame update

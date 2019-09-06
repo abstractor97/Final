@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Yarn.Unity;
 
 public class EventEmitter : MonoBehaviour
 {
@@ -86,8 +85,7 @@ public class EventEmitter : MonoBehaviour
                 
                 break;
             case ExploreEvent.e:
-                FindObjectOfType<DialogueRunner>().AddScript(action.note);
-                FindObjectOfType<DialogueRunner>().StartDialogue(action.talkToNode);
+               //todo 播放对话
 
                 break;
         }
