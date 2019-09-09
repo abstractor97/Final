@@ -6,11 +6,15 @@ using UnityEngine;
 public class Equip : ScriptableObject
 {
     public int attack;
-
+    [Tooltip("保护")]
     public int protect;
-
+    [Tooltip("保暖")]
     public int warm;
 
     public int beautiful;
+
+    public int needStr;
+
+    public int needSki;
 
 }

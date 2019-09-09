@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Typewriter : MonoBehaviour
@@ -12,8 +13,9 @@ public class Typewriter : MonoBehaviour
     public int cacheNum=20;
     [Tooltip("自适应")]
     public bool isAdaption;
-
-    public float height;
+    [HideInInspector]
+    public UnityAction<string> lineCallBack;
+    private float height;
     private ScrollRect scrollRect;
     private Queue<string> queue;
     private Text textUI;
@@ -107,11 +109,12 @@ public class Typewriter : MonoBehaviour
                 textUI.text = cache+printText;
             }
             textUI.text = textUI.text + "\n";
+            lineCallBack?.Invoke(printText);
             printText = "";
             if (isAdaption)
             {
                 scrollRect.verticalNormalizedPosition = 0;
-            }    
+            }
             yield return new WaitForSeconds(3*pause);
            
         }

@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
 
     public GameObject buffFrame;
 
-    public State state;
+    public People state;
 
     public Bag[] bags;
 
@@ -48,17 +48,17 @@ public class PlayerManager : MonoBehaviour
 
     void UpdateTime(string time)
     {
-        if (state.satiety < state.benchmarkSatiety)
+        if (state.state.satiety < state.state.benchmarkSatiety)
         {
-            state.hp -= state.hpEfflux;
+            state.state.hp -= state.state.hpEfflux;
         }
-        state.power -= state.powerEfflux;
-        state.satiety -= state.satietyEfflux;
-        state.water -= state.waterEfflux;
+        state.state.power -= state.state.powerEfflux;
+        state.state.satiety -= state.state.satietyEfflux;
+        state.state.water -= state.state.waterEfflux;
         //额外状态
         foreach (var b in buffs)
         {
-            b.Next(state);
+            b.Next(state.state);
         }
     }
 
@@ -71,7 +71,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            float speed = state.moveSpeed;
+            float speed = state.state.moveSpeed;
             foreach (var b in bags)
             {
                 speed = speed * b.LoadSpeed();
@@ -88,19 +88,19 @@ public class PlayerManager : MonoBehaviour
         switch (tag)
         {
             case StateTag.m:
-                state.moveSpeed += value;
+                state.state.moveSpeed += value;
                 break;
             case StateTag.h:
-                state.hp += value;
+                state.state.hp += value;
                 break;
             case StateTag.p:
-                state.power += value;
+                state.state.power += value;
                 break;
             case StateTag.s:
-                state.satiety += value;
+                state.state.satiety += value;
                 break;
             case StateTag.w:
-                state.water += value;
+                state.state.water += value;
                 break;
         }
     }
@@ -139,7 +139,7 @@ public class PlayerManager : MonoBehaviour
             buffs = buffs,
             buff= buff
         };
-        bc.Init(state);
+        bc.Init(state.state);
     }
 
 
@@ -154,7 +154,7 @@ public class PlayerManager : MonoBehaviour
 
         public Buff buff;
 
-        public void Init(State state)
+        public void Init(People.State state)
         {
             foreach (var b in buff.state)
             {
@@ -173,7 +173,7 @@ public class PlayerManager : MonoBehaviour
         }
 
 
-        public void Next(State state)
+        public void Next(People.State state)
         {
             foreach (var b in buff.state)
             {
@@ -206,7 +206,7 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        public void Remove(State state)
+        public void Remove(People.State state)
         {
             foreach (var b in buff.state)
             {
@@ -218,41 +218,6 @@ public class PlayerManager : MonoBehaviour
             Destroy(ui);
             buffs.Remove(this);
         }
-    }
-
-    [Serializable]
-    public class State
-    {
-        public string other;
-        public float hp;
-        public float power;
-        /// <summary>
-        /// 体力消耗量
-        /// </summary>
-        public float powerLoop;
-
-
-        public float moveSpeed;
-        /// <summary>
-        /// 重量
-        /// </summary>
-        public float weight;
-        public float water;
-        /// <summary>
-        /// 饱腹度
-        /// </summary>
-        public float satiety;
-        /// <summary>
-        /// 基准饱腹度
-        /// </summary>
-        public float benchmarkSatiety;
-        /// <summary>
-        /// hp自然流逝率
-        /// </summary>
-        public float hpEfflux;
-        public float powerEfflux;
-        public float satietyEfflux;
-        public float waterEfflux;
     }
 
     public enum StateTag

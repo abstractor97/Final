@@ -22,7 +22,6 @@ public class ProcessManager
     }
 
 
-    public PlayerManager.State cacheState;
     public bool isInGame;
     public Save save;
     public LocalLanguage language;
@@ -129,7 +128,7 @@ public class ProcessManager
         public float y;
         public float z;
 
-        public PlayerManager.State state;
+        public People state;
 
         public Buff[] buffs;
 
