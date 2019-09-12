@@ -9,11 +9,11 @@ public class NPBehaveExampleSwarmEnemyAI : MonoBehaviour
 
     void Start()
     {
-        // get the shared blackboard for this kind of ai, this blackboard is shared by all instances
+        //获取此类人工智能的共享黑板，此黑板由所有实例共享
         sharedBlackboard = UnityContext.GetSharedBlackboard("example-swarm-ai");
 
-        // create a new blackboard instance for this ai instance, parenting it to the sharedBlackboard.
-        // This way we can also access shared values through the own blackboard.
+        // 为这个ai实例创建一个新的黑板实例，并将其作为sharedblackboard的父对象。
+        //这样我们也可以通过自己的黑板访问共享值
         ownBlackboard = new Blackboard(sharedBlackboard, UnityContext.GetClock());
 
         // create the behaviourTree

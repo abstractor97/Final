@@ -1,7 +1,9 @@
-﻿using UnityEngine;
-using NPBehave;
+﻿using NPBehave;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class NPBehaveExampleEnemyAI : MonoBehaviour
+public class FightAi : MonoBehaviour
 {
     private Blackboard blackboard;
     private Root behaviorTree;
@@ -54,7 +56,8 @@ public class NPBehaveExampleEnemyAI : MonoBehaviour
                                 {
                                     return Action.Result.FAILED;
                                 }
-                            }) { Label = "Follow" }
+                            })
+                            { Label = "Follow" }
                         )
                     ),
 

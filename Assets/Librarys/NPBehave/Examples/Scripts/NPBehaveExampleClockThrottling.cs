@@ -2,9 +2,9 @@
 using NPBehave;
 
 /// <summary>
-/// This example shows how you can use use clock instances to have complete control over how your tree receives updates.
-/// This allows you for example to throttle updates to AI instances that are far away from the player.
-/// You can also share clock instances by multiple trees if you like.
+///此示例显示如何使用时钟实例来完全控制树接收更新的方式。
+///例如，这允许您限制对远离播放器的ai实例的更新。
+///如果愿意，还可以通过多个树共享时钟实例。
 /// </summary>
 public class NPBehaveExampleClockThrottling : MonoBehaviour
 {

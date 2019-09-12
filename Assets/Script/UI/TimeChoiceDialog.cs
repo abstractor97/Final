@@ -23,7 +23,7 @@ public class TimeChoiceDialog : MonoBehaviour
     {
         hour=time.transform.Find("Hour").GetComponent<Text>();
         min=time.transform.Find("Min").GetComponent<Text>();
-        tip= time.transform.Find("Tip").GetComponent<Text>();
+        tip= time. transform.parent.Find("Tip").GetComponent<Text>();
     }
 
     // Update is called once per frame
