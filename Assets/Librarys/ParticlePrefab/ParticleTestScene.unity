@@ -327,6 +327,10 @@ PrefabInstance:
       propertyPath: InitialModule.startRotationY.minMaxState
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: 0fddeeac4d9b4a74981d41ab7ae6f622, type: 3}
+      propertyPath: SizeBySpeedModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19900000, guid: 0fddeeac4d9b4a74981d41ab7ae6f622, type: 3}
       propertyPath: m_RenderMode
       value: 0

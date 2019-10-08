@@ -14,6 +14,10 @@ public class People : ScriptableObject
 
     public State state;
 
+    public Attribute attribute;
+
+    public Equipped equipped;
+
     [System.Serializable]
     public class State
     {
@@ -53,10 +57,19 @@ public class People : ScriptableObject
     public class Attribute
     {
         public int str;
-        public int ski ;
+        public int ski;
         public int pow;
         public int luk;
 
+    }
+
+    [System.Serializable]
+    public class Equipped
+    {
+        public Item head;
+        public Item body;
+        public Item shot;
+        public Item arm;
     }
 
     public enum Inclination

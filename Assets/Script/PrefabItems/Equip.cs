@@ -13,6 +13,8 @@ public class Equip : ScriptableObject
 
     public int beautiful;
 
+    public int range;
+
     public int needStr;
 
     public int needSki;
