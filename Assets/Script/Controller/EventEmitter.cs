@@ -133,7 +133,7 @@ public class EventEmitter : MonoBehaviour
 
     public void Collection()
     {
-        FindObjectOfType<PublicManager>().ShowTimeDialog("设置采集时间",delegate (string time) {
+        PublicManager.ShowTimeDialog("设置采集时间",delegate (string time) {
 
             string[] ts = time.Split(':');
             int tmin = int.Parse(ts[0]) * 60+ int.Parse(ts[1]);
@@ -214,7 +214,7 @@ public class EventEmitter : MonoBehaviour
                 t = "乞讨";
                 break;
         }
-        return ProcessManager.Instance.language.Text(t);
+        return ProcessManager.language.Text(t);
     }
 
     public enum HoldEvent

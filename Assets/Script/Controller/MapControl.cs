@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Stronghold;
 using UnityEngine.UI;
 using System;
 
@@ -60,13 +59,13 @@ namespace Map
             switch (item)
             {
                 case EventEmitter.HoldEvent.cook:
-                    text.text =ProcessManager.Instance.language.Text("烹饪") ;
+                    text.text =ProcessManager.language.Text("烹饪") ;
                     break;
                 case EventEmitter.HoldEvent.wait:
-                    text.text = ProcessManager.Instance.language.Text("等待");
+                    text.text = ProcessManager.language.Text("等待");
                     break;
                 case EventEmitter.HoldEvent.sleep:
-                    text.text = ProcessManager.Instance.language.Text("睡眠");
+                    text.text = ProcessManager.language.Text("睡眠");
                     break;
                 
             }
@@ -91,12 +90,12 @@ namespace Map
 
         public void Bag()
         {
-            FindObjectOfType<PublicManager>().Show(bag);
+           PublicManager.Show(bag);
         }
 
         public void HideBag()
         {
-            FindObjectOfType<PublicManager>().Hide(bag);
+            PublicManager.Hide(bag);
         }
 
         public void GetInto()

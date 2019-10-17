@@ -59,7 +59,7 @@ namespace Map
             {
                 if (FindObjectOfType<MapControl>().eventEmitter.OnLeave())
                 {
-                    GameObject.FindObjectOfType<PublicManager>().ShowArlog(GenerateChar(), Go);
+                    PublicManager.ShowArlog(GenerateChar(), Go);
                 }
               
             }
@@ -87,9 +87,9 @@ namespace Map
             return "前往:" + gameObject.name ;
         }
 
-        public void Go(Ardialog.Pass pass)
+        public void Go(Pass pass)
         {
-            if (pass == Ardialog.Pass.yes)
+            if (pass == Pass.yes)
             {
                 FindObjectOfType<ATarget>().WalkThis(transform.position);
                 FindObjectOfType<PublicManager>().lockWalk = true;

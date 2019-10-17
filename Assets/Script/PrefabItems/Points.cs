@@ -17,8 +17,6 @@ public class Points : ScriptableObject
     public float powerMultiplier = 1;
     [Tooltip("扎营时间")]
     public string holdTime = "04:00";
-    [Tooltip("扎营类型")]
-    public Stronghold.StrongholdControl.Type holdType;
 
     public bool isHold;
     [Tooltip("是否拦截通过者")]

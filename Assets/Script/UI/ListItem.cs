@@ -18,8 +18,6 @@ public class ListItem : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,
 
     public GameObject panel;
 
-    public string panelPath;
-
     public UnityAction<GameObject> panelAction;
 
     void Start()
@@ -52,19 +50,12 @@ public class ListItem : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (panelPath != null)
+        if (panel != null)
         {
             panel = gameObject.transform.parent.Find("ListPanel")?.gameObject;
-            if (panel == null)
-            {
-                panel = Resources.Load<GameObject>(panelPath);
-                panel = GameObject.Instantiate<GameObject>(panel);
-                panel.transform.SetParent(gameObject.transform.parent,false);
-                panel.transform.position = gameObject.transform.position + new Vector3(gameObject.GetComponent<RectTransform>().sizeDelta.x/2, gameObject.GetComponent<RectTransform>().sizeDelta.y / 2);
-            }
-            else {
-                panel.transform.position = gameObject.transform.position + new Vector3(gameObject.GetComponent<RectTransform>().sizeDelta.x / 2, gameObject.GetComponent<RectTransform>().sizeDelta.y / 2);
-            }
+
+            panel.transform.position = gameObject.transform.position + new Vector3(gameObject.GetComponent<RectTransform>().sizeDelta.x / 2, gameObject.GetComponent<RectTransform>().sizeDelta.y / 2);
+
             panelAction?.Invoke(panel);
             CanvasGroup group = panel.GetComponent<CanvasGroup>();
             group.alpha = 1;
@@ -75,10 +66,14 @@ public class ListItem : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        CanvasGroup group = panel.GetComponent<CanvasGroup>();
-        group.alpha = 0;
-        group.interactable = false;
-        group.blocksRaycasts = false;
+        if (panel != null)
+        {
+            CanvasGroup group = panel.GetComponent<CanvasGroup>();
+            group.alpha = 0;
+            group.interactable = false;
+            group.blocksRaycasts = false;
+        }
+
     }
 
 

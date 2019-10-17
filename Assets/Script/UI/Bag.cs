@@ -128,9 +128,9 @@ public class Bag : MonoBehaviour
             switch (items[sel].item.type)
             {
                 case Item.ItemType.available:
-                    FindObjectOfType<PublicManager>().ShowArlog("是否使用" + items[sel].item.name, delegate (Ardialog.Pass pass)
+                    PublicManager.ShowArlog("是否使用" + items[sel].item.name, delegate (Pass pass)
                     {
-                        if (pass == Ardialog.Pass.yes)
+                        if (pass == Pass.yes)
                         {
                             AttrToInvoke(items[sel].item);
                         }
@@ -139,9 +139,9 @@ public class Bag : MonoBehaviour
                 case Item.ItemType.material:
                     break;
                 case Item.ItemType.equip:
-                    FindObjectOfType<PublicManager>().ShowArlog("装备" + items[sel].item.name, delegate (Ardialog.Pass pass)
+                    PublicManager.ShowArlog("装备" + items[sel].item.name, delegate (Pass pass)
                     {
-                        if (pass == Ardialog.Pass.yes)
+                        if (pass == Pass.yes)
                         {
                             AttrToInvoke(items[sel].item);
                         }
@@ -160,7 +160,7 @@ public class Bag : MonoBehaviour
         actionSel = sel;
         if (playerBag)
         {
-            FindObjectOfType<PublicManager>().ShowSelectNum(items[sel].num, 1, DeleteNum);
+            PublicManager.ShowSelectNum(items[sel].num, 1, DeleteNum);
         }
         else
         {

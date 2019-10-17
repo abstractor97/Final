@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Ardialog : MonoBehaviour
 {
 
-    public delegate void Callback(Pass pass);
-    public event Callback call;
+    public event UnityAction<Pass> call;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,10 +35,12 @@ public class Ardialog : MonoBehaviour
         group.interactable = false;
         group.blocksRaycasts = false;
     }
-    public enum Pass
-    {
-        yes,
-        no
-    }
 
+
+}
+
+public enum Pass
+{
+    yes,
+    no
 }

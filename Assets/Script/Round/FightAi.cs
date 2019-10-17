@@ -5,6 +5,15 @@ using UnityEngine;
 
 public class FightAi : MonoBehaviour
 {
+    public RoundController roundController;
+    /// <summary>
+    /// 引用的人物状态
+    /// </summary>
+    public People people;
+    /// <summary>
+    /// 引用的player状态
+    /// </summary>
+    private PlayerManager playerManager;
     private Blackboard blackboard;
     private Root behaviorTree;
 
@@ -13,6 +22,8 @@ public class FightAi : MonoBehaviour
         // create our behaviour tree and get it's blackboard
         behaviorTree = CreateBehaviourTree();
         blackboard = behaviorTree.Blackboard;
+        playerManager = GameObject.FindObjectOfType<PlayerManager>();
+        Init();
 
         // attach the debugger component if executed in editor (helps to debug in the inspector) 
 #if UNITY_EDITOR
@@ -44,7 +55,7 @@ public class FightAi : MonoBehaviour
                             // set color to 'red'
                             new Action(() => SetColor(Color.red)) { Label = "Change to Red" },
 
-                            // go towards player until playerDistance is greater than 7.5 ( in that case, _shouldCancel will get true )
+                            // 向玩家靠近，直到playerdistance大于7.5（在这种情况下，应该取消将变为真）
                             new Action((bool _shouldCancel) =>
                             {
                                 if (!_shouldCancel)
@@ -73,9 +84,27 @@ public class FightAi : MonoBehaviour
 
     private void UpdatePlayerDistance()
     {
-        Vector3 playerLocalPos = this.transform.InverseTransformPoint(GameObject.FindGameObjectWithTag("Player").transform.position);
-        behaviorTree.Blackboard["playerLocalPos"] = playerLocalPos;
-        behaviorTree.Blackboard["playerDistance"] = playerLocalPos.magnitude;
+        if (people.state.hp<50) {
+
+        }
+    
+        
+        //Vector3 playerLocalPos = this.transform.InverseTransformPoint(GameObject.FindGameObjectWithTag("Player").transform.position);
+        //behaviorTree.Blackboard["playerLocalPos"] = playerLocalPos;
+        //behaviorTree.Blackboard["playerDistance"] = playerLocalPos.magnitude;
+    }
+
+
+    private void Init()
+    {
+        if (playerManager.state.state.lv > people.state.lv * 2)
+        {
+
+        }
+        if (playerManager.state.state.lv < people.state.lv / 2)
+        {
+
+        }
     }
 
     private void MoveTowards(Vector3 localPosition)

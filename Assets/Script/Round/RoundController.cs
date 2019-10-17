@@ -14,7 +14,6 @@ public class RoundController : MonoBehaviour
     /// 信息版
     /// </summary>
     public Typewriter playerWriter;
-    public Typewriter enemyWriter;
     /// <summary>
     /// 左右的 ui
     /// </summary>
@@ -29,16 +28,20 @@ public class RoundController : MonoBehaviour
     /// </summary>
     public int maxPlayerAction=1;
     /// <summary>
+    /// 是否允许接受指令
+    /// </summary>
+    private bool allowAction;
+    /// <summary>
     /// 最大对方信息条数
     /// </summary>
     private int maxEnemyAction = 1;
     /// <summary>
-    /// 目标下标
+    /// 选中的目标下标
     /// </summary>
     [HideInInspector]
     public int rightIndex=1;
-
-    List<RoundPlayer> peoples = new List<RoundPlayer>();
+    private List<Teammate> players = new List<Teammate>();
+    private List<Teammate> enemys = new List<Teammate>();
     /// <summary>
     /// 距离需传入
     /// </summary>
@@ -51,6 +54,14 @@ public class RoundController : MonoBehaviour
     void Start()
     {
         queue = new Queue<UnityAction>();
+        for (int i = 0; i < lefts.Length; i++)
+        {
+            lefts[i].sprite = players[i].sprite;
+        }
+        for (int i = 0; i < rights.Length; i++)
+        {
+            rights[i].sprite = enemys[i].sprite;
+        }
         
     }
 
@@ -59,46 +70,25 @@ public class RoundController : MonoBehaviour
     {
        
     }
+    /// <summary>
+    /// 屏幕左边队列添加
+    /// </summary>
+    /// <param name="people"></param>
+    public void AddPlayerLeft(People people,bool controlled)
+    {
+        players.Add(new Teammate
+        {
+            name = people.name,
+            posture = Posture.stand,
+            people = people,
+             controlled= controlled,
+        });
+    }
 
-    //public void Forward()
-    //{
-    //    rightIndex--;
-    //    if (rightIndex==0)
-    //    {
-    //        rightIndex = peoples.Count - 1;
-    //    }
-    //    rear.sprite = peoples[rightIndex].sprite;
-    //    if (rightIndex==peoples.Count-1)
-    //    {
-    //        ahead.sprite = peoples[1].sprite;
-    //    }
-    //    else
-    //    {
-    //        ahead.sprite = peoples[rightIndex+1].sprite;
-    //    }
-    //    rear.transform.DOMove(new Vector3(6, 6, 0), 0.8f).SetRelative();
-    //    ahead.transform.DOMove(new Vector3(-6, -6, 0), 0.8f).SetRelative();
-    //    //todo 切换
-    //}
-
-    //public void Backward()
-    //{
-    //    rightIndex++;
-    //    if (rightIndex==peoples.Count)
-    //    {
-    //        rightIndex = 1;
-    //    }
-
-    //}
-   
 
     public void AddPlayerRight(People people)
     {
-        if (peoples.Count==0)
-        {
-            //todo 添加player
-        }
-        peoples.Add(new RoundPlayer
+        enemys.Add(new Teammate
         {
             name = people.name,
             posture = Posture.stand,
@@ -113,17 +103,17 @@ public class RoundController : MonoBehaviour
             //todo 击中几率
             float hit = 0f;
             string describe = "";
-            if (distance <= peoples[pos].people.equipped.arm.equip.range)
+            if (distance <= enemys[pos].people.equipped.arm.equip.range)
             {
-                float totalProtect = peoples[tagre].people.equipped.head.equip.protect + peoples[tagre].people.equipped.body.equip.protect + peoples[tagre].people.equipped.shot.equip.protect;
-                float xs = peoples[pos].people.attribute.str / peoples[pos].people.equipped.arm.equip.needStr;
+                float totalProtect = enemys[tagre].people.equipped.head.equip.protect + enemys[tagre].people.equipped.body.equip.protect + enemys[tagre].people.equipped.shot.equip.protect;
+                float xs = enemys[pos].people.attribute.str / enemys[pos].people.equipped.arm.equip.needStr;
                 if (xs > 2)
                 {
                     xs = 2;
                 }
-                float totalAttack = peoples[pos].people.equipped.arm.equip.attack * xs + peoples[pos].people.attribute.str;
+                float totalAttack = enemys[pos].people.equipped.arm.equip.attack * xs + enemys[pos].people.attribute.str;
                 hit = totalAttack - totalProtect;
-                peoples[tagre].people.state.hp -= hit;
+                enemys[tagre].people.state.hp -= hit;
                 if (hit == 0)
                 {
                     describe = "";
@@ -150,20 +140,26 @@ public class RoundController : MonoBehaviour
             {
                 describe = "距离太远";
             }
-            if (pos==0)
-            {
-                playerWriter.AddQueue(peoples[pos].name + ProcessManager.Instance.language.Text("攻击") + peoples[tagre].name);
-                playerWriter.AddQueue(ProcessManager.Instance.language.Text(describe));
-                playerWriter.AddQueue("-----");
-            }
-            else
-            {
-                enemyWriter.AddQueue(peoples[pos].name + ProcessManager.Instance.language.Text("攻击") + peoples[tagre].name);
-                enemyWriter.AddQueue(ProcessManager.Instance.language.Text(describe));
-                enemyWriter.AddQueue("-----");
-            }          
+            //if (pos==0)
+            //{
+            //    playerWriter.AddQueue(enemys[pos].name + ProcessManager.Instance.language.Text("攻击") + enemys[tagre].name);
+            //    playerWriter.AddQueue(ProcessManager.Instance.language.Text(describe));
+            //    playerWriter.AddQueue("-----");
+            //}
+            //else
+            //{
+            //    enemyWriter.AddQueue(enemys[pos].name + ProcessManager.Instance.language.Text("攻击") + enemys[tagre].name);
+            //    enemyWriter.AddQueue(ProcessManager.Instance.language.Text(describe));
+            //    enemyWriter.AddQueue("-----");
+            //}          
         });
         //  totalAttack
+    }
+
+
+    public void Defense(int pos)
+    {
+
     }
 
     public void Move(int pos, float drg) {
@@ -179,16 +175,16 @@ public class RoundController : MonoBehaviour
                 describe = "逃跑";
             }
 
-            if (pos == 0)
-            {
-                playerWriter.AddQueue(ProcessManager.Instance.language.Text(describe) + drg);
-                playerWriter.AddQueue("-----");
-            }
-            else
-            {
-                enemyWriter.AddQueue(ProcessManager.Instance.language.Text(describe) + drg);
-                enemyWriter.AddQueue("-----");
-            }
+            //if (pos == 0)
+            //{
+            //    playerWriter.AddQueue(ProcessManager.Instance.language.Text(describe) + drg);
+            //    playerWriter.AddQueue("-----");
+            //}
+            //else
+            //{
+            //    enemyWriter.AddQueue(ProcessManager.Instance.language.Text(describe) + drg);
+            //    enemyWriter.AddQueue("-----");
+            //}
             distance += drg;
         });
 
@@ -243,6 +239,14 @@ public class RoundController : MonoBehaviour
 
     }
 
+    private void TestFightAni()
+    {
+        Tween tween = transform.DOLocalMoveX(300, 0.5f);
+        tween.OnComplete(delegate() {
+            tween.PlayBackwards();
+        });
+    }
+
     private void Next()
     {
         if (queue.Count > 0)
@@ -258,17 +262,8 @@ public class RoundController : MonoBehaviour
 
     }
 
-    public RoundPlayer GetPlayer()
-    {
-        return peoples[0];
-    }
 
-    public RoundPlayer GetTaget()
-    {
-        return peoples[rightIndex];
-    }
-
-    public class RoundPlayer
+    public class Teammate
     {
         public string name;
         public Sprite sprite;
@@ -276,6 +271,8 @@ public class RoundController : MonoBehaviour
         public Posture posture;
 
         public People people;
+
+        public bool controlled;
     }
 
     public enum Posture

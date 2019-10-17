@@ -1,4 +1,5 @@
-﻿using LitJson;
+﻿#define CN
+using LitJson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,9 +19,20 @@ public class LocalLanguage
         textasset = Resources.Load<TextAsset>(ITEMTABLE_PATH);
         jd = JsonMapper.ToObject(textasset.text);
         localFlag = localLangId.Substring(0, 2);
+        #region 测试其他语言
+#if UNITY_EDITOR
+#if CN
+        localFlag = "zh";
+#endif
+#if EN
+        localFlag = "en";
+#endif
+#endif
+        #endregion
+
     }
 
-   
+
 
     public string Text(string baseText)
     {

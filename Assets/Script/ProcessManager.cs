@@ -4,30 +4,22 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using Map;
-using Stronghold;
 using System;
 using System.Text;
 using System.Threading;
 
-public class ProcessManager
+/// <summary>
+/// 通用进程控制
+/// </summary>
+public class ProcessManager:MonoBehaviour
 {
-    private static readonly ProcessManager _instance = new ProcessManager();
     private const string SAVEFILENAME = "/byBin.dat";
-    public static ProcessManager Instance
-    {
-        get
-        {
-            return _instance;
-        }
-    }
-
-
     public bool isInGame;
     public Save save;
-    public LocalLanguage language;
-    private ProcessManager()
+    public static LocalLanguage language;
+
+    private void Awake()
     {
-               
         language = new LocalLanguage();
         save = LoadByBin();
         if (save == null)
@@ -36,15 +28,10 @@ public class ProcessManager
         }
     }
 
-
-    public void StartGame()
+    private void Start()
     {
-
-    }
-
-    public void ToEvent()
-    {
-
+       
+        DontDestroyOnLoad(this);
     }
 
     public void CreateSaveData()

@@ -18,7 +18,7 @@ public class ActionController : MonoBehaviour
             }
         }
         roundController = FindObjectOfType<RoundController>();
-        ResetButton();
+      //  ResetButton();
     }
 
     // Update is called once per frame
@@ -27,45 +27,45 @@ public class ActionController : MonoBehaviour
         
     }
 
-    public void ResetButton()
-    {
-        foreach (var iab in inputActionButtons)
-        {
-            if (IsShow(iab))
-            {
-                iab.gameObject.SetActive(true);
-            }
-            else
-            {
-                iab.gameObject.SetActive(false);
-            }
-        }
-    }
+    //public void ResetButton()
+    //{
+    //    foreach (var iab in inputActionButtons)
+    //    {
+    //        if (IsShow(iab))
+    //        {
+    //            iab.gameObject.SetActive(true);
+    //        }
+    //        else
+    //        {
+    //            iab.gameObject.SetActive(false);
+    //        }
+    //    }
+    //}
 
-    private bool IsShow(InputActionButton inputAction)
-    {
-        if (inputAction.s_posture== RoundController.Posture.none)
-        {
-            return true;
-        }
+    //private bool IsShow(InputActionButton inputAction)
+    //{
+    //    if (inputAction.s_posture== RoundController.Posture.none)
+    //    {
+    //        return true;
+    //    }
 
-        if (roundController.GetPlayer().posture==inputAction.s_posture)
-        {
-            switch (inputAction.m_posture)
-            {
-                case RoundController.Posture.none:
-                    return true;
-                default:
-                    if (roundController.GetTaget().posture == inputAction.m_posture)
-                    {
-                        return true;
+    //    if (roundController.GetPlayer().posture==inputAction.s_posture)
+    //    {
+    //        switch (inputAction.m_posture)
+    //        {
+    //            case RoundController.Posture.none:
+    //                return true;
+    //            default:
+    //                if (roundController.GetTaget().posture == inputAction.m_posture)
+    //                {
+    //                    return true;
 
-                    }
-                    break;
-            }
+    //                }
+    //                break;
+    //        }
            
-        }
+    //    }
        
-        return false;
-    }
+    //    return false;
+    //}
 }

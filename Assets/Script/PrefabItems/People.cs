@@ -21,6 +21,7 @@ public class People : ScriptableObject
     [System.Serializable]
     public class State
     {
+        public int lv;
         public string other;
         public float hp;
         public float power;

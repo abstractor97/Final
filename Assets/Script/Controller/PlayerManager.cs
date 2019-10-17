@@ -126,7 +126,7 @@ public class PlayerManager : MonoBehaviour
         l.GetComponent<Image>().sprite = buff.lowSprite;
         l.name = buff.name;
         ListItem li= l.AddComponent<ListItem>();
-        li.panelPath = "UI/BuffTips";
+        li.panel = Resources.Load<GameObject>("UI/BuffTips");
         li.panelAction += delegate (GameObject panel) {
             Text[] texts= panel.GetComponentsInChildren<Text>();
             texts[0].text = buff.name;
