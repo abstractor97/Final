@@ -20,8 +20,9 @@ public class ContinueMenuController: MonoBehaviour
                     {
                         if (pass==Pass.yes)
                         {
-                            FindObjectOfType<ProcessManager>().RecoverySave();
-
+                            FindObjectOfType<ProcessManager>().LoadSave(delegate() {
+                                PublicManager.ToScene(this, "StrongholdScene");
+                            });
                         }
 
                     });

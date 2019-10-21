@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-//todo ui
 public class StartMenuContrl : MonoBehaviour
 {
 
@@ -77,6 +76,7 @@ public class StartMenuContrl : MonoBehaviour
 
     public void ToGameScene()
     {
+        FindObjectOfType<ProcessManager>().CreateSaveData();
         PublicManager.ToScene(this, "StrongholdScene");
     }
 

@@ -7,7 +7,9 @@ public class StrongholdController : MonoBehaviour
 {
     public RectTransform SH_HUD;
 
-    public RectTransform bigMap;
+    public RectTransform BigMap;
+
+    public RectTransform MaskLoad;
 
     private void Awake()
     {
@@ -40,11 +42,11 @@ public class StrongholdController : MonoBehaviour
         //        PublicManager.ToScene(this, "MapScene");
         //    }
         //});
-        PublicManager.Show(bigMap.gameObject);
+        PublicManager.Show(BigMap.gameObject);
     }
 
     public void MapToHold()
     {
-        PublicManager.Hide(bigMap.gameObject);
+        PublicManager.Hide(BigMap.gameObject);
     }
 }

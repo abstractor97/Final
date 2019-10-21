@@ -7,6 +7,7 @@ using Map;
 using System;
 using System.Text;
 using System.Threading;
+using UnityEngine.Events;
 
 /// <summary>
 /// 通用进程控制
@@ -16,11 +17,11 @@ public class ProcessManager:MonoBehaviour
     private const string SAVEFILENAME = "/byBin.dat";
     public bool isInGame;
     public Save save;
-    public static LocalLanguage language;
+    public static LocalLanguage language = new LocalLanguage();
 
     private void Awake()
     {
-        language = new LocalLanguage();
+       // language = new LocalLanguage();
         save = LoadByBin();
         if (save == null)
         {
@@ -134,7 +135,7 @@ public class ProcessManager:MonoBehaviour
     /// <summary>
     /// 恢复数据
     /// </summary>
-    public void RecoverySave()
+    public void LoadSave(UnityAction loadCallback)
     {
         GameObject.FindGameObjectWithTag("Player").transform.position= new Vector3(save.playerSave.x,save.playerSave.y,save.playerSave.z);
         PlayerManager playerMana = GameObject.FindObjectOfType<PlayerManager>();
