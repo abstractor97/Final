@@ -14,7 +14,7 @@ namespace BayatGames.SaveGameFree
     /// Save Game Auto.
     /// 使你的游戏对象自动保存他们的位置，旋转和缩放。
     /// </summary>
-    [AddComponentMenu ("Save Game Free/Auto Save(使游戏对象自动保存位置，旋转和缩放)")]
+    [AddComponentMenu ("储存增强/Auto Save(使游戏对象自动保存位置，旋转和缩放)")]
 	public class SaveGameAuto : MonoBehaviour
 	{
 

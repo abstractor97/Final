@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[AddComponentMenu("本地化文本")]
+[AddComponentMenu("文本增强/本地化文本")]
 public class LocalText : MonoBehaviour
 {
     // Start is called before the first frame update

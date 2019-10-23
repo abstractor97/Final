@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class SuspensionFrame : MonoBehaviour
+public class TaskFrame : MonoBehaviour
 {
     public Font font;
     public Sprite sprite;
