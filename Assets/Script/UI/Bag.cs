@@ -20,6 +20,8 @@ public class Bag : MonoBehaviour
     /// </summary>
     public bool Interactive = true;
 
+    public bool drawLattice;
+
     public bool isBag;//todo
 
     public Sprite addSprite;
@@ -52,6 +54,7 @@ public class Bag : MonoBehaviour
         gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(item.GetComponent<RectTransform>().sizeDelta.x+8, gameObject.GetComponent<RectTransform>().sizeDelta.y); 
         grid= context.AddComponent<GridView>();
         grid.item = item;
+        grid.drawLattice = drawLattice;
         if (items!=null)
         {
             grid.AddData(items.ToArray(), View);
