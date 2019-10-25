@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: testm
-  m_Shader: {fileID: 10765, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 0a8ec92a4b6d5a5499522f8ad2a005f6, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -68,7 +68,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 23310d800a8334e4b8ea226987cffb76, type: 3}
+        m_Texture: {fileID: 2800000, guid: 530a17719f4beb44baf5b7200d96ddff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -105,11 +105,13 @@ Material:
     - _DropSpeed: 1
     - _DstBlend: 0
     - _DualGrid: 0
+    - _Edge: 0.126
     - _EdgeAlphaThreshold: 1
     - _EdgeDampRate: 2
-    - _EdgeLength: 0.054
+    - _EdgeLength: 0.121
     - _EmissionLM: 0
     - _EnableExternalAlpha: 0
+    - _FlowSpeed: 1.3
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -141,7 +143,7 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _Threshold: 0.01
+    - _Threshold: 0.68
     - _Tile: 1
     - _UVSec: 0
     - _UseUIAlphaClip: 0
@@ -157,6 +159,7 @@ Material:
     - _EdgeFirstColor: {r: 1, g: 0, b: 0, a: 1}
     - _EdgeSecondColor: {r: 0.3962264, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FlowColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColor: {r: 1, g: 0, b: 0, a: 1}
     - _MainColor: {r: 1, g: 0.46135092, b: 0, a: 1}
     - _NotVisibleColor: {r: 0, g: 1, b: 0, a: 1}

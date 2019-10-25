@@ -48,7 +48,7 @@ public class LatticeSliderFill : MonoBehaviour
             group.childForceExpandHeight = false;
         }
 
-        ValueChange(12);
+        ValueChange(min);
 
     }
 
