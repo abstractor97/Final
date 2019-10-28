@@ -10,7 +10,12 @@ public class LocalText : MonoBehaviour
     void Start()
     {
         Text text = gameObject.GetComponent<Text>();
-        text.text = ProcessManager.language.Text(text.text);
+#if UNITY_EDITOR
+
+#else
+         text.text = ProcessManager.language.Text(text.text);
+#endif
+
         Destroy(this);
     }
 

@@ -1,44 +1,64 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 
-/// <summary>
-/// 切换菜单
-/// </summary>
 public class SwitchMenu : MonoBehaviour
 {
     public RectTransform bLayout;
 
     public MenuGroup[] groups;
 
+    public Button[] buttons;
+
+    public RectTransform mainBackground;
+
+    public float storeyHeight;
+
     public int defShow;
 
     private int nowShow;
 
+    private Sequence se;
     [System.Serializable]
     public class MenuGroup
     {
         public Button button;
-        public CanvasGroup menu;
+        public RectTransform menu;
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        int i = 0;
-        foreach (var group in groups)
+        if (bLayout!=null)
         {
-            group.button.gameObject.name = i.ToString();
-            group.button.onClick.AddListener(delegate () { ShowThis(int.Parse(group.button.gameObject.name)); });
-            group.menu.alpha = 0;
-            i++;
+            buttons = bLayout.GetComponentsInChildren<Button>();
         }
 
-        groups[defShow].button.onClick.Invoke();
+        int i = 0;
+        foreach (var button in buttons)
+        {
+            button.gameObject.name = i.ToString();
+            button.onClick.AddListener(delegate () { ShowThis(int.Parse(button.gameObject.name)); });
+            i++;
+        }
+        //int i = 0;
+        //foreach (var group in groups)
+        //{
+        //    group.button.gameObject.name = i.ToString();
+        //    group.button.onClick.AddListener(delegate () { ShowThis(int.Parse(group.button.gameObject.name)); });
+        // //   group.menu.alpha = 0;
+        //    i++;
+        //}
+        se = DOTween.Sequence();
+
+        se.SetAutoKill(false);
+        buttons[defShow].onClick.Invoke();
         nowShow = defShow;
+
         //  transform.DOScale(transform.position,1f);
     }
 
@@ -67,11 +87,17 @@ public class SwitchMenu : MonoBehaviour
 
     public void ShowThis(int id)
     {
-        Debug.LogWarning(id);
+        Debug.LogWarning(storeyHeight * (id - nowShow));
 
-        groups[nowShow].menu.alpha = 0;
+        //  groups[nowShow].menu.alpha = 0;
+        se.Append(mainBackground.DOLocalMoveY(storeyHeight * (id-nowShow), 1.5f));
         nowShow = id;
         //buttons[id].按钮切换特效
-        groups[nowShow].menu.alpha = 1;
+        //  groups[nowShow].menu.alpha = 1;
+    }
+
+    private void OnDestroy()
+    {
+        se.Kill();
     }
 }
