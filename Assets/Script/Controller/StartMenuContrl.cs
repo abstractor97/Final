@@ -10,7 +10,7 @@ public class StartMenuContrl : MonoBehaviour
 
     public Image blackbr;
 
-    public Image backGround;
+    public RectTransform backGround;
 
     [Tooltip("界面")]
     public GameObject storyMenu;
@@ -23,12 +23,17 @@ public class StartMenuContrl : MonoBehaviour
     void Start()
     {
         CanvasGroup canvasGroup = blackbr.GetComponent<CanvasGroup>();
-        Tween tween = canvasGroup.DOFade(1, 1.5f);
-        tween.OnComplete(delegate () {
-            backGround.transform.DOLocalMoveY(540, 1.5f);
-        });
+        Tween tween = canvasGroup.DOFade(1, 1f);
+        //tween.OnComplete(delegate () {
+        //    backGround.transform.DOLocalMoveY(540, 1.5f);
+        //});
     }
 
+
+    public void MoveShowMenu()
+    {
+        backGround.transform.DOLocalMoveY(540, 1.5f);
+    }
 
     public void StartNew()
     {

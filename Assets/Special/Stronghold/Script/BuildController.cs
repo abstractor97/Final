@@ -45,11 +45,12 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
         {
             textCanvasGroup = textName.GetComponent<CanvasGroup>();
         }
+        textCanvasGroup.alpha = 0.1f;
         backLight.gameObject.SetActive(true);
         PublicManager.Show(textName.gameObject);
         se = DOTween.Sequence();
-        se.Join(textName.transform.DOLocalMoveY(200, 1f));
-        se.Join(textCanvasGroup.DOFade(1, 1.5f));
+        se.Join(textName.transform.DOLocalMoveY(GetComponent<RectTransform>().sizeDelta.y/3, 1f));
+        se.Join(textCanvasGroup.DOFade(1, 1f));
         se.Play();
     }
 
@@ -106,6 +107,7 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
         backLight.range = transform.localScale.x * GetComponent<RectTransform>().rect.size.x/80;
         backLight.gameObject.SetActive(false);
         textOriginalV3 = textName.transform.position;
+
     }
 
     // Update is called once per frame

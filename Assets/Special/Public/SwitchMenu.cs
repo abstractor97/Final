@@ -3,32 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// 切换菜单
+/// </summary>
 public class SwitchMenu : MonoBehaviour
 {
     public RectTransform bLayout;
 
-    public Button[] buttons;
-
-    public CanvasGroup[] menus;
+    public MenuGroup[] groups;
 
     public int defShow;
 
     private int nowShow;
 
-    private int oidShow;
+    [System.Serializable]
+    public class MenuGroup
+    {
+        public Button button;
+        public CanvasGroup menu;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
-        if (bLayout!=null)
+        int i = 0;
+        foreach (var group in groups)
         {
-            buttons = bLayout.GetComponentsInChildren<Button>();
+            group.button.gameObject.name = i.ToString();
+            group.button.onClick.AddListener(delegate () { ShowThis(int.Parse(group.button.gameObject.name)); });
+            group.menu.alpha = 0;
+            i++;
         }
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            buttons[i].onClick.AddListener(delegate () { ShowThis(i); });
-            menus[i].alpha = 0;
-        }
-        buttons[defShow].onClick.Invoke();
+
+        groups[defShow].button.onClick.Invoke();
+        nowShow = defShow;
         //  transform.DOScale(transform.position,1f);
     }
 
@@ -40,27 +50,28 @@ public class SwitchMenu : MonoBehaviour
             nowShow--;
             if (nowShow < 0)
             {
-                nowShow = menus.Length - 1;
+                nowShow = groups.Length - 1;
             }
-            buttons[nowShow].onClick.Invoke();
+            groups[nowShow].button.onClick.Invoke();
         }
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             nowShow++;
-            if (nowShow > menus.Length - 1)
+            if (nowShow > groups.Length - 1)
             {
                 nowShow = 0;
             }
-            buttons[nowShow].onClick.Invoke();
+            groups[nowShow].button.onClick.Invoke();
         }
     }
 
     public void ShowThis(int id)
     {
-        menus[oidShow].alpha = 0;
+        Debug.LogWarning(id);
+
+        groups[nowShow].menu.alpha = 0;
         nowShow = id;
         //buttons[id].按钮切换特效
-        menus[id].alpha = 1;
-        oidShow = nowShow;
+        groups[nowShow].menu.alpha = 1;
     }
 }

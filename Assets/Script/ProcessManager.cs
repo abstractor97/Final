@@ -17,7 +17,7 @@ public class ProcessManager:MonoBehaviour
     private const string SAVEFILENAME = "/byBin.dat";
     public bool isInGame;
     public Save save;
-    public static LocalLanguage language = new LocalLanguage();
+    public static LocalLanguage language;
 
     private void Awake()
     {
@@ -27,6 +27,7 @@ public class ProcessManager:MonoBehaviour
         {
             save = new Save();
         }
+        language = new LocalLanguage();
     }
 
     private void Start()
