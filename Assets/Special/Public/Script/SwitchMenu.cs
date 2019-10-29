@@ -9,7 +9,7 @@ public class SwitchMenu : MonoBehaviour
 {
     public RectTransform bLayout;
 
-    public MenuGroup[] groups;
+    private MenuGroup[] groups;
 
     public Button[] buttons;
 
@@ -90,7 +90,7 @@ public class SwitchMenu : MonoBehaviour
         Debug.LogWarning(storeyHeight * (id - nowShow));
 
         //  groups[nowShow].menu.alpha = 0;
-        se.Append(mainBackground.DOLocalMoveY(storeyHeight * (id-nowShow), 1.5f));
+        se.Append(mainBackground.DOLocalMoveY(storeyHeight * (id -buttons.Length/2), 1.5f));
         nowShow = id;
         //buttons[id].按钮切换特效
         //  groups[nowShow].menu.alpha = 1;

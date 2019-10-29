@@ -1,28 +1,16 @@
 fileFormatVersion: 2
-guid: 0fb09ae0f6811b741a51dabf66c00ab4
+guid: ec9864f89ca970440ae9b3f63751bb5c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5314625279665965626
-    second: MISTOVER_ICON_0
+      213: 1714756807398554617
+    second: Signs_0
   - first:
-      213: 137682565308319730
-    second: MISTOVER_ICON_1
+      213: 8051134168378353487
+    second: Signs_1
   - first:
-      213: 1049834031391274887
-    second: MISTOVER_ICON_3
-  - first:
-      213: -7168262547962401722
-    second: MISTOVER_ICON_4
-  - first:
-      213: 543881116603452529
-    second: MISTOVER_ICON_6
-  - first:
-      213: 1883088460052633428
-    second: MISTOVER_ICON_7
-  - first:
-      213: -5877818536780086745
-    second: MISTOVER_ICON_8
+      213: -5459743574113085061
+    second: Signs_2
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -116,13 +104,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MISTOVER_ICON_0
+      name: Signs_0
       rect:
         serializedVersion: 2
-        x: 207
-        y: 714
-        width: 386
-        height: 268
+        x: 20
+        y: 125
+        width: 214
+        height: 316
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,20 +118,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a14df64a6ed94dc458ee319069503caa
-      internalID: 5314625279665965626
+      spriteID: 458c799178db76d4c93373711e016e34
+      internalID: 1714756807398554617
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MISTOVER_ICON_1
+      name: Signs_1
       rect:
         serializedVersion: 2
-        x: 655
-        y: 711
-        width: 387
-        height: 282
+        x: 230
+        y: 125
+        width: 129
+        height: 350
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -151,20 +139,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ae8c701bd7f82a846ad0d0a5a4aa49e9
-      internalID: 137682565308319730
+      spriteID: f0bc6ef036ccd8940999908ce225a68c
+      internalID: 8051134168378353487
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MISTOVER_ICON_3
+      name: Signs_2
       rect:
         serializedVersion: 2
-        x: 1527
-        y: 714
-        width: 186
-        height: 228
+        x: 369
+        y: 122
+        width: 213
+        height: 316
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -172,92 +160,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc76d6b9a764b3d458d6be71374c1f33
-      internalID: 1049834031391274887
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MISTOVER_ICON_4
-      rect:
-        serializedVersion: 2
-        x: 1091
-        y: 714
-        width: 260
-        height: 200
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ea3c4c09627711740ae00744fd12a6d2
-      internalID: -7168262547962401722
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MISTOVER_ICON_6
-      rect:
-        serializedVersion: 2
-        x: 219
-        y: 89
-        width: 84
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1018f976e85358d43b376f6529a07d0b
-      internalID: 543881116603452529
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MISTOVER_ICON_7
-      rect:
-        serializedVersion: 2
-        x: 364
-        y: 85
-        width: 36
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 11eee9c700228cc42824058f3d9b5840
-      internalID: 1883088460052633428
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MISTOVER_ICON_8
-      rect:
-        serializedVersion: 2
-        x: 441
-        y: 85
-        width: 176
-        height: 88
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4cd2ae4785af27146a6ddc02f901ce3f
-      internalID: -5877818536780086745
+      spriteID: eda9cdf890345304393309337e6597e7
+      internalID: -5459743574113085061
       vertices: []
       indices: 
       edges: []
@@ -265,7 +169,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 744267bc1d8c4ce4e92262f472b3760a
+    spriteID: 1b3838853d9361649a154fd50277b4b4
     internalID: 0
     vertices: []
     indices: 
