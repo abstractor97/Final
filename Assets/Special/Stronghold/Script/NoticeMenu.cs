@@ -58,7 +58,12 @@ public class NoticeMenu : MonoBehaviour
         mCrystalt.text = weekNotice.mCrystal.ToString();
         foreach (var eve in weekNotice.noticeEvents)
         {
-            GameObject.Instantiate<GameObject>(eventItem).transform.SetParent(WeekEventLayout,false); 
+            GameObject item = GameObject.Instantiate<GameObject>(eventItem);
+            item.transform.SetParent(WeekEventLayout, false);
+            Text[] texts = item.GetComponentsInChildren<Text>();
+            texts[0].text = eve.title;
+            texts[1].text = eve.birthplace;
+            texts[2].text = eve.note;
         }
         AgainShow();
     }
@@ -113,8 +118,17 @@ public class NoticeMenu : MonoBehaviour
 
     public class NoticeEvent
     {
+        /// <summary>
+        /// 来源
+        /// </summary>
         public string title;
+        /// <summary>
+        /// 描述
+        /// </summary>
         public string note;
+        /// <summary>
+        /// 发起人（物）
+        /// </summary>
         public string birthplace;
         public bool isLuck;
     }

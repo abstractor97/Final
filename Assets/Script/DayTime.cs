@@ -14,21 +14,32 @@ public class DayTime:MonoBehaviour
     private int minute = 0;
     public delegate void TimeCallBack(string daytime);
     public event TimeCallBack callback;
-    public float scale=0.1f;
+    public float scale=1f;
     public TimeSpeed timeSpeed=TimeSpeed.wait;
 
     public string targetTime;
-    public int day;
+    /// <summary>
+    /// 经过的天数
+    /// </summary>
+    public int totalDay;
+    /// <summary>
+    /// 经过的周数
+    /// </summary>
+    public int totalWeek;
     public bool isRun;
     public bool isStop;
 
     public Text hourText;
     public Text minsText;
+    private Sequence mScoreSequence;
+    private int mOldScore;
 
     private void Start()
     {
         StartDay();
-      //  DontDestroyOnLoad(gameObject);
+        mScoreSequence = DOTween.Sequence();
+        mScoreSequence.SetAutoKill(false);
+        //  DontDestroyOnLoad(gameObject);
     }
 
     public void StartDay()
@@ -51,7 +62,7 @@ public class DayTime:MonoBehaviour
         this.timeSpeed = timeSpeed;
     }
 
-    public void JumpTime(string time)
+    public void QuickTime(string time)
     {
         //todo 时间流逝时动画效果
         string[] ts = time.Split(':');
@@ -72,14 +83,34 @@ public class DayTime:MonoBehaviour
         timeSpeed = TimeSpeed.jump;
     }
 
+    public void JumpToTime(int mweek, int mday, int mhour, int mins)
+    {
+        mhour += (mins + minute) / 60;
+        mday += (mhour + hour) / 24;
+        mweek += (mday + totalDay) / 7;
+        minute = (mins + minute) % 60;
+        hour = (mhour + hour) % 24;
+        totalDay = (mday + totalDay) % 7;
+        totalWeek += mweek;
+        isStop = true;
+        AniNumber(hourText, hour);
+        AniNumber(minsText, minute);
+    }
+
+
     IEnumerator Run()
     {
         while (true)
         {
+            if (isStop)
+            {
+                yield return new WaitForSeconds(scale);
+                continue;
+            }
             switch (timeSpeed)
             {
                 case TimeSpeed.wait:
-                    scale = 2f;
+                    scale = 1f;
                     break;
                 case TimeSpeed.walk:
                     scale = 0.4f;
@@ -89,49 +120,64 @@ public class DayTime:MonoBehaviour
                     break;
             }
             yield return new WaitForSeconds(scale);
-            if (!isStop)
-            {
-                if (minute < 59)
-                {
-                    minute += (int)(1 * speed);
-                }
-                else
-                {
-                    hour++;
-                    minute = 0;
-                    if (hour == 24)
-                    {
-                        hour = 0;
-                    }
-                }
-                string hours = hour.ToString();
-                if (hour < 10)
-                {
-                    hours = "0" + hours;
-                }
-                string minutes = minute.ToString();
-                if (minute < 10)
-                {
-                    minutes = "0" + minutes;
-                }
-                nowTime = hours + ":" + minutes;
 
-                if (nowTime.Equals(targetTime))
-                {
-                    timeSpeed = TimeSpeed.wait;
-                    targetTime = "";
-                }
-                if (nowTime.Equals("00:00"))
-                {
-                    day++;
-                }
-                hourText.text = hours;
-                minsText.text = minutes;
-                //  HaTime(hour, minute);
-                callback?.Invoke(nowTime);
+            if (minute < 59)
+            {
+                minute += (int)(1 * speed);
             }
+            else
+            {
+                hour++;
+                minute = 0;
+                if (hour == 24)
+                {
+                    hour = 0;
+                }
+            }
+            string hours = hour.ToString();
+            if (hour < 10)
+            {
+                hours = "0" + hours;
+            }
+            string minutes = minute.ToString();
+            if (minute < 10)
+            {
+                minutes = "0" + minutes;
+            }
+            nowTime = hours + ":" + minutes;
+
+            if (nowTime.Equals(targetTime))
+            {
+                timeSpeed = TimeSpeed.wait;
+                targetTime = "";
+            }
+            if (nowTime.Equals("00:00"))
+            {
+                totalDay++;
+                if (totalDay == 7)
+                {
+                    totalWeek++;
+                    totalDay = 0;
+                }
+            }
+            hourText.text = hours;
+            minsText.text = minutes;
+            //  HaTime(hour, minute);
+            callback?.Invoke(nowTime);
         }
 
+    }
+
+    private void AniNumber(Text text,int tar)
+    {
+        mScoreSequence.Append(DOTween.To(delegate (float value) {
+            //向下取整
+            var temp = Math.Floor(value);
+            var mtext = temp.ToString();
+            text.text = mtext;
+        }, mOldScore, tar, 0.4f));
+        //将更新后的值记录下来, 用于下一次滚动动画
+        mOldScore = tar;
     }
 
     public enum TimeSpeed

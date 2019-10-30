@@ -49,4 +49,6 @@ public class StrongholdController : MonoBehaviour
     {
         PublicManager.Hide(BigMap.gameObject);
     }
+
+  
 }

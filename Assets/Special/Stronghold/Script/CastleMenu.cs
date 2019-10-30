@@ -29,6 +29,8 @@ public class CastleMenu : MonoBehaviour
     {
         str,
         agi,
+        mint,
+        end,
 
     }
 }

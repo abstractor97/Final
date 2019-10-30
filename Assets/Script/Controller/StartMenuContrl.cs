@@ -15,7 +15,7 @@ public class StartMenuContrl : MonoBehaviour
     [Tooltip("界面")]
     public GameObject storyMenu;
 
-    private readonly string storyOS = "Asset/StoryAssets";
+    private readonly string storyOS = "Asset/Story";
 
     private Story[] stories;
 
@@ -23,10 +23,8 @@ public class StartMenuContrl : MonoBehaviour
     void Start()
     {
         CanvasGroup canvasGroup = blackbr.GetComponent<CanvasGroup>();
-        Tween tween = canvasGroup.DOFade(1, 1f);
-        //tween.OnComplete(delegate () {
-        //    backGround.transform.DOLocalMoveY(540, 1.5f);
-        //});
+        Tween tween = canvasGroup.DOFade(1, 1f).SetLoops(-1,LoopType.Yoyo);
+        
     }
 
 
@@ -37,7 +35,7 @@ public class StartMenuContrl : MonoBehaviour
 
     public void StartNew()
     {
-        storyMenu.transform.DOLocalMoveY(-540, 1);
+        storyMenu.transform.DOLocalMoveY(0,0.5f);
         stories = Resources.LoadAll<Story>(storyOS);
             Transform storyList = storyMenu.transform.Find("StoryList").transform.GetChild(0).transform.GetChild(0);
             for (int j = 0; j < stories.Length; j++)
@@ -66,28 +64,32 @@ public class StartMenuContrl : MonoBehaviour
         
     }
 
-    int storyIndex = 0;
-
     private void StorySelect(int i)
     {
-        //GameObject.Find("StoryScore/DegreeCivilization").GetComponent<Image>().fillAmount = stories[i].degreeCivilization;
-        //GameObject.Find("StoryScore/Difficulty").GetComponent<Image>().fillAmount = stories[i].difficulty;
-        //Transform storyNote = GameObject.Find("StorySelectMenu").transform.Find("StoryNote").transform.GetChild(0);
-        //storyNote.gameObject.GetComponent<Text>().text = stories[i].describe;
         storyMenu.GetComponentInChildren<Text>().text = stories[i].describe;
         storyMenu.GetComponentInChildren<Image>().sprite = stories[i].icon;
-        storyIndex = i;
+        ProcessManager.factor = stories[i];
+    }
+
+
+    public void DefStory()
+    {
+        ProcessManager.factor = Resources.Load<Story>(storyOS+ "/简约之旅");
     }
 
     public void ToGameScene()
     {
-        FindObjectOfType<ProcessManager>().CreateSaveData();
+        if (ProcessManager.factor==null)
+        {
+            DefStory();
+        }
+        FindObjectOfType<ProcessManager>().CreateOnAutoSave();
         PublicManager.ToScene(this, "StrongholdScene");
     }
 
     public void CloseNew()
     {
-        storyMenu.transform.DOLocalMoveY(540, 1);
+        storyMenu.transform.DOLocalMoveY(540, 0.5f);
     }
 
     public void Continue()

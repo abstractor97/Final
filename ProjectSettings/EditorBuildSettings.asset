@@ -8,13 +8,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Test/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/StartMenuScene.unity
     guid: 257eda4cc246ed44caf68087d1da3677
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MapScene.unity
     guid: 7c8fb737964a87748952e9e7c97bd8a4
   - enabled: 0
     path: Assets/Scenes/EventScene.unity
     guid: 4999bba9d250ae84392864aae467e769
+  - enabled: 1
+    path: Assets/Scenes/StrongholdScene.unity
+    guid: 5b7264331bf3ba14eb97acfa12c52544
   m_configObjects: {}

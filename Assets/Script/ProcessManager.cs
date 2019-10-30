@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using Map;
 using System;
-using System.Text;
 using System.Threading;
 using UnityEngine.Events;
+using BayatGames.SaveGameFree;
+
 
 /// <summary>
 /// 通用进程控制
@@ -16,9 +16,21 @@ public class ProcessManager:MonoBehaviour
 {
     private const string SAVEFILENAME = "/byBin.dat";
     public bool isInGame;
+    [HideInInspector]
     public Save save;
+    [Tooltip("自动存档间隔，单位分钟")]
+    public int saveSpace=5;
     public static LocalLanguage language;
+    /// <summary>
+    /// 当前使用的故事因子
+    /// </summary>
+    public static Story factor;
+    /// <summary>
+    /// 现在使用的存档位置
+    /// </summary>
+    private string saveIndex = "0";
 
+    private static bool isInit;
     private void Awake()
     {
        // language = new LocalLanguage();
@@ -32,10 +44,34 @@ public class ProcessManager:MonoBehaviour
 
     private void Start()
     {
-       
-        DontDestroyOnLoad(this);
+        if (isInit)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(this);
+            isInit = true;
+        }
     }
 
+    public void CreateOnAutoSave()
+    {
+       string saveLine= SaveGame.Load<string>("SaveSize");//01 0为空位置 1为有存档
+        if (saveLine==null)
+        {
+            SaveGame.Save<string>("SaveSize", "000");
+            saveLine = "000";
+        }
+       
+    }
+
+    public void SaveInGame()
+    {
+
+    }
+
+    [Obsolete("调用CreateOnAutoSave")]
     public void CreateSaveData()
     {
         //player相关
@@ -136,6 +172,7 @@ public class ProcessManager:MonoBehaviour
     /// <summary>
     /// 恢复数据
     /// </summary>
+    [Obsolete]
     public void LoadSave(UnityAction loadCallback)
     {
         GameObject.FindGameObjectWithTag("Player").transform.position= new Vector3(save.playerSave.x,save.playerSave.y,save.playerSave.z);
@@ -248,8 +285,8 @@ public class ProcessManager:MonoBehaviour
     {
         while (isInGame)
         {
-            yield return new WaitForSeconds(60 * 3);
-            CreateSaveData();
+            yield return new WaitForSeconds(60 * saveSpace);
+            SaveInGame();
         }
 
     }

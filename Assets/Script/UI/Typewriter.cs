@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[AddComponentMenu("文本增强/打字机特效文本")]
 public class Typewriter : MonoBehaviour
 {
     [Tooltip("显示文字的间隔")]
@@ -47,11 +48,13 @@ public class Typewriter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+     
     }
 
     void InitBaseText() {
-
+        string basetx = textUI.text;
+        textUI.text = "";
+        AddQueue(basetx);
     }
 
     public void AddQueue(string text)

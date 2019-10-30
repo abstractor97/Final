@@ -45,7 +45,7 @@ public class EventEmitter : MonoBehaviour
                 Collection();
                 break;
             case TakeAction.tocamp:
-                FindObjectOfType<DayTime>().JumpTime(points.holdTime);
+                FindObjectOfType<DayTime>().QuickTime(points.holdTime);
                 break;
             case TakeAction.medical:
                 break;
@@ -139,7 +139,7 @@ public class EventEmitter : MonoBehaviour
             int tmin = int.Parse(ts[0]) * 60+ int.Parse(ts[1]);
             int ext = tmin / 30;
 
-            FindObjectOfType<DayTime>().JumpTime(time);
+            FindObjectOfType<DayTime>().QuickTime(time);
             GameObject temporaryBag = Resources.Load<GameObject>("UI/Bag");
             temporaryBag = GameObject.Instantiate<GameObject>(temporaryBag);
             FindObjectOfType<PublicManager>().AdditionalFrame(temporaryBag).transform.SetParent(GameObject.FindGameObjectWithTag("HUD").transform, false);

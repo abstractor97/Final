@@ -12,7 +12,7 @@ namespace BayatGames.SaveGameFree
 {
 
     /// <summary>
-    /// Save game path. base paths for your save games.
+    /// 保存游戏路径。保存游戏的基本路径。
     /// </summary>
     public enum SaveGamePath
     {
@@ -30,9 +30,9 @@ namespace BayatGames.SaveGameFree
     }
 
     /// <summary>
-    /// Save Game.
-    /// Use these APIs to Save & Load game data.
-    /// If you are looking for Web saving and loading use SaveGameWeb.
+    /// 保存游戏
+    ///使用这些API保存和加载游戏数据。
+    ///如果您正在查找web保存和加载，请使用savegameweb。
     /// </summary>
     public static class SaveGame
     {
