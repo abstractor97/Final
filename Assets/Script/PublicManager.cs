@@ -173,6 +173,16 @@ public class PublicManager:MonoBehaviour
         cacheUIs.Add(sn);
         // Show(sn);
     }
+
+    public static void ShowTips(string t)
+    {
+
+        GameObject ts = Resources.Load<GameObject>("UI/Tips");
+        ts = GameObject.Instantiate<GameObject>(ts);
+        ts.GetComponentInChildren<Text>().text = ProcessManager.language.Text(t); ;
+        ts.transform.SetParent(GameObject.Find("HUD").transform, false);
+        ts.AddComponent<LastLife>().time = 2;
+    }
     #endregion
 
     #region 系统菜单
@@ -317,15 +327,7 @@ public class PublicManager:MonoBehaviour
         }
     }
 
-    public void ShowTips(string t)
-    {
-
-        GameObject ts = Resources.Load<GameObject>("UI/Tips");
-        ts = GameObject.Instantiate<GameObject>(ts);
-        ts.GetComponentInChildren<Text>().text = ProcessManager.language.Text(t); ;
-        ts.transform.SetParent(GameObject.Find("HUD").transform, false);
-        LastLife(ts, 2);
-    }
+   
 
     public GameObject AdditionalFrame(GameObject ui)
     {
@@ -341,15 +343,5 @@ public class PublicManager:MonoBehaviour
         return frame;
     }
 
-    public void LastLife(GameObject obj, float t)
-    {
-        StartCoroutine(LastDes(obj,t));
-    }
-
-    private IEnumerator LastDes(GameObject obj,float t)
-    {
-        yield return new WaitForSeconds(t);
-        Destroy(obj);
-
-    }
+  
 }

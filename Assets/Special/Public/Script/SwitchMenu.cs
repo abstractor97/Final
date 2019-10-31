@@ -90,7 +90,7 @@ public class SwitchMenu : MonoBehaviour
         Debug.LogWarning(storeyHeight * (id - nowShow));
 
         //  groups[nowShow].menu.alpha = 0;
-        se.Append(mainBackground.DOLocalMoveY(storeyHeight * (id -buttons.Length/2), 1.5f));
+        se.Append(mainBackground.DOLocalMove(new Vector3(0, storeyHeight * (id - buttons.Length / 2),0), 1f));
         nowShow = id;
         //buttons[id].按钮切换特效
         //  groups[nowShow].menu.alpha = 1;

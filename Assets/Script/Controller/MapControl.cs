@@ -48,7 +48,7 @@ namespace Map
             }
             else
             {
-                FindObjectOfType<PublicManager>().ShowTips("该地点没有营地");
+                PublicManager.ShowTips("该地点没有营地");
             }
                       
         }

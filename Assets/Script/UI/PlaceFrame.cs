@@ -135,7 +135,7 @@ public class PlaceFrame : MonoBehaviour
     {
         if (isWalk)
         {
-            FindObjectOfType<PublicManager>().ShowTips("正在行动中");
+            PublicManager.ShowTips("正在行动中");
             return;
         }
         switch (sel)
@@ -170,7 +170,7 @@ public class PlaceFrame : MonoBehaviour
     {
         if (isWalk)
         {
-            FindObjectOfType<PublicManager>().ShowTips("正在行动中");
+            PublicManager.ShowTips("正在行动中");
             return;
         }
         switch (sel)
@@ -192,7 +192,7 @@ public class PlaceFrame : MonoBehaviour
     {
         if (isWalk)
         {
-            FindObjectOfType<PublicManager>().ShowTips("正在行动中");
+            PublicManager.ShowTips("正在行动中");
             return;
         }
         switch (sel)

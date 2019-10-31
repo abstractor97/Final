@@ -15,6 +15,8 @@ public class ListItem : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,
 
     public UnityAction<int> leftAction;
     public UnityAction<int> rightAction;
+    public UnityAction<int> enterAction;
+    public UnityAction<int> exitAction;
 
     public GameObject panel;
 
@@ -62,6 +64,7 @@ public class ListItem : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,
             group.interactable = true;
             group.blocksRaycasts = true;
         }
+        enterAction?.Invoke(sel);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -73,7 +76,7 @@ public class ListItem : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,
             group.interactable = false;
             group.blocksRaycasts = false;
         }
-
+        exitAction?.Invoke(sel);
     }
 
 
