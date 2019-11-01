@@ -20,6 +20,10 @@ public class ListItem : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,
 
     public GameObject panel;
 
+    public bool hasSelectFrame;
+
+    public GameObject SelectFrameColor;
+
     public UnityAction<GameObject> panelAction;
 
     void Start()

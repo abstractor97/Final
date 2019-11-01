@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class DigitText : MonoBehaviour
 {
     [Tooltip("允许显示几位")]
-    public int digit = 4;
+    private int digit = 4;
     [Tooltip("开启滚动动画")]
     public bool openAni;
 
@@ -50,7 +50,7 @@ public class DigitText : MonoBehaviour
     private void Awake()
     {
         uitext = GetComponent<Text>();
-      
+        digit = uitext.text.Length;
     }
 
     // Start is called before the first frame update

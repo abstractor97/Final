@@ -24,6 +24,11 @@ public class CastleMenu : MonoBehaviour
 
     private Dictionary<Attribute, DemandRes> demandLevel;
 
+    public DigitText strText;
+
+    public DigitText agiText;
+    public DigitText intText;
+    public DigitText endText;
 
     public void OpenStrengthen()
     {
@@ -65,7 +70,21 @@ public class CastleMenu : MonoBehaviour
             }
             demandRes.lv++;
             demandRes.growthRate += demandRes.lv;
-            //todo 显示更新 
+            switch (attribute)
+            {
+                case Attribute.str:
+                    strText.text = (int.Parse(strText.text) + 1).ToString();
+                    break;
+                case Attribute.agi:
+                    agiText.text = (int.Parse(agiText.text) + 1).ToString();
+                    break;
+                case Attribute.mint:
+                    intText.text = (int.Parse(intText.text) + 1).ToString();
+                    break;
+                case Attribute.end:
+                    endText.text = (int.Parse(endText.text) + 1).ToString();
+                    break;
+            }
         }
         else
         {
@@ -91,66 +110,6 @@ public class CastleMenu : MonoBehaviour
 
     #endregion
 
-
-    #region 牢房
-    private List<People1> captives = new List<People1>();
-
-    private int ration=0;
-
-    private int selectCaptive;
-
-    public Text cellRationText;
-
-    public RectTransform captivesList;
-
-    public GameObject captiveItem;
-
-
-    public void AddCaptive(People1 people1)
-    {
-        captives.Add(people1);
-        GameObject item= GameObject.Instantiate<GameObject>(captiveItem);
-        item.transform.SetParent(captivesList, false);
-        item.name = (captives.Count - 1).ToString();
-        ListItem li= item.AddComponent<ListItem>();
-        li.leftAction = delegate (int i) {
-            selectCaptive = i;
-        };
-        ration += 1;
-    }
-
-    public void ChangeRation(int num)
-    {
-        if (ration==0&&num<0)
-        {
-            //todo 文字变红动画
-        }
-        else
-        {
-            ration += num;
-            cellRationText.text = ration.ToString();
-        }
-    }
-
-    public void LockRation()
-    {
-
-    }
-
-    public void CellRelease()
-    {
-        PublicManager.ShowArlog("释放", delegate (Pass pass) {
-            if (pass==Pass.yes)
-            {
-                captives.Remove(captives[selectCaptive]);
-                Destroy(captivesList.GetChild(selectCaptive).gameObject);
-            }
-        });
-    
-    }
-
-
-    #endregion
 
     public enum Attribute
     {

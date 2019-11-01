@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
-
+/// <summary>
+/// 浮动放置-黑
+/// </summary>
 public class NewBehaviourScript : MonoBehaviour
 {
     private bool isMove;

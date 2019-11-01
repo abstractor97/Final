@@ -6,12 +6,18 @@ using UnityEngine;
 public class People1 : ScriptableObject
 {
 
+    public Sprite head;
+
+    public string defName;
+
     [Tooltip("薪资")]
     public int salary;
     [Tooltip("每周消耗的食物")]
     public int consume = 1;
     [Tooltip("默认士气")]
     public int morale = 100;
+
+    public int lv = 1;
 
     public Attribute attribute;
     /// <summary>
