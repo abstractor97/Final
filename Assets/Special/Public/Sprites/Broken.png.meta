@@ -1,13 +1,22 @@
 fileFormatVersion: 2
-guid: c104bf443daec26468cf7aeb0fa74a37
+guid: d35f904ba29397e4d988bea8a0815a9e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2838933700678351001
-    second: ButtonFrame_0
+      213: 832268600461873751
+    second: Broken_1
   - first:
-      213: -5919742186625660227
-    second: ButtonFrame_1
+      213: -7675083766147768221
+    second: Broken_2
+  - first:
+      213: 693644847554471340
+    second: Broken_4
+  - first:
+      213: -863121026863077760
+    second: Broken_5
+  - first:
+      213: -859234161726942517
+    second: Broken_0
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -101,43 +110,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ButtonFrame_0
+      name: Broken_1
       rect:
         serializedVersion: 2
-        x: 66
-        y: 218
-        width: 206
-        height: 57
+        x: 374
+        y: 1297
+        width: 744
+        height: 405
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 58a897a48bee65d4f9c8751b2d9ebf32
-      internalID: -2838933700678351001
+      spriteID: 66380885fc51dc942950e7ba8b1a6ab2
+      internalID: 832268600461873751
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ButtonFrame_1
+      name: Broken_2
       rect:
         serializedVersion: 2
-        x: 56
-        y: 36
-        width: 262
-        height: 80
+        x: 1119
+        y: 913
+        width: 881
+        height: 824
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c8f3ab0f2a77cd144b0497da473a41ab
-      internalID: -5919742186625660227
+      spriteID: 6a6bd4d8dc15a964fa79787bf778f2b7
+      internalID: -7675083766147768221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Broken_4
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 1344
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18bafa58523b318488399d9e14428d8e
+      internalID: 693644847554471340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Broken_5
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 16
+        width: 1054
+        height: 903
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 956b5f3e6b2c55e478735921336c00aa
+      internalID: -863121026863077760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Broken_0
+      rect:
+        serializedVersion: 2
+        x: 1220
+        y: 0
+        width: 780
+        height: 833
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b32b2476fae00343ac22e6709d6cf30
+      internalID: -859234161726942517
       vertices: []
       indices: 
       edges: []
@@ -145,7 +217,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: b348dca8386c1b748b8511c2fbaaad55
+    spriteID: b50c7a5f0d74ce048bcb324aabfa615e
     internalID: 0
     vertices: []
     indices: 

@@ -1,7 +1,40 @@
 fileFormatVersion: 2
 guid: 9398ffb051880c64db97970ac4522fc2
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3850564952883496113
+    second: CoinBox_0
+  - first:
+      213: 6181358989557219763
+    second: CoinBox_1
+  - first:
+      213: 9201986136481458905
+    second: CoinBox_2
+  - first:
+      213: -6637453053097597599
+    second: CoinBox_3
+  - first:
+      213: 1294107286617743520
+    second: CoinBox_4
+  - first:
+      213: 8211247927366335704
+    second: CoinBox_5
+  - first:
+      213: 8172651230019660256
+    second: CoinBox_6
+  - first:
+      213: 9035893356686242212
+    second: CoinBox_7
+  - first:
+      213: -7009610223739044110
+    second: CoinBox_8
+  - first:
+      213: -7603288622950034670
+    second: CoinBox_9
+  - first:
+      213: 6250803023357467659
+    second: CoinBox_10
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -40,7 +73,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -69,9 +102,262 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: CoinBox_0
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 780
+        width: 160
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 623d4668934a4ff4ea91d4d34d78b4ea
+      internalID: 3850564952883496113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_1
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 887
+        width: 4
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 087616c578c14494488fdffd8abf4d7b
+      internalID: 6181358989557219763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_2
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 780
+        width: 176
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 045bb4ee925b6934e9d6751565a2adb1
+      internalID: 9201986136481458905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_3
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 605
+        width: 167
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1996723db8982448aa035a5544c190b
+      internalID: -6637453053097597599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_4
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 605
+        width: 190
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06db8151da994674b8429b4986a49f14
+      internalID: 1294107286617743520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_5
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 436
+        width: 171
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e386db29c6321b24d96edf2923b3be92
+      internalID: 8211247927366335704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_6
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 436
+        width: 192
+        height: 158
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14a39d6fc926425438be0a93d4ecd8ad
+      internalID: 8172651230019660256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_7
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 252
+        width: 176
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4a3187674f92e44ab94e0ebe298ab5e
+      internalID: 9035893356686242212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_8
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 252
+        width: 203
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55be21d3dc0ea9845b81616c365c49a8
+      internalID: -7009610223739044110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_9
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 36
+        width: 192
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a0721158cc7e054fb2d1bf22867ed35
+      internalID: -7603288622950034670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinBox_10
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 36
+        width: 232
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30e6f7562a2a4624ebeb1ce9206b33eb
+      internalID: 6250803023357467659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

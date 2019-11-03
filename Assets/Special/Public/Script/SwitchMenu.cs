@@ -15,6 +15,8 @@ public class SwitchMenu : MonoBehaviour
 
     public RectTransform mainBackground;
 
+    public RectTransform selectStorey;
+
     public float storeyHeight;
 
     public int defShow;
