@@ -1,24 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.UI;
-using System;
 
-public class CastleMenu : MonoBehaviour
+public class SkillItem : MonoBehaviour
 {
+    public Text itemName;
+
+    public DigitText itemNumber;
 
     // Start is called before the first frame update
     void Start()
     {
-
-      //  transform.DOScale(transform.position,1f);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-       
+        
     }
-    
+
+    public void Init(string name,int num)
+    {
+        itemName.text = name;
+        itemNumber.text = num.ToString();
+    }
 }

@@ -20,7 +20,19 @@ public class ProcessManager:MonoBehaviour
     public Save save;
     [Tooltip("自动存档间隔，单位分钟")]
     public int saveSpace=5;
-    public static LocalLanguage language;
+    private static LocalLanguage language_p;
+    public static LocalLanguage language
+    {
+        private set { language_p = value; }
+        get
+        {
+            if (language_p == null)
+            {
+                language_p = new LocalLanguage();
+            }
+            return language_p;
+        }
+    }
     /// <summary>
     /// 当前使用的故事因子
     /// </summary>

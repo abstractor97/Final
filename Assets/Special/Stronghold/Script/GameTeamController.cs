@@ -21,16 +21,29 @@ public class GameTeamController
 
     private List<People1> waitTeam;
 
-    private List< TeamMember> outTeam;
+    private Team outTeam;
 
-    private int maxTeam=10;
+    public int maxTeam=20;
+    /// <summary>
+    /// 招募等级
+    /// </summary>
+    public int rtLv;
+
+    public List<People1> waitRecruit;
 
 
 
     public GameTeamController()
     {
         waitTeam = new List<People1>(maxTeam);
-        outTeam = new List<TeamMember>(4);
+        outTeam = new Team();
+        waitRecruit = new List<People1>();
+
+    }
+
+    public bool CheckWaitTeam()
+    {
+        return waitTeam.Count < maxTeam;
     }
 
     public bool AddWaitTeam(People1 people)
@@ -52,22 +65,14 @@ public class GameTeamController
         waitTeam.Remove(people);
     }
 
-    public bool AddOutTeam(People1 people)
+    public void AddOutTeam(int i, People1 people)
     {
-        if (outTeam.Count >= 4)
-        {
-            return false;
-        }
-        else
-        {
-            TeamMember tm = new TeamMember
-            {
-                people = people
-            };
-            outTeam.Add(tm);
-            return true;
-        }
+        outTeam.teamMembers[i] = people;
+    }
 
+    public void AddOutTeamSp(int i, People1 people)
+    {
+        outTeam.supports[i] = people;
     }
 
     /// <summary>
@@ -75,18 +80,25 @@ public class GameTeamController
     /// </summary>
     public bool DepartureCheck()
     {
-        return outTeam.Count == 4;
+        foreach (var tm in outTeam.teamMembers)
+        {
+            if (tm!=null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public class TeamMember
+    public class Team
     {
 
-        public int id;
-
-       public People1 people;
+       public People1[] teamMembers=new People1[3];
 
         public Buff1 buff;
 
         public bool dead;
+
+        public People1[] supports = new People1[2];
     }
 }

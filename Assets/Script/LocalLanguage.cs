@@ -44,6 +44,10 @@ public class LocalLanguage
             }
             else
             {
+                //if (baseText.Length>20)
+                //{
+                //    return jd[baseText]["en"].ToString();
+                //}
                 if (IsNumeric(baseText))
                 {
                    // String numberStr = "asd22uu335hh66mm99tt44yy445";

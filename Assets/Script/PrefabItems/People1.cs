@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "自定义人物", menuName = "自定义生成系统/自定义人物")]
+[CreateAssetMenu(fileName = "自定义人物", menuName = "自定义生成系统/自定义人物1")]
 public class People1 : ScriptableObject
 {
 
@@ -20,6 +20,9 @@ public class People1 : ScriptableObject
     public int lv = 1;
 
     public Attribute attribute;
+    public Skill skill;
+    [Tooltip("简述")]
+    public TextAsset sketch;
     /// <summary>
     /// 其他和属性有关
     /// hp=end*10
@@ -34,6 +37,22 @@ public class People1 : ScriptableObject
         public int end;
 
     }
+    [System.Serializable]
+    public class Skill
+    {
+        public int explore;
+        public int battle;
+        public int transport;
+        public int strain;
 
-    
+        public SuperSkill superName;
+    }
+
+    public enum SuperSkill
+    {
+        reinforcements,
+        shelling,
+        subjugate,
+        garrison
+    }
 }
