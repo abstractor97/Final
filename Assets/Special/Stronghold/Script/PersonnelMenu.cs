@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PersonnelMenu : MonoBehaviour
 {
@@ -39,11 +40,15 @@ public class PersonnelMenu : MonoBehaviour
 
     private void Start()
     {
+        strengthen.GetComponent<CanvasGroup>().alpha = 0;
+        hire.GetComponent<CanvasGroup>().alpha = 0;
+        manager.GetComponent<CanvasGroup>().alpha = 0;
+        cacheRt = strengthen;
         InitLv();
     }
 
     #region 招募层
-
+    [Header("招募层")]
     public RectTransform peopleList;
 
     public GameObject peopleItem;
@@ -107,10 +112,12 @@ public class PersonnelMenu : MonoBehaviour
     }
 
 
+
+
     #endregion
 
     #region 训练层相关操作And数据
-
+    [Header("训练层")]
     private Dictionary<Attribute, DemandRes> demandLevel;
 
 
@@ -192,6 +199,52 @@ public class PersonnelMenu : MonoBehaviour
 
     #endregion
 
+
+    #region 管理层
+    [Header("管理层")]
+    public RectTransform waitTeamList;
+
+    public EquipDetails equipDetails;
+
+    public RectTransform selectProfileM;
+     
+
+    public void ShowManager()
+    {
+        foreach (RectTransform pl in peopleList)
+        {
+            Destroy(pl.gameObject);
+        }
+
+        foreach (People1 p in GameTeamController.GameData.waitRecruit)
+        {
+            GameObject pi = GameObject.Instantiate<GameObject>(peopleItem);
+            ProfileItem pfi = pi.GetComponent<ProfileItem>();
+            pfi.click = delegate (ProfileItem pl1)
+            {
+            };
+            pfi.enter = delegate (Transform tr)
+            {
+                selectProfileM.SetParent(tr, false);
+                equipDetails.InitDetails(tr.GetComponent<ProfileItem>().people);
+            };
+            pfi.InitProfile(p);
+            pi.transform.SetParent(waitTeamList, false);
+        }
+    }
+
+    public void RotateFire()
+    {
+        PublicManager.ShowArlog("确定解雇",delegate(Pass pass) {
+            if (pass==Pass.yes)
+            {
+                GameTeamController.GameData.FireWaitTeam(selectProfileM.parent.GetComponent<ProfileItem>().people);
+
+            }
+        });
+    }
+
+    #endregion
 
     public enum Attribute
     {

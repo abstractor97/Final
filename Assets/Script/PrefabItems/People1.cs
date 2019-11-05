@@ -47,6 +47,11 @@ public class People1 : ScriptableObject
 
         public SuperSkill superName;
     }
+    [System.Serializable]
+    public class Equip
+    {
+       
+    }
 
     public enum SuperSkill
     {
