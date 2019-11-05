@@ -9,9 +9,9 @@ public class PersonnelMenu : MonoBehaviour
 
     private RectTransform cacheRt;
 
-    public RectTransform strengthen;
-
     public RectTransform hire;
+
+    public RectTransform strengthen;
 
     public RectTransform manager;
 
@@ -117,10 +117,10 @@ public class PersonnelMenu : MonoBehaviour
     #endregion
 
     #region 训练层相关操作And数据
-    [Header("训练层")]
+
     private Dictionary<Attribute, DemandRes> demandLevel;
 
-
+    [Header("训练层")]
     public DigitText strText;
 
     public DigitText agiText;
