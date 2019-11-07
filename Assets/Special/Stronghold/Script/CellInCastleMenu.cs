@@ -6,11 +6,9 @@ public class CellInCastleMenu : MonoBehaviour
 {
 
     #region 牢房
-    private List<People1> captives = new List<People1>();
-
     private int ration = 0;
 
-    private int selectCaptive;
+    private ProfileItem selectCaptive;
 
     public DigitText cellRationText;
 
@@ -25,20 +23,32 @@ public class CellInCastleMenu : MonoBehaviour
         
     }
 
-    public void AddCaptive(People1 people1)
+    public void ShowCell()
     {
-        captives.Add(people1);
+        foreach (RectTransform pl in captivesList)
+        {
+            Destroy(pl.gameObject);
+        }
+        foreach (var cp in GameTeamController.GameData.cellPrisoners)
+        {
+            AddCaptive(cp);
+        }
+        selectFrame.gameObject.SetActive(captivesList.childCount == 0);
+    }
+
+    private void AddCaptive(People1 people1)
+    {
         GameObject item = GameObject.Instantiate<GameObject>(captiveItem);
         item.transform.SetParent(captivesList, false);
-        item.name = (captives.Count - 1).ToString();
-        captiveItem.GetComponent<ProfileItem>().InitProfile(people1);
-        ListItem li = item.AddComponent<ListItem>();
-        li.leftAction = delegate (int i) {
-            selectCaptive = i;
-            selectFrame.SetParent(captivesList.GetChild(selectCaptive), false);
+        ProfileItem pfi = captiveItem.GetComponent<ProfileItem>();
+        pfi.InitProfile(people1);
+        pfi.click = delegate (ProfileItem p) {
+            selectFrame.transform.position = p.transform.position;
+            selectFrame.sizeDelta =p.GetComponent<RectTransform>().sizeDelta;
         };
         ration += 1;
         cellRationText.text = ration.ToString();
+
     }
 
     public void ChangeRation(int num)
@@ -64,8 +74,8 @@ public class CellInCastleMenu : MonoBehaviour
         PublicManager.ShowArlog("释放", delegate (Pass pass) {
             if (pass == Pass.yes)
             {
-                captives.Remove(captives[selectCaptive]);
-                Destroy(captivesList.GetChild(selectCaptive).gameObject);
+                GameTeamController.GameData.cellPrisoners.Remove(selectCaptive.people);
+                Destroy(selectCaptive.gameObject);
                 int i = 0;
                 foreach (Transform tr in captivesList.transform)
                 {
@@ -82,9 +92,9 @@ public class CellInCastleMenu : MonoBehaviour
         PublicManager.ShowArlog("索取赎金", delegate (Pass pass) {
             if (pass == Pass.yes)
             {
-                int lv = captives[selectCaptive].lv;
-                captives.Remove(captives[selectCaptive]);
-                Destroy(captivesList.GetChild(selectCaptive).gameObject);
+                int lv = selectCaptive.people.lv;
+                GameTeamController.GameData.cellPrisoners.Remove(selectCaptive.people);
+                Destroy(selectCaptive.gameObject);
                 int i = 0;
                 foreach (Transform tr in captivesList.transform)
                 {
@@ -105,8 +115,8 @@ public class CellInCastleMenu : MonoBehaviour
         PublicManager.ShowArlog("处决", delegate (Pass pass) {
             if (pass == Pass.yes)
             {
-                captives.Remove(captives[selectCaptive]);
-                Destroy(captivesList.GetChild(selectCaptive).gameObject);
+                GameTeamController.GameData.cellPrisoners.Remove(selectCaptive.people);
+                Destroy(selectCaptive.gameObject);
                 int i = 0;
                 foreach (Transform tr in captivesList.transform)
                 {
@@ -119,11 +129,6 @@ public class CellInCastleMenu : MonoBehaviour
             }
         });
 
-    }
-
-
-    public List<People1> GetPeoples() {
-        return captives;
     }
 
     #endregion

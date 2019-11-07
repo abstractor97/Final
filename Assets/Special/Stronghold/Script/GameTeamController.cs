@@ -27,17 +27,52 @@ public class GameTeamController
     /// <summary>
     /// 招募等级
     /// </summary>
-    public int rtLv;
-
+    public int rtLv=1;
+    /// <summary>
+    /// 等待招募的队列
+    /// </summary>
     public List<People1> waitRecruit;
+    /// <summary>
+    /// 囚犯队列
+    /// </summary>
+    public List<People1> cellPrisoners;
 
-
+    private People1[] lv1;
+    private People1[] lv2;
+    private People1[] lv3;
 
     public GameTeamController()
     {
         waitTeam = new List<People1>(maxTeam);
         outTeam = new Team();
         waitRecruit = new List<People1>();
+        cellPrisoners = new List<People1>();
+        //todo 读取各级别
+
+    }
+
+
+    public void CreateRecruitOnLv()
+    {
+        int createNumber = 2;
+        createNumber += rtLv - 1;
+        for (int i = 0; i < createNumber; i++)
+        {
+            int r = Random.Range(0, 100);
+            if (r < 100 - rtLv * 10)
+            {
+                waitRecruit.Add( lv1[ Random.Range(0,lv1.Length-1)]);
+            }
+            else if (100 - rtLv * 10 < r && r < 100 - rtLv * 3)
+            {
+                waitRecruit.Add(lv1[Random.Range(0, lv2.Length - 1)]);
+            }
+            else
+            {
+                waitRecruit.Add(lv1[Random.Range(0, lv3.Length - 1)]);
+            }
+        }
+
 
     }
 

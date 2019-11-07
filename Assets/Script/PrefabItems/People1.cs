@@ -17,12 +17,16 @@ public class People1 : ScriptableObject
     [Tooltip("默认士气")]
     public int morale = 100;
 
+    [Tooltip("归属于哪个级别")]
     public int lv = 1;
 
     public Attribute attribute;
     public Skill skill;
+
+    public Equip equip;
     [Tooltip("简述")]
     public TextAsset sketch;
+
     /// <summary>
     /// 其他和属性有关
     /// hp=end*10
@@ -50,7 +54,8 @@ public class People1 : ScriptableObject
     [System.Serializable]
     public class Equip
     {
-       
+        public int baseArm;
+        public int auxiliary;
     }
 
     public enum SuperSkill

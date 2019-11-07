@@ -273,6 +273,7 @@ public class PublicManager:MonoBehaviour
         group.alpha = 1;
         group.interactable = true;
         group.blocksRaycasts = true;
+        cacheUIs.Add(ui);
     }
 
     public static void Hide(GameObject ui)

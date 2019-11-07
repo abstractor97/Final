@@ -2,9 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EquipDetails : MonoBehaviour
 {
+    public Text armName;
+    public Text auxiliary;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,8 +21,8 @@ public class EquipDetails : MonoBehaviour
         
     }
 
-    internal void InitDetails(People1 people)
+    public void InitDetails(People1 people)
     {
-        throw new NotImplementedException();
+        
     }
 }

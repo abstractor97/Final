@@ -37,6 +37,8 @@ public class ProcessManager:MonoBehaviour
     /// 当前使用的故事因子
     /// </summary>
     public static Story factor;
+
+    private static Dictionary<string, Dictionary<string, string>> configureDic;
     /// <summary>
     /// 现在使用的存档位置
     /// </summary>
@@ -316,5 +318,22 @@ public class ProcessManager:MonoBehaviour
         public PointsSave[] pointsSaves;
 
         public ItemSave[] itemSaves;
+    }
+    /// <summary>
+    /// 初始化配置
+    /// </summary>
+    private void InitConfigure()
+    {
+        configureDic = new Dictionary<string, Dictionary<string, string>>();
+      //  configureDic.Add
+      //todo 读取配置表
+    }
+
+    /// <summary>
+    /// 配置解析
+    /// </summary>
+    public static Dictionary<string,string> DefConfigure(string configure)
+    {
+        return configureDic[configure];
     }
 }

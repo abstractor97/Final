@@ -58,7 +58,7 @@ public class PersonnelMenu : MonoBehaviour
         manager.GetComponent<CanvasGroup>().alpha = 0;
         cacheRt = strengthen;
         InitLv();
-        selectProfile.SetActive(false);
+        selectProfile.gameObject.SetActive(false);
     }
 
     #region 招募层
@@ -69,7 +69,7 @@ public class PersonnelMenu : MonoBehaviour
     /// <summary>
     /// 被选中的提示框
     /// </summary>
-    public GameObject selectProfile;
+    public RectTransform selectProfile;
 
     public ProfileDetails profileDetails;
 
@@ -121,11 +121,11 @@ public class PersonnelMenu : MonoBehaviour
             }
             if (peopleList.childCount==0)
             {
-                selectProfile.SetActive(false);
+                selectProfile.gameObject.SetActive(false);
             }
             else
             {
-                selectProfile.SetActive(true);
+                selectProfile.gameObject.SetActive(true);
                 selectProfile.GetComponent<RectTransform>().sizeDelta = peopleList.GetChild(0).GetComponent<RectTransform>().sizeDelta;
             }
             rtlv = GameTeamController.GameData.rtLv;
@@ -255,11 +255,11 @@ public class PersonnelMenu : MonoBehaviour
         }
         if (peopleList.childCount == 0)
         {
-            selectProfile.SetActive(false);
+            selectProfile.gameObject.SetActive(false);
         }
         else
         {
-            selectProfile.SetActive(true);
+            selectProfile.gameObject.SetActive(true);
             selectProfile.GetComponent<RectTransform>().sizeDelta = waitTeamList.GetChild(0).GetComponent<RectTransform>().sizeDelta;
         }
     }

@@ -13,6 +13,10 @@ public class Story : ScriptableObject
     public string describe;
     [Tooltip("图片")]
     public Sprite icon;
+    [Tooltip("配置表")]
+    public TextAsset configure;
+
+
 
     // [Tooltip("启动时调用")]
     //  public UnityAction<GameTable> init;

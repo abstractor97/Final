@@ -67,13 +67,13 @@ Material:
     - _DstBlend: 0
     - _DualGrid: 1
     - _EdgeAlphaThreshold: 1
-    - _EdgeDampRate: 4
+    - _EdgeDampRate: 8
     - _EnableExternalAlpha: 0
     - _Glossiness: 0.5
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _OriginAlphaThreshold: 0.24
+    - _OriginAlphaThreshold: 0.8
     - _Parallax: 0.02
     - _SrcBlend: 1
     - _UVSec: 0
