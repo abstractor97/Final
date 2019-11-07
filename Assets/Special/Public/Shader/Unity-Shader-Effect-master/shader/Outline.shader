@@ -1,6 +1,6 @@
 
 //Ãè±ßĞ§¹û
-Shader "Custom/Outline"  
+Shader "Custom/3DOutline"  
 {  
     //ÊôĞÔ  
     Properties{  

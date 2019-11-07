@@ -8,6 +8,8 @@ public class PersonnelMenu : MonoBehaviour
 {
 
     private RectTransform cacheRt;
+    [Tooltip("按钮组")]
+    public CanvasGroup buttons;
 
     public RectTransform hire;
 
@@ -21,6 +23,7 @@ public class PersonnelMenu : MonoBehaviour
         cacheRt.GetComponent<CanvasGroup>().alpha = 0;
         strengthen.GetComponent<CanvasGroup>().alpha = 1;
         cacheRt = strengthen;
+        buttons.alpha = 0;
 
     }
 
@@ -29,6 +32,8 @@ public class PersonnelMenu : MonoBehaviour
         cacheRt.GetComponent<CanvasGroup>().alpha = 0;
         hire.GetComponent<CanvasGroup>().alpha = 1;
         cacheRt = hire;
+        ShowRecruit();
+        buttons.alpha = 0;
     }
 
     public void OpenManager()
@@ -36,6 +41,14 @@ public class PersonnelMenu : MonoBehaviour
         cacheRt.GetComponent<CanvasGroup>().alpha = 0;
         manager.GetComponent<CanvasGroup>().alpha = 1;
         cacheRt = manager;
+        ShowManager();
+        buttons.alpha = 0;
+    }
+
+    public void BackMain()
+    {
+        cacheRt.GetComponent<CanvasGroup>().alpha = 0;
+        buttons.alpha = 1;
     }
 
     private void Start()
@@ -45,6 +58,7 @@ public class PersonnelMenu : MonoBehaviour
         manager.GetComponent<CanvasGroup>().alpha = 0;
         cacheRt = strengthen;
         InitLv();
+        selectProfile.SetActive(false);
     }
 
     #region 招募层
@@ -55,13 +69,13 @@ public class PersonnelMenu : MonoBehaviour
     /// <summary>
     /// 被选中的提示框
     /// </summary>
-    public RectTransform selectProfile;
+    public GameObject selectProfile;
 
     public ProfileDetails profileDetails;
 
     private int rtlv;
 
-    public void ShowRecruit()
+    private void ShowRecruit()
     {
         if (rtlv==GameTeamController.GameData.rtLv)
         {
@@ -98,12 +112,21 @@ public class PersonnelMenu : MonoBehaviour
                 };
                 pfi.enter = delegate (Transform tr)
                 {
-                    selectProfile.SetParent(tr, false);
+                    selectProfile.transform.position=tr.position;
                     profileDetails.InitDetails(tr.GetComponent<ProfileItem>().people);
                 };
                 //todo 随机化属性技能
                 pfi.InitProfile(p);
                 pi.transform.SetParent(peopleList,false);
+            }
+            if (peopleList.childCount==0)
+            {
+                selectProfile.SetActive(false);
+            }
+            else
+            {
+                selectProfile.SetActive(true);
+                selectProfile.GetComponent<RectTransform>().sizeDelta = peopleList.GetChild(0).GetComponent<RectTransform>().sizeDelta;
             }
             rtlv = GameTeamController.GameData.rtLv;
 
@@ -118,15 +141,14 @@ public class PersonnelMenu : MonoBehaviour
 
     #region 训练层相关操作And数据
 
-    private Dictionary<Attribute, DemandRes> demandLevel;
 
     [Header("训练层")]
-    public DigitText strText;
+    public LevelBar strBar;
+    public LevelBar agiBar;
+    public LevelBar intBar;
+    public LevelBar endBar;
 
-    public DigitText agiText;
-    public DigitText intText;
-    public DigitText endText;
-
+    private Dictionary<Attribute, DemandRes> demandLevel;
 
 
     private void InitLv()
@@ -162,16 +184,16 @@ public class PersonnelMenu : MonoBehaviour
             switch (attribute)
             {
                 case Attribute.str:
-                    strText.text = (int.Parse(strText.text) + 1).ToString();
+                    strBar.Init(demandRes.lv, demandRes.baseCoin * (demandRes.lv + demandRes.growthRate), demandRes.baseFood * (demandRes.lv + demandRes.growthRate));
                     break;
                 case Attribute.agi:
-                    agiText.text = (int.Parse(agiText.text) + 1).ToString();
+                    agiBar.Init(demandRes.lv, demandRes.baseCoin * (demandRes.lv + demandRes.growthRate), demandRes.baseFood * (demandRes.lv + demandRes.growthRate));
                     break;
                 case Attribute.mint:
-                    intText.text = (int.Parse(intText.text) + 1).ToString();
+                    intBar.Init(demandRes.lv, demandRes.baseCoin * (demandRes.lv + demandRes.growthRate), demandRes.baseFood * (demandRes.lv + demandRes.growthRate));
                     break;
                 case Attribute.end:
-                    endText.text = (int.Parse(endText.text) + 1).ToString();
+                    endBar.Init(demandRes.lv, demandRes.baseCoin * (demandRes.lv + demandRes.growthRate), demandRes.baseFood * (demandRes.lv + demandRes.growthRate));
                     break;
             }
         }
@@ -206,10 +228,9 @@ public class PersonnelMenu : MonoBehaviour
 
     public EquipDetails equipDetails;
 
-    public RectTransform selectProfileM;
-     
+    private ProfileItem selectIndex;
 
-    public void ShowManager()
+    private void ShowManager()
     {
         foreach (RectTransform pl in peopleList)
         {
@@ -225,11 +246,21 @@ public class PersonnelMenu : MonoBehaviour
             };
             pfi.enter = delegate (Transform tr)
             {
-                selectProfileM.SetParent(tr, false);
-                equipDetails.InitDetails(tr.GetComponent<ProfileItem>().people);
+                selectProfile.transform.position = tr.position;
+                selectIndex = tr.GetComponent<ProfileItem>();
+                equipDetails.InitDetails(selectIndex.people);
             };
             pfi.InitProfile(p);
             pi.transform.SetParent(waitTeamList, false);
+        }
+        if (peopleList.childCount == 0)
+        {
+            selectProfile.SetActive(false);
+        }
+        else
+        {
+            selectProfile.SetActive(true);
+            selectProfile.GetComponent<RectTransform>().sizeDelta = waitTeamList.GetChild(0).GetComponent<RectTransform>().sizeDelta;
         }
     }
 
@@ -238,7 +269,7 @@ public class PersonnelMenu : MonoBehaviour
         PublicManager.ShowArlog("确定解雇",delegate(Pass pass) {
             if (pass==Pass.yes)
             {
-                GameTeamController.GameData.FireWaitTeam(selectProfileM.parent.GetComponent<ProfileItem>().people);
+                GameTeamController.GameData.FireWaitTeam(selectIndex.people);
 
             }
         });
