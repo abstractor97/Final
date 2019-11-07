@@ -9,7 +9,7 @@ public class PersonnelMenu : MonoBehaviour
 
     private RectTransform cacheRt;
     [Tooltip("按钮组")]
-    public CanvasGroup buttons;
+    public RectTransform buttons;
 
     public RectTransform hire;
 
@@ -20,43 +20,59 @@ public class PersonnelMenu : MonoBehaviour
 
     public void OpenStrengthen()
     {
-        cacheRt.GetComponent<CanvasGroup>().alpha = 0;
-        strengthen.GetComponent<CanvasGroup>().alpha = 1;
+        Hide(cacheRt);
+        Show(strengthen);
         cacheRt = strengthen;
-        buttons.alpha = 0;
+        Hide(buttons);
 
     }
 
     public void OpenHire()
     {
-        cacheRt.GetComponent<CanvasGroup>().alpha = 0;
-        hire.GetComponent<CanvasGroup>().alpha = 1;
+        Hide(cacheRt);
+        Show(hire);
         cacheRt = hire;
         ShowRecruit();
-        buttons.alpha = 0;
+        Hide(buttons);
     }
 
     public void OpenManager()
     {
-        cacheRt.GetComponent<CanvasGroup>().alpha = 0;
-        manager.GetComponent<CanvasGroup>().alpha = 1;
+        Hide(cacheRt);
+        Show(manager);
         cacheRt = manager;
         ShowManager();
-        buttons.alpha = 0;
+        Hide(buttons);
     }
 
     public void BackMain()
     {
-        cacheRt.GetComponent<CanvasGroup>().alpha = 0;
-        buttons.alpha = 1;
+        Hide(cacheRt);
+        Show(buttons);
+    }
+
+    private void Show(RectTransform ui)
+    {
+        CanvasGroup group = ui.GetComponent<CanvasGroup>();
+        group.alpha = 1;
+        group.interactable = true;
+        group.blocksRaycasts = true;
+    }
+
+    private void Hide(RectTransform ui)
+    {
+        CanvasGroup group = ui.GetComponent<CanvasGroup>();
+        group.alpha = 0;
+        group.interactable = false;
+        group.blocksRaycasts = false;
     }
 
     private void Start()
     {
-        strengthen.GetComponent<CanvasGroup>().alpha = 0;
-        hire.GetComponent<CanvasGroup>().alpha = 0;
-        manager.GetComponent<CanvasGroup>().alpha = 0;
-        cacheRt = strengthen;
+        Hide(strengthen);
+        Hide(hire);
+        Hide(manager);
+        cacheRt = hire;
         InitLv();
         selectProfile.gameObject.SetActive(false);
     }
@@ -155,7 +171,7 @@ public class PersonnelMenu : MonoBehaviour
     {
         int i = Enum.GetNames(typeof(Attribute)).Length;
         demandLevel = new Dictionary<Attribute, DemandRes>(i);
-        foreach (Attribute type in Enum.GetValues(typeof(Type)))
+        foreach (Attribute type in Enum.GetValues(typeof(Attribute)))
         {
             demandLevel.Add(type, new DemandRes());
         }
