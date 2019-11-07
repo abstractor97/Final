@@ -2569,7 +2569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellRationText: {fileID: 356216804}
   captivesList: {fileID: 1506668002}
-  selectFrame: {fileID: 0}
+  selectFrame: {fileID: 1029637675}
   captiveItem: {fileID: 6462284854065923080, guid: 15622a8e057ad334094849e96050b03a,
     type: 3}
 --- !u!1 &505774699
@@ -6801,7 +6801,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u7EC4\u7EC7\u519B\u52BF"
+  m_Text: "\u7EC4\u7EC7\u519B\u961F"
 --- !u!222 &1026405347
 CanvasRenderer:
   m_ObjectHideFlags: 0
