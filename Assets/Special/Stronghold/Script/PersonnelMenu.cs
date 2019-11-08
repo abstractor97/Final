@@ -89,11 +89,9 @@ public class PersonnelMenu : MonoBehaviour
 
     public ProfileDetails profileDetails;
 
-    private int rtlv;
-
     private void ShowRecruit()
     {
-        if (rtlv==GameTeamController.GameData.rtLv)
+        if (!GameTeamController.GameData.recruitRefresh)
         {
 
         }
@@ -144,8 +142,7 @@ public class PersonnelMenu : MonoBehaviour
                 selectProfile.gameObject.SetActive(true);
                 selectProfile.GetComponent<RectTransform>().sizeDelta = peopleList.GetChild(0).GetComponent<RectTransform>().sizeDelta;
             }
-            rtlv = GameTeamController.GameData.rtLv;
-
+            GameTeamController.GameData.recruitRefresh = false;
         }
 
     }

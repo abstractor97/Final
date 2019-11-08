@@ -30,7 +30,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
 
-        FindObjectOfType<DayTime>().callback += UpdateTime;
+       // FindObjectOfType<DayTime>().callback += UpdateTime;
         foreach (var bag in bags)
         {
             bag.playerBag = true;

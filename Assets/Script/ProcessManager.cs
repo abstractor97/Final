@@ -18,6 +18,9 @@ public class ProcessManager:MonoBehaviour
     public bool isInGame;
     [HideInInspector]
     public Save save;
+
+
+
     [Tooltip("自动存档间隔，单位分钟")]
     public int saveSpace=5;
     private static LocalLanguage language_p;
@@ -42,18 +45,12 @@ public class ProcessManager:MonoBehaviour
     /// <summary>
     /// 现在使用的存档位置
     /// </summary>
-    private string saveIndex = "0";
+    private static string saveTag = "0";
 
     private static bool isInit;
     private void Awake()
     {
-       // language = new LocalLanguage();
-        save = LoadByBin();
-        if (save == null)
-        {
-            save = new Save();
-        }
-        language = new LocalLanguage();
+        CreateOnAutoSave();
     }
 
     private void Start()
@@ -74,17 +71,37 @@ public class ProcessManager:MonoBehaviour
        string saveLine= SaveGame.Load<string>("SaveSize");//01 0为空位置 1为有存档
         if (saveLine==null)
         {
-            SaveGame.Save<string>("SaveSize", "000");
-            saveLine = "000";
+            SaveGame.Save<string>("SaveSize", "0000");
+            saveLine = "0000";
+        }
+        else
+        {
+            for (int i = 0; i < saveLine.Length; i++)
+            {
+                if (saveLine[i].Equals("0"))
+                {
+                    saveTag = i.ToString();
+                }
+               
+            }
         }
        
     }
 
     public void SaveInGame()
     {
-
+        
     }
 
+    public static void SaveGameData<T>(string key, T data)
+    {
+        SaveGame.Save("Tag:" + saveTag + ",key:" + key, data);
+    }
+
+    public static T GetSaveData<T>(string key){
+        return SaveGame.Load<T>("Tag:"+saveTag+",key:"+key);
+    }
+    #region 过时存档系统
     [Obsolete("调用CreateOnAutoSave")]
     public void CreateSaveData()
     {
@@ -101,7 +118,7 @@ public class ProcessManager:MonoBehaviour
             x = player.transform.position.x,
             y = player.transform.position.y,
             state = playerMana.state,
-            buffs= buffs.ToArray()
+            buffs = buffs.ToArray()
         };
 
 
@@ -117,7 +134,7 @@ public class ProcessManager:MonoBehaviour
             {
                 x = emitters[i].gameObject.transform.position.x,
                 y = emitters[i].gameObject.transform.position.y,
-                position = emitters[i].position,               
+                position = emitters[i].position,
             };
 
             if (emitters[i].points.isRandom)
@@ -129,7 +146,7 @@ public class ProcessManager:MonoBehaviour
                     {
                         pointsSave.randomPlaces[j] = emitters[i].points.places[j].name;
                     }
-                  
+
                 }
             }
             else
@@ -145,6 +162,8 @@ public class ProcessManager:MonoBehaviour
 
 
     }
+
+    [Obsolete("调用GetSaveData")]
     [Serializable]
     public struct PointsSave
     {
@@ -159,7 +178,7 @@ public class ProcessManager:MonoBehaviour
         public string[] randomPlaces;
 
     }
-
+    [Obsolete("调用GetSaveData")]
     [Serializable]
     public struct PlayerSave
     {
@@ -173,7 +192,7 @@ public class ProcessManager:MonoBehaviour
 
     }
 
-
+    [Obsolete("调用GetSaveData")]
     [Serializable]
     public struct ItemSave
     {
@@ -189,7 +208,7 @@ public class ProcessManager:MonoBehaviour
     [Obsolete]
     public void LoadSave(UnityAction loadCallback)
     {
-        GameObject.FindGameObjectWithTag("Player").transform.position= new Vector3(save.playerSave.x,save.playerSave.y,save.playerSave.z);
+        GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(save.playerSave.x, save.playerSave.y, save.playerSave.z);
         PlayerManager playerMana = GameObject.FindObjectOfType<PlayerManager>();
         playerMana.state = save.playerSave.state;
         foreach (var buff in save.playerSave.buffs)
@@ -234,7 +253,7 @@ public class ProcessManager:MonoBehaviour
                 {
                     emitters[i].points.places[j].state = save.pointsSaves[i].states[j];
                 }
-              
+
             }
 
 
@@ -247,13 +266,13 @@ public class ProcessManager:MonoBehaviour
         /// </summary>
     private void SaveByBin()
     {
-       // Save save = LoadByBin();
+        // Save save = LoadByBin();
         //序列化过程（将Save对象转换为字节流）
         //创建Save对象并保存当前游戏状态
         if (save == null)
         {
             save = new Save();
-        }      
+        }
         //创建一个二进制格式化程序
         BinaryFormatter bf = new BinaryFormatter();
         //创建一个文件流
@@ -281,7 +300,7 @@ public class ProcessManager:MonoBehaviour
             //创建一个二进制格式化程序
             BinaryFormatter bf = new BinaryFormatter();
             //打开一个文件流
-            FileStream fileStream =File.Open(Application.dataPath + SAVEFILENAME, FileMode.Open);
+            FileStream fileStream = File.Open(Application.dataPath + SAVEFILENAME, FileMode.Open);
             //调用格式化程序的反序列化方法，将文件流转换为一个Save对象
             Save save = (Save)bf.Deserialize(fileStream);
             //关闭文件流
@@ -295,18 +314,7 @@ public class ProcessManager:MonoBehaviour
         }
     }
 
-    private IEnumerator AutoSave()
-    {
-        while (isInGame)
-        {
-            yield return new WaitForSeconds(60 * saveSpace);
-            SaveInGame();
-        }
-
-    }
-
- 
-
+    [Obsolete("调用GetSaveData")]
     [System.Serializable]
     public class Save
     {
@@ -319,6 +327,10 @@ public class ProcessManager:MonoBehaviour
 
         public ItemSave[] itemSaves;
     }
+
+    #endregion
+
+
     /// <summary>
     /// 初始化配置
     /// </summary>
@@ -335,5 +347,15 @@ public class ProcessManager:MonoBehaviour
     public static Dictionary<string,string> DefConfigure(string configure)
     {
         return configureDic[configure];
+    }
+
+    private IEnumerator AutoSave()
+    {
+        while (isInGame)
+        {
+            yield return new WaitForSeconds(60 * saveSpace);
+            SaveInGame();
+        }
+
     }
 }

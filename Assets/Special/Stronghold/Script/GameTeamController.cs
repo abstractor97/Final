@@ -36,6 +36,10 @@ public class GameTeamController
     /// 囚犯队列
     /// </summary>
     public List<People1> cellPrisoners;
+    /// <summary>
+    /// 当列表更新时刷新
+    /// </summary>
+    public bool recruitRefresh;
 
     private People1[] lv1;
     private People1[] lv2;
@@ -47,8 +51,10 @@ public class GameTeamController
         outTeam = new Team();
         waitRecruit = new List<People1>();
         cellPrisoners = new List<People1>();
-        //todo 读取各级别
-
+       //todo 转为AB包资源
+        lv1 = Resources.LoadAll<People1>("Assets/People1/Lv1");
+        lv2 = Resources.LoadAll<People1>("Assets/People1/Lv2");
+        lv3 = Resources.LoadAll<People1>("Assets/People1/Lv3");
     }
 
 
@@ -72,6 +78,7 @@ public class GameTeamController
                 waitRecruit.Add(lv1[Random.Range(0, lv3.Length - 1)]);
             }
         }
+        recruitRefresh = true           ;
 
 
     }

@@ -72,7 +72,7 @@ namespace Map
             EventEmitter e = gameObject.GetComponent<EventEmitter>();
             e.OnArrive();
             FindObjectOfType<MapControl>().eventEmitter = e;
-            FindObjectOfType<DayTime>().ChangeSpeed(DayTime.TimeSpeed.wait);
+            FindObjectOfType<WorldTime>().ChangeSpeed(WorldTime.TimeSpeed.wait);
             FindObjectOfType<PublicManager>().lockWalk = false;
           //  ProcessManager.Instance.save.x = gameObject.transform.position.x;
           //  ProcessManager.Instance.save.y = gameObject.transform.position.y;
@@ -99,7 +99,7 @@ namespace Map
                 player.GetComponent<AILerp>().SearchPath();
                 player.GetComponent<AILerp>().complete += Arrive;
                 player.GetComponent<AILerp>().pathCallBack += delegate(float l) { d = l; };
-                GameObject.FindObjectOfType<DayTime>().ChangeSpeed(DayTime.TimeSpeed.walk);
+                GameObject.FindObjectOfType<WorldTime>().ChangeSpeed(WorldTime.TimeSpeed.walk);
                 // FindObjectOfType<MapPlayer>().ai.Goto(transform.position);
                 // FindObjectOfType<MapPlayer>().ai.arriveCallBack += Arrive;
             }
