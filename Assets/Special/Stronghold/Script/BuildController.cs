@@ -104,7 +104,8 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
     {
      
         backLight.transform.position = gameObject.transform.position;
-        backLight.range = transform.localScale.x * GetComponent<RectTransform>().rect.size.x/80;
+        // backLight.range = transform.localScale.x * GetComponent<RectTransform>().rect.size.x/80;
+      //  backLight.range = transform.localScale.x * transform.s.x / 80;
         backLight.gameObject.SetActive(false);
         textOriginalV3 = textName.transform.position;
 
