@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class WorldClock : MonoBehaviour
 {
@@ -11,12 +12,13 @@ public class WorldClock : MonoBehaviour
     public DigitText hourText;
     public DigitText minText;
 
+    public UnityAction clock;
     // Start is called before the first frame update
     void Start()
     {
-        worldTime.weekCall = WeekCallBack;
-        worldTime.dayInWeekCall = DayCallBack;
-        worldTime.timeInDayCall = HourAndMinCallBack;
+        worldTime.weekCall += WeekCallBack;
+        worldTime.dayInWeekCall += DayCallBack;
+        worldTime.timeInDayCall += HourAndMinCallBack;
         weekText.text = worldTime.allTime.week.ToString();
         dayText.text = worldTime.allTime.day.ToString();
         hourText.text = worldTime.allTime.hour.ToString();
@@ -32,6 +34,7 @@ public class WorldClock : MonoBehaviour
     private void WeekCallBack(int week)
     {
         weekText.text = week.ToString();
+        worldTime.stop = true;
         //todo 显示周总结
     }
     private void DayCallBack(int day)
@@ -43,6 +46,7 @@ public class WorldClock : MonoBehaviour
     {
         hourText.text = hour.ToString();
         minText.text = min.ToString();
+        clock?.Invoke();
         //todo 修改光线亮度
     }
 

@@ -11,8 +11,10 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
     public Light backLight;
 
     public GameObject menu;
+    [Tooltip("提示牌")]
+    public Image notice;
 
-    public Image textName;
+    public GameObject closeTime;
 
     private bool isCache;
 
@@ -43,13 +45,13 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
     {
         if (textCanvasGroup==null)
         {
-            textCanvasGroup = textName.GetComponent<CanvasGroup>();
+            textCanvasGroup = notice.GetComponent<CanvasGroup>();
         }
         textCanvasGroup.alpha = 0.1f;
         backLight.gameObject.SetActive(true);
-        PublicManager.Show(textName.gameObject);
+        PublicManager.Show(notice.gameObject);
         se = DOTween.Sequence();
-        se.Join(textName.transform.DOLocalMoveY(GetComponent<RectTransform>().sizeDelta.y/3, 1f));
+        se.Join(notice.transform.DOLocalMoveY(GetComponent<RectTransform>().sizeDelta.y/3, 1f));
         se.Join(textCanvasGroup.DOFade(1, 1f));
         se.Play();
     }
@@ -58,7 +60,7 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
     {
         backLight.gameObject.SetActive(false);
         se.Kill();
-        textName.transform.position = textOriginalV3;
+        notice.transform.position = textOriginalV3;
         textCanvasGroup.alpha = 0;
     }
 
@@ -82,10 +84,10 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
     private void OnMouseEnter()
     {
         backLight.gameObject.SetActive(true);
-        PublicManager.Show(textName.gameObject);
+        PublicManager.Show(notice.gameObject);
         se = DOTween.Sequence();
-        se.Join(textName.transform.DOLocalMoveY(80, 0.5f));
-        se.Join(textName.DOFade(1, 1f));
+        se.Join(notice.transform.DOLocalMoveY(80, 0.5f));
+        se.Join(notice.DOFade(1, 1f));
         se.Play();
 
     }
@@ -94,21 +96,23 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
     {
         backLight.gameObject.SetActive(false);
         se.Kill();
-        textName.transform.position = textOriginalV3;
-        PublicManager.Hide(textName.gameObject);
+        notice.transform.position = textOriginalV3;
+        PublicManager.Hide(notice.gameObject);
 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-     
+        float x = transform.localScale.x * GetComponent<SpriteRenderer>().sprite.bounds.size.x;
+        float y = transform.localScale.x * GetComponent<SpriteRenderer>().sprite.bounds.size.y;
         backLight.transform.position = gameObject.transform.position;
         // backLight.range = transform.localScale.x * GetComponent<RectTransform>().rect.size.x/80;
       //  backLight.range = transform.localScale.x * transform.s.x / 80;
         backLight.gameObject.SetActive(false);
-        textOriginalV3 = textName.transform.position;
-
+        textOriginalV3 = transform.position + new Vector3(0,y/2,0); ;
+        closeTime = GameObject.Instantiate<GameObject>(closeTime);
+        closeTime.transform.SetParent(transform, false);
     }
 
     // Update is called once per frame
@@ -117,5 +121,26 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
         
     }
 
+    public void ShowCloseTime(int hour,int mins)
+    {
+       
+        closeTime.GetComponentInChildren<Text>().text = hour+":"+mins;
+        FindObjectOfType<WorldClock>().clock=delegate() {
+            string time= closeTime.GetComponentInChildren<Text>().text;
+            string[] ts= time.Split(':');
+            int h = int.Parse(ts[0]);
+            int m = int.Parse(ts[0]);
+            if (m==0)
+            {
+                h--;
+                m = 59;
+            }
+            else
+            {
+                m--;
+            }
+            closeTime.GetComponentInChildren<Text>().text = h + ":" + m;
 
+        };
+    }
 }

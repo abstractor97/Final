@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using NPBehave;
+using System.Collections;
 
 public class NPBehaveExampleHelloWorldAI : MonoBehaviour
 {
@@ -8,8 +9,9 @@ public class NPBehaveExampleHelloWorldAI : MonoBehaviour
     void Start()
     {
         behaviorTree = new Root(
-            new Action(() => Debug.Log("Hello World!"))
+            new Action(() => Debug.LogWarning("Hello World!"))
         );
         behaviorTree.Start();
     }
+
 }

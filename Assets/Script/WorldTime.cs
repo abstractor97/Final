@@ -16,6 +16,7 @@ public class WorldTime:MonoBehaviour
     [Tooltip("时间伸缩率")]
     public float scale=1f;
 
+    public bool stop;
     private string targetTime;
     [HideInInspector]
     public bool isRun;
@@ -32,7 +33,7 @@ public class WorldTime:MonoBehaviour
         StartDay();
         mScoreSequence = DOTween.Sequence();
         mScoreSequence.SetAutoKill(false);
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     public void StartDay()
@@ -120,7 +121,12 @@ public class WorldTime:MonoBehaviour
     IEnumerator Run()
     {
         while (true)
-        {         
+        {
+            if (stop)
+            {
+                yield return new WaitForSeconds(scale);
+                continue;
+            }
             yield return new WaitForSeconds(scale);
             if (allTime.minute +speed < 60)
             {

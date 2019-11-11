@@ -35,7 +35,7 @@ public class PublicManager:MonoBehaviour
 
     public static GameObject pauseMenu;
 
-    public static List<GameObject> cacheUIs;
+    public static List<GameObject> cacheUIs=new List<GameObject>();
 
     public static UINames Names;
 
@@ -282,6 +282,7 @@ public class PublicManager:MonoBehaviour
         group.alpha = 0;
         group.interactable = false;
         group.blocksRaycasts = false;
+        cacheUIs.Remove(ui);
     }
     #endregion
 
