@@ -6,12 +6,13 @@ using UnityEngine.EventSystems;
 public class MapPlaceUI : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
 {
     public Light volumeLight;
+    public PlaceDetails placeDetails;
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button==PointerEventData.InputButton.Left)
         {
-        
+            placeDetails.Init(new PlaceDetails.Details { });
         }
     }
 

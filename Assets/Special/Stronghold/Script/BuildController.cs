@@ -76,6 +76,7 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
             {
                 menu = GameObject.Instantiate<GameObject>(menu);
                 menu.transform.SetParent(PublicManager.HUD, false);
+                PublicManager.Show(menu);
                 isCache = true;
             }
         }
@@ -84,20 +85,29 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
     private void OnMouseEnter()
     {
         backLight.gameObject.SetActive(true);
-        PublicManager.Show(notice.gameObject);
-        se = DOTween.Sequence();
-        se.Join(notice.transform.DOLocalMoveY(80, 0.5f));
-        se.Join(notice.DOFade(1, 1f));
-        se.Play();
+        notice.transform.position = textOriginalV3;
+        CanvasGroup group = notice.GetComponent<CanvasGroup>();
+        group.alpha = 1;
+        group.interactable = false;
+        group.blocksRaycasts = false;
+        //PublicManager.Show(notice.gameObject);
+        //se = DOTween.Sequence();
+        //se.Join(notice.transform.DOLocalMoveY(80, 0.5f));
+        //se.Join(notice.DOFade(1, 1f));
+        //se.Play();
 
     }
 
     private void OnMouseExit()
     {
         backLight.gameObject.SetActive(false);
-        se.Kill();
+       // se.Kill();
         notice.transform.position = textOriginalV3;
-        PublicManager.Hide(notice.gameObject);
+        CanvasGroup group = notice.GetComponent<CanvasGroup>();
+        group.alpha = 0;
+        group.interactable = false;
+        group.blocksRaycasts = false;
+     //   PublicManager.Hide(notice.gameObject);
 
     }
 
@@ -110,7 +120,8 @@ public class BuildController : MonoBehaviour,IPointerClickHandler,IPointerEnterH
         // backLight.range = transform.localScale.x * GetComponent<RectTransform>().rect.size.x/80;
       //  backLight.range = transform.localScale.x * transform.s.x / 80;
         backLight.gameObject.SetActive(false);
-        textOriginalV3 = transform.position + new Vector3(0,y/2,0); ;
+        textOriginalV3 = transform.position + new Vector3(0,y,0);
+        notice.transform.position = textOriginalV3;
         closeTime = GameObject.Instantiate<GameObject>(closeTime);
         closeTime.transform.SetParent(transform, false);
     }
