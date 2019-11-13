@@ -7,12 +7,15 @@ public class MapPlaceUI : MonoBehaviour,IPointerClickHandler,IPointerEnterHandle
 {
     public Light volumeLight;
     public PlaceDetails placeDetails;
+    public PlaceDetails.Terrainl terrain;
+    public int lv;
+
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button==PointerEventData.InputButton.Left)
         {
-            placeDetails.Init(new PlaceDetails.Details { });
+            placeDetails.Init(new PlaceDetails.Details { terrainl = terrain,lv= lv});
         }
     }
 

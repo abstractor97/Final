@@ -19,9 +19,11 @@ public class GameTeamController
         }
     }
 
-    private List<People1> waitTeam;
-
-    private Team outTeam;
+    public List<People1> waitTeam;
+    /// <summary>
+    /// 整备好的队伍
+    /// </summary>
+    public List<Team> outTeam;
 
     public int maxTeam=20;
     /// <summary>
@@ -44,17 +46,19 @@ public class GameTeamController
     private People1[] lv1;
     private People1[] lv2;
     private People1[] lv3;
+    private int id;
 
     public GameTeamController()
     {
         waitTeam = new List<People1>(maxTeam);
-        outTeam = new Team();
+        outTeam = new List<Team>();
         waitRecruit = new List<People1>();
         cellPrisoners = new List<People1>();
        //todo 转为AB包资源
         lv1 = Resources.LoadAll<People1>("Assets/People1/Lv1");
         lv2 = Resources.LoadAll<People1>("Assets/People1/Lv2");
         lv3 = Resources.LoadAll<People1>("Assets/People1/Lv3");
+        id = ProcessManager.GetSaveData<int>("TeamId");
     }
 
 
@@ -107,24 +111,37 @@ public class GameTeamController
         waitTeam.Remove(people);
     }
 
-    public void AddOutTeam(int i, People1 people)
+
+    public Team CreateTeam()
     {
-        outTeam.teamMembers[i] = people;
+        id++;
+       return new Team {id=id-1 };
     }
 
-    public void AddOutTeamSp(int i, People1 people)
+    public void AddOutTeam(int id,int i, People1 people)
     {
-        outTeam.supports[i] = people;
+        outTeam.Find((Team t)=>
+        {
+            return t.id == id;
+        }).teamMembers[i] = people;
+    }
+
+    public void AddOutTeamSp(int id,int i, People1 people)
+    {
+        outTeam.Find((Team t) =>
+        {
+            return t.id == id;
+        }).supports[i] = people;
     }
 
     /// <summary>
     /// 出发检查
     /// </summary>
-    public bool DepartureCheck()
+    public bool DepartureCheck(int id)
     {
-        foreach (var tm in outTeam.teamMembers)
+        foreach (var tm in outTeam.Find((Team t) =>{return t.id == id;}).teamMembers)
         {
-            if (tm!=null)
+            if (tm != null)
             {
                 return true;
             }
@@ -135,12 +152,9 @@ public class GameTeamController
     public class Team
     {
 
-       public People1[] teamMembers=new People1[3];
-
+        public int id;
+        public People1[] teamMembers=new People1[3];
         public Buff1 buff;
-
-        public bool dead;
-
         public People1[] supports = new People1[2];
     }
 }
