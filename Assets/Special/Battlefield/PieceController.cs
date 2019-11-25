@@ -12,6 +12,8 @@ public class PieceController : MonoBehaviour
 
     public bool intercept;
 
+    public bool isEnemy;
+
     public Command command { set { behaviorTree.Blackboard["command"] = value; }
         get { return behaviorTree.Blackboard.Get<Command>("command"); } }
 
@@ -27,7 +29,14 @@ public class PieceController : MonoBehaviour
         // );
         throttledClock = new Clock();
         //获取此类人工智能的共享黑板，此黑板由所有实例共享
-        sharedBlackboard = UnityContext.GetSharedBlackboard("enemy_ai");
+        if (isEnemy)
+        {
+            sharedBlackboard = UnityContext.GetSharedBlackboard("enemy_ai");
+        }
+        else
+        {
+            sharedBlackboard = UnityContext.GetSharedBlackboard("_ai");
+        }
         ownBlackboard = new Blackboard(sharedBlackboard, throttledClock);
         command = Command.garrison;
         //     behaviorTree = new Root(new Blackboard(throttledClock), throttledClock, mainTree);
