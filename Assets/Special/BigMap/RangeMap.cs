@@ -36,22 +36,25 @@ public class RangeMap : MonoBehaviour
 
     private void InitMap()
     {
-        mapHolder = new GameObject("Map").transform;// 设置一个父类管理生成的地图
+        //   mapHolder = new GameObject("Map").transform;// 设置一个父类管理生成的地图
+        mapHolder = transform;
         for (int x = 0; x < cols; x++)
         {
             for (int y = 0; y < rows; y++)
             {
+
                 if (x == 0 || y == 0 || x == cols - 1 || y == rows - 1)//地图最外面一圈是围墙
                 {
                     int index = Random.Range(0, OutWallArray.Length);
-                    GameObject go = GameObject.Instantiate(OutWallArray[index], new Vector3(x, y, 0), Quaternion.identity) as GameObject;
-                    go.transform.SetParent(mapHolder);
+                    GameObject go = GameObject.Instantiate(OutWallArray[index], new Vector3(x, y, 0), OutWallArray[index].transform.rotation) as GameObject;
+               
+                    go.transform.SetParent(mapHolder,false);
                 }
                 else// 其余是地板
                 {
                     int index = Random.Range(0, FloorArray.Length);
-                    GameObject go = GameObject.Instantiate(FloorArray[index], new Vector3(x, y, 0), Quaternion.identity) as GameObject;
-                    go.transform.SetParent(mapHolder);
+                    GameObject go = GameObject.Instantiate(FloorArray[index], new Vector3(x, y, 0), FloorArray[index].transform.rotation) as GameObject;
+                    go.transform.SetParent(mapHolder,false);
                 }
             }
         }
@@ -75,7 +78,8 @@ public class RangeMap : MonoBehaviour
             //随机取得障碍物
             int WallIndex = Random.Range(0, WallArray.Length);
             GameObject go = GameObject.Instantiate(WallArray[WallIndex], pos, Quaternion.identity) as GameObject;
-            go.transform.SetParent(mapHolder);
+            go.transform.SetParent(mapHolder,false);
         }
     }
+
 }

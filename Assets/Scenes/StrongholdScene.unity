@@ -149,7 +149,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &14354976
 MonoBehaviour:
@@ -1426,11 +1426,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 687529730}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -82.04503, y: -2.5286932, z: -2298.8018}
+  m_LocalPosition: {x: -100, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &718933331
 GameObject:
@@ -1566,6 +1566,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 729794684}
+  - component: {fileID: 729794685}
   m_Layer: 0
   m_Name: BigMap
   m_TagString: Untagged
@@ -1581,12 +1582,34 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 729794683}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -100, y: 0, z: -10}
+  m_LocalPosition: {x: -100, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &729794685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 729794683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b07df2c66c5b7348b7b4548d5d57c7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OutWallArray:
+  - {fileID: 1994085010386688, guid: 408ff2acb0a41b24dbed2426e39d1530, type: 3}
+  FloorArray:
+  - {fileID: 1388657164994780, guid: dcf682d7e73d63e4db2f3cea8bdac239, type: 3}
+  WallArray:
+  - {fileID: 1991328963452212, guid: dc899da57486f4c4fa53c3bb800568d6, type: 3}
+  rows: 10
+  cols: 10
+  minCountWall: 2
+  maxCountWall: 8
 --- !u!1 &741528584
 GameObject:
   m_ObjectHideFlags: 0
@@ -1719,7 +1742,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &898656220
 MonoBehaviour:
@@ -4762,7 +4785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1ae954f09c65940b44feaa45c369d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backLight: {fileID: 0}
+  backLight: {fileID: 64795131}
   menu: {fileID: 0}
   notice: {fileID: 0}
   closeTime: {fileID: 0}
