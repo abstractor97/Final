@@ -35,7 +35,7 @@ namespace Map
                 GameObject player = GameObject.FindGameObjectWithTag("Player");
                 player.GetComponent<AILerp>().destination = transform.position;
                 player.GetComponent<AILerp>().SearchPath();
-                player.GetComponent<AILerp>().complete += Arrive;
+              //  player.GetComponent<AILerp>().complete += Arrive;
 
             }
         }
@@ -97,8 +97,8 @@ namespace Map
                 player.GetComponent<AILerp>().destination= transform.position;
                 player.GetComponent<AILerp>().speed = FindObjectOfType<PlayerManager>().GetSpeed();
                 player.GetComponent<AILerp>().SearchPath();
-                player.GetComponent<AILerp>().complete += Arrive;
-                player.GetComponent<AILerp>().pathCallBack += delegate(float l) { d = l; };
+            //    player.GetComponent<AILerp>().complete += Arrive;
+            //    player.GetComponent<AILerp>().pathCallBack += delegate(float l) { d = l; };
                 GameObject.FindObjectOfType<WorldTime>().ChangeSpeed(WorldTime.TimeSpeed.walk);
                 // FindObjectOfType<MapPlayer>().ai.Goto(transform.position);
                 // FindObjectOfType<MapPlayer>().ai.arriveCallBack += Arrive;

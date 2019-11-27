@@ -4,38 +4,37 @@ using System.Collections.Generic;
 
 namespace Pathfinding {
 	using Pathfinding.Util;
-    using UnityEngine.Events;
 
-    /// <summary>
-    /// Linearly interpolating movement script.
-    /// This movement script will follow the path exactly, it uses linear interpolation to move between the waypoints in the path.
-    /// This is desirable for some types of games.
-    /// It also works in 2D.
-    ///
-    /// See: You can see an example of this script in action in the example scene called Example15_2D.
-    ///
-    /// \section rec Configuration
-    /// \subsection rec-snapped Recommended setup for movement along connections
-    ///
-    /// This depends on what type of movement you are aiming for.
-    /// If you are aiming for movement where the unit follows the path exactly and move only along the graph connections on a grid/point graph.
-    /// I recommend that you adjust the StartEndModifier on the Seeker component: set the 'Start Point Snapping' field to 'NodeConnection' and the 'End Point Snapping' field to 'SnapToNode'.
-    /// [Open online documentation to see images]
-    /// [Open online documentation to see images]
-    ///
-    /// \subsection rec-smooth Recommended setup for smooth movement
-    /// If you on the other hand want smoother movement I recommend setting 'Start Point Snapping' and 'End Point Snapping' to 'ClosestOnNode' and to add the Simple Smooth Modifier to the GameObject as well.
-    /// Alternatively you can use the <see cref="Pathfinding.FunnelModifier Funnel"/> which works better on navmesh/recast graphs or the <see cref="Pathfinding.RaycastModifier"/>.
-    ///
-    /// You should not combine the Simple Smooth Modifier or the Funnel Modifier with the NodeConnection snapping mode. This may lead to very odd behavior.
-    ///
-    /// [Open online documentation to see images]
-    /// [Open online documentation to see images]
-    /// You may also want to tweak the <see cref="rotationSpeed"/>.
-    ///
-    /// \ingroup movementscripts
-    /// </summary>
-    [RequireComponent(typeof(Seeker))]
+	/// <summary>
+	/// Linearly interpolating movement script.
+	/// This movement script will follow the path exactly, it uses linear interpolation to move between the waypoints in the path.
+	/// This is desirable for some types of games.
+	/// It also works in 2D.
+	///
+	/// See: You can see an example of this script in action in the example scene called Example15_2D.
+	///
+	/// \section rec Configuration
+	/// \subsection rec-snapped Recommended setup for movement along connections
+	///
+	/// This depends on what type of movement you are aiming for.
+	/// If you are aiming for movement where the unit follows the path exactly and move only along the graph connections on a grid/point graph.
+	/// I recommend that you adjust the StartEndModifier on the Seeker component: set the 'Start Point Snapping' field to 'NodeConnection' and the 'End Point Snapping' field to 'SnapToNode'.
+	/// [Open online documentation to see images]
+	/// [Open online documentation to see images]
+	///
+	/// \subsection rec-smooth Recommended setup for smooth movement
+	/// If you on the other hand want smoother movement I recommend setting 'Start Point Snapping' and 'End Point Snapping' to 'ClosestOnNode' and to add the Simple Smooth Modifier to the GameObject as well.
+	/// Alternatively you can use the <see cref="Pathfinding.FunnelModifier Funnel"/> which works better on navmesh/recast graphs or the <see cref="Pathfinding.RaycastModifier"/>.
+	///
+	/// You should not combine the Simple Smooth Modifier or the Funnel Modifier with the NodeConnection snapping mode. This may lead to very odd behavior.
+	///
+	/// [Open online documentation to see images]
+	/// [Open online documentation to see images]
+	/// You may also want to tweak the <see cref="rotationSpeed"/>.
+	///
+	/// \ingroup movementscripts
+	/// </summary>
+	[RequireComponent(typeof(Seeker))]
 	[AddComponentMenu("Pathfinding/AI/AILerp (2D,3D)")]
 	[HelpURL("http://arongranberg.com/astar/docs/class_pathfinding_1_1_a_i_lerp.php")]
 	public class AILerp : VersionedMonoBehaviour, IAstarAI {
@@ -55,22 +54,18 @@ namespace Pathfinding {
 		/// <summary>Speed in world units</summary>
 		public float speed = 3;
 
-
-        public UnityAction complete;
-        public UnityAction<float> pathCallBack;
-
-        /// <summary>
-        /// Determines which direction the agent moves in.
-        /// For 3D games you most likely want the ZAxisIsForward option as that is the convention for 3D games.
-        /// For 2D games you most likely want the YAxisIsForward option as that is the convention for 2D games.
-        ///
-        /// Using the YAxisForward option will also allow the agent to assume that the movement will happen in the 2D (XY) plane instead of the XZ plane
-        /// if it does not know. This is important only for the point graph which does not have a well defined up direction. The other built-in graphs (e.g the grid graph)
-        /// will all tell the agent which movement plane it is supposed to use.
-        ///
-        /// [Open online documentation to see images]
-        /// </summary>
-        [UnityEngine.Serialization.FormerlySerializedAs("rotationIn2D")]
+		/// <summary>
+		/// Determines which direction the agent moves in.
+		/// For 3D games you most likely want the ZAxisIsForward option as that is the convention for 3D games.
+		/// For 2D games you most likely want the YAxisIsForward option as that is the convention for 2D games.
+		///
+		/// Using the YAxisForward option will also allow the agent to assume that the movement will happen in the 2D (XY) plane instead of the XZ plane
+		/// if it does not know. This is important only for the point graph which does not have a well defined up direction. The other built-in graphs (e.g the grid graph)
+		/// will all tell the agent which movement plane it is supposed to use.
+		///
+		/// [Open online documentation to see images]
+		/// </summary>
+		[UnityEngine.Serialization.FormerlySerializedAs("rotationIn2D")]
 		public OrientationMode orientation = OrientationMode.ZAxisForward;
 
 		/// <summary>
@@ -108,7 +103,7 @@ namespace Pathfinding {
 		/// <summary>\copydoc Pathfinding::IAstarAI::reachedDestination</summary>
 		public bool reachedDestination {
 			get {
-				if (!reachedEndOfPath) return false;
+				if (!reachedEndOfPath || !interpolator.valid) return false;
 				// Note: distanceToSteeringTarget is the distance to the end of the path when approachingPathEndpoint is true
 				var dir = destination - interpolator.endPoint;
 				// Ignore either the y or z coordinate depending on if we are using 2D mode or not
@@ -284,10 +279,10 @@ namespace Pathfinding {
 		protected PathInterpolator interpolator = new PathInterpolator();
 
 
-        /// <summary>
-        ///如果启动功能已运行，则保持。
-       /// 用于测试协同程序是否应在OnEnable中启动以防止计算路径
-       /// 在唤醒阶段（或者更确切地说，在第0帧开始之前）。
+		/// <summary>
+		/// Holds if the Start function has been run.
+		/// Used to test if coroutines should be started in OnEnable to prevent calculating paths
+		/// in the awake stage (or rather before start on frame 0).
 		/// </summary>
 		bool startHasRun = false;
 
@@ -299,11 +294,10 @@ namespace Pathfinding {
 		Transform targetCompatibility;
 
 		protected AILerp () {
-            // 请注意，这需要在构造函数中设置，而不是在例如“唤醒”中设置。
-           // 因为有可能其他代码运行并设置Destination属性
-           // 在此脚本上的唤醒方法运行之前。
-
-            destination = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
+			// Note that this needs to be set here in the constructor and not in e.g Awake
+			// because it is possible that other code runs and sets the destination property
+			// before the Awake method on this script runs.
+			destination = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
 		}
 
 		/// <summary>
@@ -317,11 +311,11 @@ namespace Pathfinding {
 
 			seeker = GetComponent<Seeker>();
 
-            // 告诉StartEndModifier在后期处理此路径时要求我们的确切位置
-           // 重要的是，如果我们使用预测，并从前面的某个点请求路径
-           // 从那时起，路径请求中的起点可能远离我们的位置，当
-          //  已计算路径。这也很好，因为如果请求长路径，可能需要
-           // 计算几帧，这样我们就可以在这段时间内移动一些距离。
+			// Tell the StartEndModifier to ask for our exact position when post processing the path This
+			// is important if we are using prediction and requesting a path from some point slightly ahead
+			// of us since then the start point in the path request may be far from our position when the
+			// path has been calculated. This is also good because if a long path is requested, it may take
+			// a few frames for it to be calculated so we could have moved some distance during that time
 			seeker.startEndModifier.adjustStartPoint = () => simulatedPosition;
 		}
 
@@ -353,29 +347,21 @@ namespace Pathfinding {
 		}
 
 		public void OnDisable () {
-			// Abort any calculations in progress
-			if (seeker != null) seeker.CancelCurrentPathRequest();
-			canSearchAgain = true;
-
-			// Release current path so that it can be pooled
-			if (path != null) path.Release(this);
-			path = null;
-			interpolator.SetPath(null);
-
+			ClearPath();
 			// Make sure we no longer receive callbacks when paths complete
 			seeker.pathCallback -= OnPathComplete;
 		}
 
 		public void Teleport (Vector3 position, bool clearPath = true) {
-			if (clearPath) interpolator.SetPath(null);
+			if (clearPath) ClearPath();
 			simulatedPosition = previousPosition1 = previousPosition2 = position;
 			if (updatePosition) tr.position = position;
 			reachedEndOfPath = false;
 			if (clearPath) SearchPath();
 		}
 
-        /// <summary>如果应尽快自动重新计算路径，则为true</summary>
-        protected virtual bool shouldRecalculatePath {
+		/// <summary>True if the path should be automatically recalculated as soon as possible</summary>
+		protected virtual bool shouldRecalculatePath {
 			get {
 				return Time.time - lastRepath >= repathRate && canSearchAgain && canSearch && !float.IsPositiveInfinity(destination.x);
 			}
@@ -430,76 +416,88 @@ namespace Pathfinding {
 		/// and override the function in that script.
 		/// </summary>
 		public virtual void OnTargetReached () {
-            complete?.Invoke();
-            complete = null;
+		}
 
-        }
+		/// <summary>
+		/// Called when a requested path has finished calculation.
+		/// A path is first requested by <see cref="SearchPath"/>, it is then calculated, probably in the same or the next frame.
+		/// Finally it is returned to the seeker which forwards it to this function.
+		/// </summary>
+		protected virtual void OnPathComplete (Path _p) {
+			ABPath p = _p as ABPath;
 
-        /// <summary>
-        ///当请求的路径完成计算时调用。
-        /// A path is first requested by <see cref="SearchPath"/>, it is then calculated, probably in the same or the next frame.
-        /// Finally it is returned to the seeker which forwards it to this function.
-        /// </summary>
-        protected virtual void OnPathComplete(Path _p)
-        {
-            ABPath p = _p as ABPath;
+			if (p == null) throw new System.Exception("This function only handles ABPaths, do not use special path types");
 
-            if (p == null) throw new System.Exception("This function only handles ABPaths, do not use special path types");
+			canSearchAgain = true;
 
-            canSearchAgain = true;
+			// Increase the reference count on the path.
+			// This is used for path pooling
+			p.Claim(this);
 
-            // Increase the reference count on the path.
-            // This is used for path pooling
-            p.Claim(this);
+			// Path couldn't be calculated of some reason.
+			// More info in p.errorLog (debug string)
+			if (p.error) {
+				p.Release(this);
+				return;
+			}
 
-            // Path couldn't be calculated of some reason.
-            // More info in p.errorLog (debug string)
-            if (p.error)
-            {
-                p.Release(this);
-                return;
-            }
-
-            if (interpolatePathSwitches)
-            {
-                ConfigurePathSwitchInterpolation();
-            }
+			if (interpolatePathSwitches) {
+				ConfigurePathSwitchInterpolation();
+			}
 
 
-            // Replace the old path
-            var oldPath = path;
-            path = p;
-            reachedEndOfPath = false;
+			// Replace the old path
+			var oldPath = path;
+			path = p;
+			reachedEndOfPath = false;
 
-            // Just for the rest of the code to work, if there
-            // is only one waypoint in the path add another one
-            if (path.vectorPath != null && path.vectorPath.Count == 1)
-            {
-                path.vectorPath.Insert(0, GetFeetPosition());
-            }
+			// Just for the rest of the code to work, if there
+			// is only one waypoint in the path add another one
+			if (path.vectorPath != null && path.vectorPath.Count == 1) {
+				path.vectorPath.Insert(0, GetFeetPosition());
+			}
 
-            // 重置一些变量
-            ConfigureNewPath();
+			// Reset some variables
+			ConfigureNewPath();
 
-            // 释放上一个路径
-            // 这用于路径池。
-            //这是在配置器路径方法中配置了内插器之后完成的，因为此方法会使内插器失效，因为将汇集向量路径列表（内插器使用的列表）。
-            if (oldPath != null) oldPath.Release(this);
+			// Release the previous path
+			// This is used for path pooling.
+			// This is done after the interpolator has been configured in the ConfigureNewPath method
+			// as this method would otherwise invalidate the interpolator
+			// since the vectorPath list (which the interpolator uses) will be pooled.
+			if (oldPath != null) oldPath.Release(this);
 
-            if (interpolator.remainingDistance < 0.0001f && !reachedEndOfPath)
-            {
-                reachedEndOfPath = true;
-                OnTargetReached();
-            }
-            //只调用一次路径长度
-            pathCallBack?.Invoke(remainingDistance);
-            pathCallBack = null;
+			if (interpolator.remainingDistance < 0.0001f && !reachedEndOfPath) {
+				reachedEndOfPath = true;
+				OnTargetReached();
+			}
+		}
 
-        }
+		/// <summary>
+		/// Clears the current path of the agent.
+		///
+		/// Usually invoked using <see cref="SetPath(null)"/>
+		///
+		/// See: <see cref="SetPath"/>
+		/// See: <see cref="isStopped"/>
+		/// </summary>
+		protected virtual void ClearPath () {
+			// Abort any calculations in progress
+			if (seeker != null) seeker.CancelCurrentPathRequest();
+			canSearchAgain = true;
+			reachedEndOfPath = false;
+
+			// Release current path so that it can be pooled
+			if (path != null) path.Release(this);
+			path = null;
+			interpolator.SetPath(null);
+		}
 
 		/// <summary>\copydoc Pathfinding::IAstarAI::SetPath</summary>
 		public void SetPath (Path path) {
-			if (path.PipelineState == PathState.Created) {
+			if (path == null) {
+				ClearPath();
+			} else if (path.PipelineState == PathState.Created) {
 				// Path has not started calculation yet
 				lastRepath = Time.time;
 				canSearchAgain = false;

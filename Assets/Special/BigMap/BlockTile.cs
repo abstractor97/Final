@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockTile : MonoBehaviour
+public class BlockTile
 {
+    public int x;
+    public int y;
+    public float pos_x;
+    public float pos_y;
+    public bool isWall;
+    /// <summary>
+    /// 代表
+    /// </summary>
+    public Block6RangeMap.TileType type;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int index;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float speedCoe;
+
+   
 }

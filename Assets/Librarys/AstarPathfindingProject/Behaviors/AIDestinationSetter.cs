@@ -31,8 +31,8 @@ namespace Pathfinding {
 			if (ai != null) ai.onSearchPath -= Update;
 		}
 
-        /// <summary>每帧更新人工智能的目的地</summary>
-        void Update () {
+		/// <summary>Updates the AI's destination every frame</summary>
+		void Update () {
 			if (target != null && ai != null) ai.destination = target.position;
 		}
 	}
