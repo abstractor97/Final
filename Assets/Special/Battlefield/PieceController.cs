@@ -2,18 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class PieceController : MonoBehaviour
+public class PieceController
 {
 
     public People1 people;
 
-    public PieceController target;
+  //  public PieceController target;
 
     public bool intercept;
 
     public bool isEnemy;
-
+    /// <summary>
+    /// 命令
+    /// </summary>
     public Command command { set { behaviorTree.Blackboard["command"] = value; }
         get { return behaviorTree.Blackboard.Get<Command>("command"); } }
 
@@ -22,7 +25,13 @@ public class PieceController : MonoBehaviour
     private Clock throttledClock;
     private Root behaviorTree;
 
-    void Start()
+    public PieceController (People1 people, bool isEnemy)
+    {
+        this.people = people;
+        this.isEnemy = isEnemy;
+    }
+
+    public void Start()
     {
         // Node mainTree = new Service( () => { Debug.LogWarning("Test"); },
         //     new WaitUntilStopped()
@@ -42,12 +51,6 @@ public class PieceController : MonoBehaviour
         //     behaviorTree = new Root(new Blackboard(throttledClock), throttledClock, mainTree);
         behaviorTree = GetRoot();
         behaviorTree.Start();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
     /// <summary>
     /// 每次执行树
@@ -141,6 +144,12 @@ public class PieceController : MonoBehaviour
                 )
             )
         );
+
+    }
+
+
+    public void Collision(string tag)
+    {
 
     }
 
