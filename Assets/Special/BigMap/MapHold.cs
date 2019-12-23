@@ -9,7 +9,7 @@ public class MapHold : MonoBehaviour
 
     public Shader highlight;
     public Shader defShader;
-
+    //地块的UI
     public GameObject tileUI;
 
     private GameObject cacheTile;
