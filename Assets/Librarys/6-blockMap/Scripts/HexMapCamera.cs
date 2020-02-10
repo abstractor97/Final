@@ -10,6 +10,7 @@ public class HexMapCamera : MonoBehaviour {
 
 	public float rotationSpeed;
 
+
 	Transform swivel, stick;
 
 	public HexGrid grid;
@@ -39,18 +40,53 @@ public class HexMapCamera : MonoBehaviour {
 		instance = this;
 	}
 
-	void Update () {
-		float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
-		if (zoomDelta != 0f) {
-			AdjustZoom(zoomDelta);
-		}
+    void Update() {
+        float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
+        if (zoomDelta != 0f) {
+            AdjustZoom(zoomDelta);
+        }
+        //float mxDelta = Input.GetAxis("Mouse X");
+        //float myDelta = Input.GetAxis("Mouse Y");
+        //if (mxDelta != 0f || myDelta != 0f) {
+        //    Debug.LogWarning("mx:" + mxDelta + "my:" + myDelta);
+        //}
 
-		//float rotationDelta = Input.GetAxis("Rotation");
-		//if (rotationDelta != 0f) {
-		//	AdjustRotation(rotationDelta);
-		//}
+        Vector3 v1 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        int x = 0;
+        int y = 0;
+        if (v1.x < 0.05f)
+        {
+            x = -1;
+          //  transform.Translate(-Vector3.right * 10 * Time.deltaTime, Space.World);
+        }
+        if (v1.x > 1 - 0.05f)
+        {
+            x = 1;
+       // transform.Translate(Vector3.right * 10 * Time.deltaTime, Space.World);
+    }
+        if (v1.y < 0.05f)
+        {
+            y = -1;
+           // transform.Translate(-Vector3.forward * 10 * Time.deltaTime, Space.World);
+        }
+        if (v1.y > 1 - 0.05f)
+        {
+            y = 1;
+          //  transform.Translate(-Vector3.back * 10 * Time.deltaTime, Space.World);
 
-		float xDelta = Input.GetAxis("Horizontal");
+        }
+
+        if (x != 0f || y != 0f)
+        {
+            AdjustPosition(x, y);
+        }
+
+        //float rotationDelta = Input.GetAxis("Rotation");
+        //if (rotationDelta != 0f) {
+        //	AdjustRotation(rotationDelta);
+        //}
+
+        float xDelta = Input.GetAxis("Horizontal");
 		float zDelta = Input.GetAxis("Vertical");
 		if (xDelta != 0f || zDelta != 0f) {
 			AdjustPosition(xDelta, zDelta);

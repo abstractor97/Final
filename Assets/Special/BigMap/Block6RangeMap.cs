@@ -17,7 +17,6 @@ public class Block6RangeMap : MonoBehaviour
 
     public UnityAction<GameObject,BlockTile> clickTile;
 
-
     private Transform mapHolder;
     private List<List<BlockTile>> tiles = new List<List<BlockTile>>();//保存这个
     private List<GameObject> objTiles = new List<GameObject>();//地块的对象引用
